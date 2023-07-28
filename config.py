@@ -4,7 +4,7 @@ class config:
     def __init__(self):
         self.run_name = "run_name"
 
-        #Form_Factors
+        #Form_Factor
         self.Form_Factor = "Server"
 
         #NPU_parameters
@@ -46,8 +46,12 @@ class config:
         config = cp.Configparser()
         config.read(config_file)
 
-        section = 'Form_Factors'
-        self.Form_Factor
+        section = 'Form_Factor'
+        self.Form_Factor = config.get(section, 'Form_Factor')
+        if self.Form_Factor == ('Mobile' or 'PC'):
+            self.flag = True
+        else:
+            self.flag = False
 
         section = 'NPU_Parameters'
         self.Throughput = config.get(section, 'Throuhgput')
@@ -64,12 +68,3 @@ class config:
         section = 'PIM_Parameters'
 
         section = 'DNN_Parameters'
-
-
-    def 
-        
-Form_Factors
-NPU_Parameters
-PIM_Parameters
-DNN_parameters
-Save_parameters
