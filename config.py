@@ -66,5 +66,23 @@ class config:
         self.Total_Bandwidth = config.get(section, 'Total_Bandwidth')
 
         section = 'PIM_Parameters'
+        self.Systolic_Row = config.get(section, 'Systolic_Row')
+        self.Systolic_Col = config.get(section, 'Systolic_Col')
+        self.Pod_Dimension_Row = config.get(section, 'Pod_Dimension_Row')
+        self.Pod_Dimension_Col = config.get(section, 'Pod_Dimension_Col')
+        self.PU_per_Chip = config.get(section, 'PU_per_Chip')
+        self.Chip_per_DIMM = config.get(section, 'Chip_per_DIMM')
+        self.Number_of_DIMM = config.get(section, 'NUmber_of_DIMM')
+        self.Input_Buffer = config.get(section, 'Input_Buffer')
+        self.Filter_Buffer = config.get(section, 'Filter_Buffer')
+        self.PIM_Bandwidth_per_DIMM = config.get(section, 'PIM_Bandwidth_per_DIMM')
 
         section = 'DNN_Parameters'
+        self.Topology_Path = config.get(section, 'Topology_Path')
+        self.Batch = config.get(section, 'Batch')
+        self.NPU_Dataflow = config.get(section, 'NPU_Dataflow')
+        self.PIM_Dataflow = config.get(section, 'PIM_Dataflow')
+
+        section = 'Save_parameters'
+        self.PIM_Flag = config.get(section, 'PIM_Flag')
+        self.Storing_Path = config.get(section, 'Storing_Path')
