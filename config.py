@@ -43,7 +43,7 @@ class config:
 
     def read_config_file(self, config_file):
         
-        config = cp.Configparser()
+        config = cp.configparser()
         config.read(config_file)
 
         section = 'Form_Factor'
@@ -54,35 +54,35 @@ class config:
             self.flag = False
 
         section = 'NPU_Parameters'
-        self.Throughput = config.get(section, 'Throuhgput')
-        self.Systolic_Row = config.get(section, 'Systolic_Row')
-        self.Systolic_Col = config.get(section, 'Systolic_Col')
-        self.Pod_Dimension_Row = config.get(section, 'Pod_Dimension_Row')
-        self.Pod_Dimension_Col = config.get(section, 'Pod_Dimension_Col')
-        self.Number_of_Pod = config.get(section, 'Number_of_Pod')
-        self.Input_Buffer = config.get(section, 'Input_Buffer')
-        self.Filter_Buffer = config.get(section, 'Filter_Buffer')
-        self.Clock_Frequency = config.get(section, 'Clock_Frequency')
-        self.Total_Bandwidth = config.get(section, 'Total_Bandwidth')
+        self.Throughput = float(config.get(section, 'Throuhgput'))
+        self.Systolic_Row = int(config.get(section, 'Systolic_Row'))
+        self.Systolic_Col = int(config.get(section, 'Systolic_Col'))
+        self.Pod_Dimension_Row = int(config.get(section, 'Pod_Dimension_Row'))
+        self.Pod_Dimension_Col = int(config.get(section, 'Pod_Dimension_Col'))
+        self.Number_of_Pod = int(config.get(section, 'Number_of_Pod'))
+        self.Input_Buffer = int(config.get(section, 'Input_Buffer'))
+        self.Filter_Buffer = int(config.get(section, 'Filter_Buffer'))
+        self.Clock_Frequency = int(config.get(section, 'Clock_Frequency'))
+        self.Total_Bandwidth = float(config.get(section, 'Total_Bandwidth'))
 
         section = 'PIM_Parameters'
-        self.Systolic_Row = config.get(section, 'Systolic_Row')
-        self.Systolic_Col = config.get(section, 'Systolic_Col')
-        self.Pod_Dimension_Row = config.get(section, 'Pod_Dimension_Row')
-        self.Pod_Dimension_Col = config.get(section, 'Pod_Dimension_Col')
-        self.PU_per_Chip = config.get(section, 'PU_per_Chip')
-        self.Chip_per_DIMM = config.get(section, 'Chip_per_DIMM')
-        self.Number_of_DIMM = config.get(section, 'NUmber_of_DIMM')
-        self.Input_Buffer = config.get(section, 'Input_Buffer')
-        self.Filter_Buffer = config.get(section, 'Filter_Buffer')
-        self.PIM_Bandwidth_per_DIMM = config.get(section, 'PIM_Bandwidth_per_DIMM')
+        self.Systolic_Row = int(config.get(section, 'Systolic_Row'))
+        self.Systolic_Col = int(config.get(section, 'Systolic_Col'))
+        self.Pod_Dimension_Row = int(config.get(section, 'Pod_Dimension_Row'))
+        self.Pod_Dimension_Col = int(config.get(section, 'Pod_Dimension_Col'))
+        self.PU_per_Chip = int(config.get(section, 'PU_per_Chip'))
+        self.Chip_per_DIMM = int(config.get(section, 'Chip_per_DIMM'))
+        self.Number_of_DIMM = int(config.get(section, 'NUmber_of_DIMM'))
+        self.Input_Buffer = int(config.get(section, 'Input_Buffer'))
+        self.Filter_Buffer = int(config.get(section, 'Filter_Buffer'))
+        self.PIM_Bandwidth_per_DIMM = float(config.get(section, 'PIM_Bandwidth_per_DIMM'))
 
         section = 'DNN_Parameters'
         self.Topology_Path = config.get(section, 'Topology_Path')
-        self.Batch = config.get(section, 'Batch')
+        self.Batch = int(config.get(section, 'Batch'))
         self.NPU_Dataflow = config.get(section, 'NPU_Dataflow')
         self.PIM_Dataflow = config.get(section, 'PIM_Dataflow')
 
         section = 'Save_parameters'
-        self.PIM_Flag = config.get(section, 'PIM_Flag')
-        self.Storing_Path = config.get(section, 'Storing_Path')
+        self.PIM_Flag = int(config.get(section, 'PIM_Flag'))
+        self.Storing_Path = int(config.get(section, 'Storing_Path'))
