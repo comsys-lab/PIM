@@ -49,21 +49,26 @@ class config:
         section = 'Form_Factor'
         self.Form_Factor = config.get(section, 'Form_Factor')
         if self.Form_Factor == ('Mobile' or 'PC'):
-            self.flag = True
+            self.NPU_flag = True
         else:
-            self.flag = False
+            self.NPU_flag = False
 
         section = 'NPU_Parameters'
-        self.Throughput = float(config.get(section, 'Throuhgput'))
-        self.Systolic_Row = int(config.get(section, 'Systolic_Row'))
-        self.Systolic_Col = int(config.get(section, 'Systolic_Col'))
-        self.Pod_Dimension_Row = int(config.get(section, 'Pod_Dimension_Row'))
-        self.Pod_Dimension_Col = int(config.get(section, 'Pod_Dimension_Col'))
-        self.Number_of_Pod = int(config.get(section, 'Number_of_Pod'))
-        self.Input_Buffer = int(config.get(section, 'Input_Buffer'))
-        self.Filter_Buffer = int(config.get(section, 'Filter_Buffer'))
-        self.Clock_Frequency = int(config.get(section, 'Clock_Frequency'))
-        self.Total_Bandwidth = float(config.get(section, 'Total_Bandwidth'))
+        if self.NPU_flag == True:
+            self.NPU_Throughput = float(config.get(section, 'Throuhgput'))
+            self.NPU_Systolic_Row, self.NPU_Systolic_Col = self.convert_throughput(self.NPU_Throughput)
+        
+        else:
+            self.NPU_Systolic_Row = int(config.get(section, 'Systolic_Row'))
+            self.NPU_Systolic_Col = int(config.get(section, 'Systolic_Col'))
+
+        self.NPU_Pod_Dimension_Row = int(config.get(section, 'Pod_Dimension_Row'))
+        self.NPU_Pod_Dimension_Col = int(config.get(section, 'Pod_Dimension_Col'))
+        self.NPU_Number_of_Pod = int(config.get(section, 'Number_of_Pod'))
+        self.NPU_Input_Buffer = int(config.get(section, 'Input_Buffer'))
+        self.NPU_Filter_Buffer = int(config.get(section, 'Filter_Buffer'))
+        self.NPU_Clock_Frequency = int(config.get(section, 'Clock_Frequency'))
+        self.NPU_Total_Bandwidth = float(config.get(section, 'Total_Bandwidth'))
 
         section = 'PIM_Parameters'
         self.Systolic_Row = int(config.get(section, 'Systolic_Row'))
@@ -87,11 +92,13 @@ class config:
         self.PIM_Flag = eval(config.get(section, 'PIM_Flag'))
         self.Storing_Path = int(config.get(section, 'Storing_Path'))
 
-    def return_parameters(self):
-        self.npu_params = []
-        self.pim_params = []
-        self.dnn_params = []
-        self.save_params = []
 
-    def convert_params(self):
+        
+    def convert_throughput(self,throughput,clock_frequency):
+        #Throughput = 2 * # of pod * clock frequency
+        #of pod = Throughput / (2 * clock frequency)
+
+        num_pe = throughput /(2 * clock_frequency)
+
+
         
