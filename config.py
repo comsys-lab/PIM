@@ -84,5 +84,14 @@ class config:
         self.PIM_Dataflow = config.get(section, 'PIM_Dataflow')
 
         section = 'Save_parameters'
-        self.PIM_Flag = int(config.get(section, 'PIM_Flag'))
+        self.PIM_Flag = eval(config.get(section, 'PIM_Flag'))
         self.Storing_Path = int(config.get(section, 'Storing_Path'))
+
+    def return_parameters(self):
+        self.npu_params = []
+        self.pim_params = []
+        self.dnn_params = []
+        self.save_params = []
+
+    def convert_params(self):
+        
