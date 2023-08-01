@@ -1,4 +1,5 @@
 import configparser as cp
+import math
 
 class config:
     def __init__(self):
@@ -56,7 +57,8 @@ class config:
         section = 'NPU_Parameters'
         if self.NPU_flag == True:
             self.NPU_Throughput = float(config.get(section, 'Throuhgput'))
-            self.NPU_Systolic_Row, self.NPU_Systolic_Col = self.convert_throughput(self.NPU_Throughput)
+            self.NPU_Systolic_Row, self.NPU_Systolic_Col = self.convert_throughput(self.NPU_Throughput,\
+                 self.NPU_Pod_Dimension_Row, self.NPU_Pod_Dimension_Col, self.NPU_Clock_Frequency)
         
         else:
             self.NPU_Systolic_Row = int(config.get(section, 'Systolic_Row'))
@@ -94,11 +96,33 @@ class config:
 
 
         
-    def convert_throughput(self,throughput,clock_frequency):
+    def convert_throughput(self, throughput, NPU_Pod_Dimension_Row, NPU_Pod_Dimension_Col, clock_frequency):
         #Throughput = 2 * # of pod * clock frequency
         #of pod = Throughput / (2 * clock frequency)
 
         num_pe = throughput /(2 * clock_frequency)
+        mul_two = int(round(math.log(num_pe) / math.log(2),0))
+        
+        if mul_two//2 == 0:
+            row = pow(2,int(mul_two/2))
+            col = pow(2,int(mul_two/2))
+        else:
+            row = pow(2,int(mul_two/2))
+            col = pow(2,int(mul_two/2)+1)
+        #For row case
+        if row // NPU_Pod_Dimension_Row == 0:
+            row_dim = int(row / NPU_Pod_Dimension_Row)
+            row = int(row / row_dim)
+        else:
+            row_dim = 1
 
+        #For col case
+        if col // NPU_Pod_Dimension_Col == 0:
+            col_dim = int(col / NPU_Pod_Dimension_Col)
+            col = int(col / col_dim)
+        else:
+            col_dim = 1
+
+        return row, col, row_dim, col_dim
 
         
