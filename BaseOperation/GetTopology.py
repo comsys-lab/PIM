@@ -73,8 +73,3 @@ class GetTopology:
         topo = [MNK[0],1,1,1,MNK[1],MNK[2],1]
 
         return topo
-    
-
-a = GetTopology()
-topo,MNK = a.GetTopology('/Users/seongjun/Desktop/PIM/1.csv')
-print(topo,MNK)

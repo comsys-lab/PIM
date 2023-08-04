@@ -2,16 +2,20 @@ import numpy as np
 import pandas as pd
 import os
 
-from Base.GetParameters import GetParameters as gp
-from Base.GetTopology import GetTopology as gt
+from BaseOperation.GetParameters import GetParameters
+from BaseOperation.GetTopology import GetTopology
+from BaseOperation.GetConfiguration import GetConfiguration
 
-from Base.get_batch_case_one import get_batch_case_one as gbco
-from Base.get_batch_case_over_one import get_batch_case_over_one as gbcoo
 from MakeOperand.MakeOperand import MakeOperand as mo
 from scaleout.scaleout_bw_ideal import scaleout_bw_ideal as sbi
 from batch_distribute import batch_distribute as bd
+
 class simulation:
     def __init__(self):
+        self.GetParameters = GetParameters()
+        self.GetTopology = GetTopology()
+        self.GetConfiguration = GetConfiguration()
+        
         self.gp = gp()
         self.gt = gt()
         self.gbco = gbco()
