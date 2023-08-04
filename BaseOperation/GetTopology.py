@@ -6,7 +6,8 @@ class GetTopology:
         self.MNK = []
 
     def GetTopology(self, path):
-        topo, MNK, len_one = self.read_csv(path)
+        length = self.return_layer_length(path)
+        topo, MNK, len_one = self.read_csv(length, path)
 
         #If topology file is entered with Original format, we have to convert it into MNK format.
         #If topology file is entered with MNK format, we have to convert it into Original format.
@@ -18,51 +19,62 @@ class GetTopology:
             self.Change_Original_to_MNK(self.topo,len_one)
     
         return self.topo, self.MNK
-    
-    #read files from topology file
-    def read_csv(self, path):
-        topology = np.loadtxt(path, delimiter=',', usecols=np.arange(1,8), dtype=int)
 
+    def return_layer_length(self, path):
+        with open(path, 'r') as file:
+            return sum(1 for _ in file)
+
+    #read files from topology file
+    def read_csv(self, length, path):
+        try:
+            topology = np.loadtxt(path, delimiter=',', usecols=np.arange(1,8), dtype=int)
+        except:
+            topology = np.loadtxt(path, delimiter=',', usecols=np.arange(1,4), dtype=int)
         #Check Layer length (topology length)
-        length = int(len(topology))
-        
+
         if length == 1:
             topo = [topology.tolist()]
-            MNK = len(topo) == 4
+            MNK = len(topo[0]) == 3
             len_one = True
         else:
             topo = topology.tolist()
-            MNK = len(topo[0]) == 4
+            MNK = len(topo[0]) == 3
             len_one = False
-        
+        print(topo,MNK,len_one)
         return topo, MNK, len_one
     
     def Change_Original_to_MNK(self, topo_all, len_one):
         if len_one:
-            self.MNK.append(self.Change_Original_to_MNK_One_Layer(topo_all))
+            self.MNK.append(self.Change_Original_to_MNK_One_Layer(topo_all[0]))
         else:
             for topo in topo_all:
                 self.MNK.append(self.Change_Original_to_MNK_One_Layer(topo))
 
     def Change_Original_to_MNK_One_Layer(self, topo):
-        #Topology is composed of ['run_name',input_width, input_height, filter_width, filter_height,
+        #Topology is composed of [input_width, input_height, filter_width, filter_height,
         #channel, number_of_fiter, stride]
-        M = int(np.ceil((topo[1]-topo[3]+topo[7])/topo[7])*np.ceil((topo[2]-topo[4]+topo[7])/topo[7]))
-        N = topo[3] * topo[4] * topo[5]
-        K = topo[6]
-        MNK = [topo[0],M,N,K]
+        M = int(np.ceil((topo[0]-topo[2]+topo[6])/topo[6])*np.ceil((topo[1]-topo[3]+topo[6])/topo[6]))
+        N = topo[2] * topo[3] * topo[4]
+        K = topo[5]
+        MNK = [M,N,K]
 
         return MNK
 
     def Change_MNK_to_Original(self, MNK_all, len_one):
         if len_one:
-            self.topo.append(self.Change_MNK_to_Original_One_Layer(MNK_all))
+            self.topo.append(self.Change_MNK_to_Original_One_Layer(MNK_all[0]))
         else:
             for MNK in MNK_all:
                 self.topo.append(self.Change_MNK_to_Original_One_Layer(MNK))
 
     def Change_MNK_to_Original_One_Layer(self, MNK):
         #MNK is composed of ['run_name',M,N,K]
-        topo = [MNK[0],MNK[1],1,1,1,MNK[2],MNK[3],1]
+        print(MNK)
+        topo = [MNK[0],1,1,1,MNK[1],MNK[2],1]
 
         return topo
+    
+
+a = GetTopology()
+topo,MNK = a.GetTopology('/Users/seongjun/Desktop/PIM/1.csv')
+print(topo,MNK)
