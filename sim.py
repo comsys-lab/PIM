@@ -4,22 +4,13 @@ import time
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-npu',nargs='*', required=True, help='Enter NPU parameters')
-    parser.add_argument('-pim',nargs='*', required=True, help='Enter PIM parameters')
-    parser.add_argument('-dnn',nargs='*', required=True, help='Enter DNN parameters')
-    parser.add_argument('-save',nargs='*', required=True, help='Enter Save parameters')
+    parser.add_argument('-t',required=True, help='Enter topology file path')
+    parser.add_argument('-c',required=True, help='Enter configuration file path')
 
     args = parser.parse_args()
     
-    npu_param = args.npu
-    pim_param = args.pim
-    dnn_param = args.dnn
-    save_param = args.save
+    topology_path = args.t
+    configuration_path = args.c
 
     s = sim()
-    start = time.time()
-    s.simulation(npu_param,pim_param,dnn_param,save_param)
-    end = time.time()
-
-
-    print(end-start)
+    s.simulation(topology_path, configuration_path)

@@ -1,7 +1,7 @@
 import configparser as cp
 import math
 
-class config:
+class GetConfiguration:
     def __init__(self):
         self.run_name = "run_name"
 
@@ -47,6 +47,10 @@ class config:
         config = cp.ConfigParser()
         config.read(config_file)
         
+        #Enter Run name
+        section = 'Run_name'
+        self.Run_name = config.get(section, 'Run_name')
+
         #In this section, we distribute form factor with two types; Mobile and PC (Throughput), Server and Supercomputer.
         section = 'Form_Factor'
         self.Form_Factor = config.get(section, 'Form_Factor')
@@ -108,7 +112,7 @@ class config:
 
         num_pe = throughput * 1024 /(2 * clock_frequency)
         mul_two = int(round(math.log(num_pe) / math.log(2),0))
-        print(mul_two)
+
         if mul_two % 2 == 0:
             row = pow(2,int(mul_two/2))
             col = pow(2,int(mul_two/2))
@@ -120,6 +124,8 @@ class config:
             row_dim =  NPU_Pod_Dimension_Row
             row = int(row / row_dim)
         else:
+            print('PIM_Pod_Dimension_Row is set to 1 because NPU_Systolic_Row is not divided with PIM_Pod_Dimension_Row')
+            print('----------------------------------------------------------------------------------------------------')
             row_dim = 1
 
         #For col case
@@ -127,11 +133,15 @@ class config:
             col_dim = NPU_Pod_Dimension_Col
             col = int(col / col_dim)
         else:
+            print('PIM_Pod_Dimension_Col is set to 1 because NPU_Systolic_Col is not divided with PIM_Pod_Dimension_Col')
+            print('----------------------------------------------------------------------------------------------------')
             col_dim = 1
 
         return row, col, row_dim, col_dim
 
     def get_parameters(self):
+        run_name = self.Run_name
+        form_factor = self.Form_Factor
         npu_params = [self.NPU_Systolic_Row, self.NPU_Systolic_Col, self.NPU_Pod_Dimension_Row, \
                             self.NPU_Pod_Dimension_Col, self.NPU_Number_of_Pod, self.NPU_Input_Buffer, \
                             self.NPU_Filter_Buffer, self.NPU_Clock_Frequency, self.NPU_Total_Bandwidth]
@@ -142,4 +152,5 @@ class config:
         dnn_params = [self.Topology_Path, self.Batch, self.NPU_Dataflow, self.PIM_Dataflow]
         save_params = [self.PIM_Flag, self.Storing_Path]
 
-        return npu_params, pim_params, dnn_params, save_params
+        return run_name,form_factor, npu_params, pim_params, dnn_params, save_params
+    
