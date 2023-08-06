@@ -16,11 +16,7 @@ class simulation:
         self.GetTopology = GetTopology()
         self.GetConfiguration = GetConfiguration()
         
-        self.gp = gp()
-        self.gt = gt()
-        self.gbco = gbco()
         self.sbi = sbi()
-        self.gbcoo = gbcoo()
         self.mo = mo()
         self.bd = bd()
 
