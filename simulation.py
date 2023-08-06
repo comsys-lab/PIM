@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import os
 
-from BaseOperation.GetParameters import GetParameters
 from BaseOperation.GetTopology import GetTopology
 from BaseOperation.GetConfiguration import GetConfiguration
+from BaseOperation.GetEnergy import GetEnergy
 
 from MakeOperand.MakeOperand import MakeOperand as mo
 from scaleout.scaleout_bw_ideal import scaleout_bw_ideal as sbi
@@ -12,15 +12,30 @@ from batch_distribute import batch_distribute as bd
 
 class simulation:
     def __init__(self):
-        self.GetParameters = GetParameters()
         self.GetTopology = GetTopology()
         self.GetConfiguration = GetConfiguration()
-        
+        self.GetEnergy = GetEnergy()
+
         self.sbi = sbi()
         self.mo = mo()
         self.bd = bd()
 
-    def simulation(self,npu_param,pim_param,dnn_param,save_param):
+    def simulation(self,topology_path, configuration_path, energy_file_path):
+        #From topology file path, get topology list and MNK list
+        self.topology, self.MNK = self.GetTopology.GetTopology(topology_path)
+
+        #From Configuration file path, get hardware confiugration parameters.
+        self.run_name, self.form_factor, self.npu_params, self.pim_params, self.dnn_params, self.save_params =\
+        self.GetConfiguration.GetConfiguration(configuration_path)
+
+        #From Energy configuration file path, get Energyr pataemters.
+        self.Energy_MAC, self.Energy_NPU, self.Energy_PIM = self.GetEnergy.GetEnergy(energy_file_path)
+
+        #Simulation setting complete---------------------------------------------------------------------
+
+        
+
+    def simulation1(self,npu_param,pim_param,dnn_param,save_param):
         self.get_settings(npu_param,pim_param,dnn_param,save_param)
         temp = ""
         for i in range(8):

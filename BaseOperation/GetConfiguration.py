@@ -154,3 +154,7 @@ class GetConfiguration:
 
         return run_name,form_factor, npu_params, pim_params, dnn_params, save_params
     
+    def GetConfiguration(self, config_file):
+        self.read_config_file(config_file)
+        
+        return self.get_parameters
