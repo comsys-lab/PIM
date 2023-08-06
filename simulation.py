@@ -1,14 +1,12 @@
 import numpy as np
-import pandas as pd
 import os
 
 from BaseOperation.GetTopology import GetTopology
 from BaseOperation.GetConfiguration import GetConfiguration
 from BaseOperation.GetEnergy import GetEnergy
 
-from MakeOperand.MakeOperand import MakeOperand as mo
-from scaleout.scaleout_bw_ideal import scaleout_bw_ideal as sbi
-from batch_distribute import batch_distribute as bd
+from MakeOperand.MakeOperand import MakeOperand
+from scaleout.scaleout_bw_ideal import scaleout_bw_ideal 
 
 class simulation:
     def __init__(self):
@@ -16,11 +14,21 @@ class simulation:
         self.GetConfiguration = GetConfiguration()
         self.GetEnergy = GetEnergy()
 
+        self.MakeOperand = MakeOperand()
         self.sbi = sbi()
         self.mo = mo()
         self.bd = bd()
 
-    def simulation(self,topology_path, configuration_path, energy_file_path):
+    def Simulation(self,topology_path, configuration_path, energy_file_path):
+        #Get Simulation settings: topology, hardware configuration, energy configuration
+        self.Get_Setting(topology_path, configuration_path, energy_file_path)
+    
+        if not self.save_params[0]:
+            self.Only_NPU()
+        else:
+            self.With_PIM()
+        
+    def Get_Setting(self, topology_path, configuration_path, energy_file_path):
         #From topology file path, get topology list and MNK list
         self.topology, self.MNK = self.GetTopology.GetTopology(topology_path)
 
@@ -31,9 +39,10 @@ class simulation:
         #From Energy configuration file path, get Energyr pataemters.
         self.Energy_MAC, self.Energy_NPU, self.Energy_PIM = self.GetEnergy.GetEnergy(energy_file_path)
 
-        #Simulation setting complete---------------------------------------------------------------------
-
-        
+    def Only_NPU(self):
+        pass
+    def With_PIM(self):
+        pass
 
     def simulation1(self,npu_param,pim_param,dnn_param,save_param):
         self.get_settings(npu_param,pim_param,dnn_param,save_param)
@@ -60,12 +69,6 @@ class simulation:
         else:
             self.only_npu(name)
         
-
-    def get_settings(self,npu_param,pim_param,dnn_param,save_param):
-        self.npu_param, self.pim_param, self.dnn_param, self.save_param = self.gp.return_parameters(npu_param,pim_param,dnn_param,save_param)
-        self.topology, self.MNK = self.gt.return_topology(self.dnn_param[0])
-        self.batch = self.dnn_param[1]
-
     def only_npu(self,name):
 
         result = [0,0,0,0,0,0,0,0]
