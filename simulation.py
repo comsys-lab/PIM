@@ -6,7 +6,6 @@ from BaseOperation.GetConfiguration import GetConfiguration
 from BaseOperation.GetEnergy import GetEnergy
 
 from MakeOperand.MakeOperand import MakeOperand
-from scaleout.scaleout_bw_ideal import scaleout_bw_ideal 
 
 class simulation:
     def __init__(self):
@@ -15,9 +14,6 @@ class simulation:
         self.GetEnergy = GetEnergy()
 
         self.MakeOperand = MakeOperand()
-        self.sbi = sbi()
-        self.mo = mo()
-        self.bd = bd()
 
     def Simulation(self,topology_path, configuration_path, energy_file_path):
         #Get Simulation settings: topology, hardware configuration, energy configuration
@@ -39,11 +35,30 @@ class simulation:
         #From Energy configuration file path, get Energyr pataemters.
         self.Energy_MAC, self.Energy_NPU, self.Energy_PIM = self.GetEnergy.GetEnergy(energy_file_path)
 
-    def Only_NPU(self):
+    def One_Layer(self, one_layer):
         pass
+    def Only_NPU(self):
+        for one_layer in self.topology:
+            pass
+
+        return 1
+    
     def With_PIM(self):
+        if self.dnn_params[1] == 1:
+            self.PIM_Batch_One()
+        else:
+            self.PIM_Batch_Over_One()
+
+
+    def PIM_Batch_One(self):
         pass
 
+    def PIM_Batch_Over_One(self):
+        pass
+
+    def Simulation_One_Layer(self):
+        pass
+    
     def simulation1(self,npu_param,pim_param,dnn_param,save_param):
         self.get_settings(npu_param,pim_param,dnn_param,save_param)
         temp = ""
