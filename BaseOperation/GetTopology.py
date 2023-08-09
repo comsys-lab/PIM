@@ -17,7 +17,7 @@ class GetTopology:
         else:
             self.topo = topo
             self.Change_Original_to_MNK(self.topo,len_one)
-    
+
         return self.topo, self.MNK
 
     def return_layer_length(self, path):

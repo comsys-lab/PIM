@@ -1,14 +1,13 @@
+"Python 3.10.8"
 import numpy as np
-import os
 
 from BaseOperation.GetTopology import GetTopology
 from BaseOperation.GetConfiguration import GetConfiguration
 from BaseOperation.GetEnergy import GetEnergy
 
 from MakeOperand.MakeOperand import MakeOperand
-from scaleout.scaleout_bw_ideal import scaleout_bw_ideal 
 
-class simulation:
+class Simulation:
     def __init__(self):
         self.GetTopology = GetTopology()
         self.GetConfiguration = GetConfiguration()
@@ -19,12 +18,12 @@ class simulation:
     def Simulation(self,topology_path, configuration_path, energy_file_path):
         #Get Simulation settings: topology, hardware configuration, energy configuration
         self.Get_Setting(topology_path, configuration_path, energy_file_path)
-    
+
         if not self.save_params[0]:
             self.Only_NPU()
         else:
             self.With_PIM()
-        
+
     def Get_Setting(self, topology_path, configuration_path, energy_file_path):
         #From topology file path, get topology list and MNK list
         self.topology, self.MNK = self.GetTopology.GetTopology(topology_path)
@@ -42,7 +41,7 @@ class simulation:
         pass
 
     #The Scaleout funtion will return SRAM input access, SRAM filter access, SRAM output access, DRAM input access, DRAM
-    # filter access, DRAM output access,
+    # filter access, DRAM output access, number of MAC operation.
 
     def simulation1(self,npu_param,pim_param,dnn_param,save_param):
         self.get_settings(npu_param,pim_param,dnn_param,save_param)
