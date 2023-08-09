@@ -1,5 +1,5 @@
 import argparse
-from simulation import simulation as sim
+from Simulation import simulation as sim
 import time
 
 if __name__ == "__main__":

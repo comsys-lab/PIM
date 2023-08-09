@@ -15,9 +15,6 @@ class simulation:
         self.GetEnergy = GetEnergy()
 
         self.MakeOperand = MakeOperand()
-        self.sbi = sbi()
-        self.mo = mo()
-        self.bd = bd()
 
     def Simulation(self,topology_path, configuration_path, energy_file_path):
         #Get Simulation settings: topology, hardware configuration, energy configuration
@@ -43,6 +40,9 @@ class simulation:
         pass
     def With_PIM(self):
         pass
+
+    #The Scaleout funtion will return SRAM input access, SRAM filter access, SRAM output access, DRAM input access, DRAM
+    # filter access, DRAM output access,
 
     def simulation1(self,npu_param,pim_param,dnn_param,save_param):
         self.get_settings(npu_param,pim_param,dnn_param,save_param)
