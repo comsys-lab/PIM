@@ -43,10 +43,10 @@ class GetConfiguration:
         self.Storing_Path = " "
 
     def read_config_file(self, config_file):
-        
+
         config = cp.ConfigParser()
         config.read(config_file)
-        
+
         #Enter Run name
         section = 'Run_name'
         self.Run_name = config.get(section, 'Run_name')
@@ -75,11 +75,11 @@ class GetConfiguration:
             self.NPU_Systolic_Row, self.NPU_Systolic_Col, self.NPU_Pod_Dimension_Row, self.NPU_Pod_Dimension_Col\
                   = self.convert_throughput(self.NPU_Throughput, self.NPU_Pod_Dimension_Row, \
                                             self.NPU_Pod_Dimension_Col, self.NPU_Clock_Frequency)
-        
+
         else:
             self.NPU_Systolic_Row = config.getint(section, 'NPU_Systolic_Row')
             self.NPU_Systolic_Col = config.getint(section, 'NPU_Systolic_Col')
-        
+
         #In this section, enter the parameters for PIM units.
         section = 'PIM_Parameters'
         self.PIM_Systolic_Row = config.getint(section, 'PIM_Systolic_Row')
@@ -94,7 +94,7 @@ class GetConfiguration:
         self.PIM_Clock_Frequency = config.getint(section, 'PIM_Clock_Frequency')
         self.PIM_Bandwidth_per_DIMM = config.getfloat(section, 'PIM_Bandwidth_per_DIMM')
 
-        #In this section, enter the parameters for DNN Models. 
+        #In this section, enter the parameters for DNN Models.
         section = 'DNN_Parameters'
         self.Topology_Path = config.get(section, 'Topology_Path')
         self.Batch = config.getint(section, 'Batch')
@@ -105,7 +105,7 @@ class GetConfiguration:
         section = 'Save_Parameters'
         self.PIM_Flag = config.getboolean(section, 'PIM_Flag')
         self.Storing_Path = config.get(section, 'Storing_Path')
-        
+
     def convert_throughput(self, throughput, NPU_Pod_Dimension_Row, NPU_Pod_Dimension_Col, clock_frequency):
         #Throughput = 2 * # of pod * clock frequency
         #of pod = Throughput / (2 * clock frequency)
@@ -153,8 +153,8 @@ class GetConfiguration:
         save_params = [self.PIM_Flag, self.Storing_Path]
 
         return run_name,form_factor, npu_params, pim_params, dnn_params, save_params
-    
+
     def GetConfiguration(self, config_file):
         self.read_config_file(config_file)
-        
+
         return self.get_parameters

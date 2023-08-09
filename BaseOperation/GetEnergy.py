@@ -34,12 +34,12 @@ class GetEnergy:
         self.PIM_Input_SRAM_Access = config.getfloat(section, 'PIM_Input_SRAM_Access')
         self.PIM_Filter_SRAM_Access = config.getfloat(section, 'PIM_Filter_SRAM_Access')
         self.PIM_Output_SRAM_Access = config.getfloat(section, 'PIM_Output_SRAM_Access')
-        
+
     def return_energy_parameters(self):
         self.MAC_Parameters = [self.MAC_random, self.MAC_reused, self.MAC_gated, self.MAC_idle]
         self.NPU_Parameters = [self.NPU_Input_DRAM_Access, self.NPU_Filter_DRAM_Access, self.NPU_Output_DRAM_Access,\
                                self.NPU_Input_SRAM_Access, self.NPU_Filter_SRAM_Access, self.NPU_Output_SRAM_Access]
         self.PIM_Parameters = [self.PIM_Input_DRAM_Access, self.PIM_Filter_DRAM_Access, self.PIM_Output_DRAM_Access, \
                                self.PIM_Input_SRAM_Access, self.PIM_Filter_SRAM_Access, self.PIM_Output_SRAM_Access]
-        
+
         return self.MAC_Parameters, self.NPU_Parameters, self.PIM_Parameters

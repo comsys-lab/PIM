@@ -15,6 +15,9 @@ class Simulation:
 
         self.MakeOperand = MakeOperand()
 
+        self.NPU_results = []
+        self.PIM_results = []
+
     def Simulation(self,topology_path, configuration_path, energy_file_path):
         #Get Simulation settings: topology, hardware configuration, energy configuration
         self.Get_Setting(topology_path, configuration_path, energy_file_path)
@@ -39,16 +42,15 @@ class Simulation:
         pass
     def Only_NPU(self):
         for one_layer in self.topology:
-            pass
+            self.One_Layer(one_layer)
 
         return 1
 
     def With_PIM(self):
-        if self.dnn_params[1] == 1:
+        if self.form_factor == 'Mobile':
             self.PIM_Batch_One()
         else:
             self.PIM_Batch_Over_One()
-
 
     def PIM_Batch_One(self):
         pass
@@ -59,8 +61,9 @@ class Simulation:
     def Simulation_One_Layer(self):
         pass
 
-    #The Scaleout funtion will return SRAM input access, SRAM filter access, SRAM output access, DRAM input access, DRAM
-    # filter access, DRAM output access, number of MAC operation.
+    # The Scaleout funtion will return results like this:
+    # [SRAM input access, SRAM filter access, SRAM output access, DRAM input access, DRAM filter access, DRAM output access, number of MAC operation]
+    # Returns seven simulation results from the scale-out function. The total energy consumption can be obtained by multiplying this by the energy parameter.
 
     def simulation1(self,npu_param,pim_param,dnn_param,save_param):
         self.get_settings(npu_param,pim_param,dnn_param,save_param)
