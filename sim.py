@@ -1,6 +1,8 @@
+"Python 3.10.8"
 import argparse
-from simulation import simulation as sim
-import time
+
+from Simulation import Simulation
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -9,10 +11,10 @@ if __name__ == "__main__":
     parser.add_argument('-e', required=True, help='Enter energy file path')
 
     args = parser.parse_args()
-    
+
     topology_path = args.t
     configuration_path = args.c
     energy_file_path = args.e
 
-    s = sim()
-    s.simulation(topology_path, configuration_path, energy_file_path)
+    Simulation = Simulation()
+    Simulation.simulation(topology_path, configuration_path, energy_file_path)
