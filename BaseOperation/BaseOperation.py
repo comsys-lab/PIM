@@ -1,6 +1,12 @@
+"Python 3.10.8"
 import numpy as np
 
 class BaseOperation:
+    """
+    In this class, there are functions used several times in simulator.
+    1. get_data_size_no_duplication
+        In this function, we can get
+    """
     def get_data_size_no_duplication(self, matrix):
         data = set()
         for row in matrix:

@@ -1,9 +1,17 @@
+"Python 3.10.8"
+import dataclasses
+
 import numpy as np
 
+@dataclasses.dataclass
 class GetTopology:
+    """
+    In this class, there are functions to read topology files (.csv format).
+
+    """
     def __init__(self):
         self.topo = []
-        self.MNK = []
+        self.mnk = []
 
     def GetTopology(self, path):
         length = self.return_layer_length(path)
@@ -42,7 +50,7 @@ class GetTopology:
             len_one = False
         print(topo,MNK,len_one)
         return topo, MNK, len_one
-    
+
     def Change_Original_to_MNK(self, topo_all, len_one):
         if len_one:
             self.MNK.append(self.Change_Original_to_MNK_One_Layer(topo_all[0]))

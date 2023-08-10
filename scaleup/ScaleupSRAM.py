@@ -69,8 +69,16 @@ class ScaleupSRAM:
         else:
             raise ValueError("Invalid dataflow value")
 
+    def Return_Data_Size(self, Input_Operand, Filter_Operand):
+
+        input_data_size = self.BaseOperation.get_data_size_with_duplication()
+
+        return input_data_size, filter_data_size
     def Return_Input_Size(self, Input_Operand, Filter_Operand):
-        pass
+
+        input_data_size = self.
+        return input_data_size, filter_data_size
+
     def Return_Filter_Size(self, Input_Operand, Filter_Operand):
         pass
     def OS_Over_One(self, info, Input_Operand, Filter_Operand):
