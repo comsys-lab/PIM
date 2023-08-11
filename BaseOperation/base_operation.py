@@ -1,7 +1,7 @@
 "Python 3.10.8"
 import numpy as np
 
-class BaseOperation:
+class Baseoperation:
     """
     Store functions that will be reused in simulator.
     """
@@ -12,8 +12,8 @@ class BaseOperation:
         """
         data = set()
         for row in matrix:
-            x = set(row)
-            data |= x
+            row = set(row)
+            data |= row
         data.discard("[-1,-1,-1]")
         data_size = len(data)
         return data_size
@@ -35,7 +35,7 @@ class BaseOperation:
 
     def input_padding(self, processor, input_operand):
         """
-        Dimension of operand matrix (row, column) is not always divisibe with dimension of systolic array.
+        Dimension of operand matrix is not always divisibe with dimension of systolic array.
         Thus, padding needs to satisfy divisible dimension.
         In case of input operand matrix, padding should done to row direction.
         """
@@ -47,13 +47,14 @@ class BaseOperation:
 
     def filter_padding(self, processor, filter_operand):
         """
-        Dimension of operand matrix (row, column) is not always divisibe with dimension of systolic array.
+        Dimension of operand matrix is not always divisibe with dimension of systolic array.
         Thus, padding needs to satisfy divisible dimension.
         In casee of filter operand matrix, padding should done to column direction.
         """
         length = processor[1] - (len(filter_operand[0]) % processor[1])
         filter_temp = [["[-1,-1,-1]"] * length for _ in range(len(filter_operand))]
         filter_operand = np.concatenate((filter_operand, filter_temp), axis=1)
+
         return filter_operand
 
     def skew_input_matrix(self, input_matrix):
@@ -64,6 +65,7 @@ class BaseOperation:
         temp = np.full((row, col + row - 1), "[-1,-1,-1]", dtype='U20')
         for i in range(row):
             temp[i, i:i+col] = input_matrix[i]
+
         return temp
 
     def skew_filter_matrix(self, filter_matrix):
@@ -74,4 +76,5 @@ class BaseOperation:
         temp = np.full((col + row - 1, col), "[-1,-1,-1]", dtype='U20')
         for j in range(col):
             temp[j:j+row, j] = filter_matrix[:, j]
+
         return temp

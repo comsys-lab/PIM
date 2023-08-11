@@ -2,7 +2,7 @@
 import numpy as np
 
 from BaseOperation.GetTopology import GetTopology
-from BaseOperation.GetConfiguration import GetConfiguration
+from BaseOperation.get_configuration import GetConfiguration
 from BaseOperation.GetEnergy import GetEnergy
 
 from MakeOperand.MakeOperand import MakeOperand

@@ -1,7 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 
-from BaseOperation.BaseOperation import BaseOperation
+from BaseOperation.Baseoperation import BaseOperation
 
 class DramBuffer:
     def __init__(self):
