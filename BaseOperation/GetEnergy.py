@@ -1,12 +1,16 @@
 import configparser as cp
 
 class GetEnergy:
+    """
+    Get energy parameters from configuration file (.cfg)
+    """
     def __init__(self):
         self.MAC_Parameters = []
         self.NPU_Parameters = []
         self.PIM_Parameters = []
 
     def GetEnergy(self, path):
+        """."""
         config = cp.ConfigParser()
         config.read(path)
 
@@ -36,6 +40,7 @@ class GetEnergy:
         self.PIM_Output_SRAM_Access = config.getfloat(section, 'PIM_Output_SRAM_Access')
 
     def return_energy_parameters(self):
+        """."""
         self.MAC_Parameters = [self.MAC_random, self.MAC_reused, self.MAC_gated, self.MAC_idle]
         self.NPU_Parameters = [self.NPU_Input_DRAM_Access, self.NPU_Filter_DRAM_Access, self.NPU_Output_DRAM_Access,\
                                self.NPU_Input_SRAM_Access, self.NPU_Filter_SRAM_Access, self.NPU_Output_SRAM_Access]

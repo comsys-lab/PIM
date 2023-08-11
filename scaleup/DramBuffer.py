@@ -1,7 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 
-from Base.BaseOperation import BaseOperation
+from BaseOperation.BaseOperation import BaseOperation
 
 class DramBuffer:
     def __init__(self):
@@ -88,11 +88,11 @@ class DramBuffer:
                     filter += len(buffer)
 
                 count+=1
-            
+
         print("Finish calculate Filter DRAM access",'\n')
 
-        return input,filter,output    
-        
+        return input,filter,output
+
     def WS(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
         input = 0
         filter = 0
