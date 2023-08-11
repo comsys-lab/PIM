@@ -8,15 +8,21 @@ from BaseOperation.GetEnergy import GetEnergy
 from MakeOperand.MakeOperand import MakeOperand
 
 class Simulation:
+    """
+    Simulation code.
+    """
     def __init__(self):
-        self.GetTopology = GetTopology()
-        self.GetConfiguration = GetConfiguration()
-        self.GetEnergy = GetEnergy()
+        self.get_topology = GetTopology()
+        self.get_configuration = GetConfiguration()
+        self.get_energy = GetEnergy()
 
-        self.MakeOperand = MakeOperand()
+        self.make_operand = MakeOperand()
 
-        self.NPU_results = []
-        self.PIM_results = []
+        self.npu_params = []
+        self.pim_params = []
+
+        self.npu_results = []
+        self.pim_results = []
 
     def Simulation(self,topology_path, configuration_path, energy_file_path):
         #Get Simulation settings: topology, hardware configuration, energy configuration
