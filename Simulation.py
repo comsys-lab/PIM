@@ -1,9 +1,9 @@
 "Python 3.10.8"
 import numpy as np
 
-from BaseOperation.GetTopology import GetTopology
+from BaseOperation.get_topology import GetTopology
 from BaseOperation.get_configuration import GetConfiguration
-from BaseOperation.GetEnergy import GetEnergy
+from BaseOperation.get_energy import GetEnergy
 
 from MakeOperand.MakeOperand import MakeOperand
 

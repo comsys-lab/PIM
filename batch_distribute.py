@@ -20,7 +20,7 @@ class batch_distribute:
             pim_result.append(PIM_runtime)
 
         return sum(npu_result), sum(pim_result)
-    
+
     def return_MNK(self, MNK, dataflow):
         if dataflow == "OS":
             return MNK
@@ -69,11 +69,11 @@ class batch_distribute:
         runtime3 = T + processor[0] + (processor[0] + col_rest - 2)
         #CASE4
         runtime4 = T + processor[0] + (row_rest + col_rest - 2)
-        
+
         runtime = runtime1 * row_q * col_q + runtime2 * row_flag * col_q + runtime3 * row_q * col_flag + runtime4 * row_flag * col_flag
 
         return runtime
-    
+
     def WS(self, processor, MNK):
         [SR,SC,T] = self.return_MNK(MNK,"WS")
         row_q = SR // processor[0]
@@ -93,7 +93,7 @@ class batch_distribute:
         runtime3 = T + processor[0] - 1 + (processor[0] + col_rest- 1)
         #CASE4
         runtime4 = T + processor[0] - 1 + (row_rest + col_rest - 1)
-        
+
         runtime = runtime1 * row_q * col_q + runtime2 * row_flag * col_q + runtime3 * row_q * col_flag + runtime4 * row_flag * col_flag
 
         return runtime
