@@ -1,5 +1,7 @@
-from MakeOperand.MakeInput import MakeInput
-from MakeOperand.MakeFilter import MakeFilter
+
+"Python 3.10.8"
+from MakeOperand.make_input import MakeInput
+from MakeOperand.make_filter import MakeFilter
 
 class MakeOperand:
     def __init__(self):

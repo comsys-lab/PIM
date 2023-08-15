@@ -5,7 +5,7 @@ from BaseOperation.get_topology import GetTopology
 from BaseOperation.get_configuration import GetConfiguration
 from BaseOperation.get_energy import GetEnergy
 
-from MakeOperand.MakeOperand import MakeOperand
+from MakeOperand.make_operand import MakeOperand
 
 class Simulation:
     """

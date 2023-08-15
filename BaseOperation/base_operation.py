@@ -33,25 +33,25 @@ class Baseoperation:
 
         return data_size
 
-    def input_padding(self, processor, input_operand):
+    def input_padding(self, systolic, input_operand):
         """
         Dimension of operand matrix is not always divisibe with dimension of systolic array.
         Thus, padding needs to satisfy divisible dimension.
         In case of input operand matrix, padding should done to row direction.
         """
-        length = processor[0] - (len(input_operand) % processor[0])
+        length = systolic.row - (len(input_operand) % systolic.row)
         input_temp = [["[-1,-1,-1]"] * len(input_operand[0]) for _ in range(length)]
         input_operand = np.concatenate((input_operand, input_temp), axis=0)
 
         return input_operand
 
-    def filter_padding(self, processor, filter_operand):
+    def filter_padding(self, systolic, filter_operand):
         """
         Dimension of operand matrix is not always divisibe with dimension of systolic array.
         Thus, padding needs to satisfy divisible dimension.
         In casee of filter operand matrix, padding should done to column direction.
         """
-        length = processor[1] - (len(filter_operand[0]) % processor[1])
+        length = systolic.col - (len(filter_operand[0]) % systolic.col)
         filter_temp = [["[-1,-1,-1]"] * length for _ in range(len(filter_operand))]
         filter_operand = np.concatenate((filter_operand, filter_temp), axis=1)
 
