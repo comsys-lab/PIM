@@ -1,11 +1,11 @@
 "Python 3.10.8"
 import numpy as np
 
-from BaseOperation.get_topology import GetTopology
-from BaseOperation.get_configuration import GetConfiguration
-from BaseOperation.get_energy import GetEnergy
+from Base_Operation.get_topology import GetTopology
+from Base_Operation.get_configuration import GetConfiguration
+from Base_Operation.get_energy import GetEnergy
 
-from MakeOperand.make_operand import MakeOperand
+from Make_Operand.make_operand import MakeOperand
 
 class Simulation:
     """
@@ -24,25 +24,25 @@ class Simulation:
         self.npu_results = []
         self.pim_results = []
 
-    def Simulation(self,topology_path, configuration_path, energy_file_path):
+    def simulation(self,topology_path, configuration_path, energy_file_path):
         #Get Simulation settings: topology, hardware configuration, energy configuration
-        self.Get_Setting(topology_path, configuration_path, energy_file_path)
+        self.get_setting(topology_path, configuration_path, energy_file_path)
 
         if not self.save_params[0]:
             self.Only_NPU()
         else:
             self.With_PIM()
 
-    def Get_Setting(self, topology_path, configuration_path, energy_file_path):
+    def get_setting(self, topology_path, configuration_path, energy_file_path):
         #From topology file path, get topology list and MNK list
-        self.topology, self.MNK = self.GetTopology.GetTopology(topology_path)
+        self.topology, self.MNK = self.get_topology.get_topology(topology_path)
 
         #From Configuration file path, get hardware confiugration parameters.
         self.run_name, self.form_factor, self.npu_params, self.pim_params, self.dnn_params, self.save_params =\
-        self.GetConfiguration.GetConfiguration(configuration_path)
+        self.get_configuration.get_configuration(configuration_path)
 
         #From Energy configuration file path, get Energyr pataemters.
-        self.Energy_MAC, self.Energy_NPU, self.Energy_PIM = self.GetEnergy.GetEnergy(energy_file_path)
+        self.Energy_MAC, self.Energy_NPU, self.Energy_PIM = self.get_energy.get_energy(energy_file_path)
 
     def One_Layer(self, one_layer):
         pass

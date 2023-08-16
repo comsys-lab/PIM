@@ -1,19 +1,21 @@
-from BaseOperation.Baseoperation import BaseOperation
+"Python 3.10.8"
+from base_operation import Baseoperation
 
-class ScaleupSRAM:
+class Scaleupsram:
+    """Get SRAM access count."""
     def __init__(self):
-        self.BaseOperation = BaseOperation()
+        self.base_operation = Baseoperation()
 
-    def ScaleupSRAM(self, Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow, stride):
+    def scaleupsram(self, num_row_tiles, num_col_tiles, input_operand, filter_operand, dataflow, stride):
         if stride == 1:
-            input, filter, output = self.SRAM_Stride_One(Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow)
+            input, filter, output = self.sram_stride_one(Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow)
         else:
-            input, filter, output = self.SRAM_Stride_Over_One(Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow)
+            input, filter, output = self.sram_stride_over_one(Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow)
 
         return input, filter, output
 
     #Layer with stride 1 doesn't have duplication data in input operand matrix.
-    def SRAM_Stride_One(self, Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow):
+    def sram_stride_one(self, Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow):
         dataflow_functions = {
             "OS": self.OS_One,
             "WS": self.WS_One,
@@ -75,9 +77,7 @@ class ScaleupSRAM:
 
         return input_data_size, filter_data_size
     def Return_Input_Size(self, Input_Operand, Filter_Operand):
-
-        input_data_size = self.
-        return input_data_size, filter_data_size
+        pass
 
     def Return_Filter_Size(self, Input_Operand, Filter_Operand):
         pass

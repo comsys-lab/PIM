@@ -46,7 +46,7 @@ class Dnnsave:
     pim_flag: bool
     storing_path: str
 
-class Getconfiguration:
+class GetConfiguration:
     """Read hardware configuration and return."""
     def __init__(self):
         self.run_name = "run_name"

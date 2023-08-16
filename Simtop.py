@@ -3,7 +3,6 @@ import argparse
 
 from Simulation import Simulation
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', required=True, help='Enter topology file path')
