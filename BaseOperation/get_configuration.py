@@ -5,7 +5,7 @@ import math
 
 @dataclass
 class Systolic:
-    """ Define systolic array's dimension"""
+    """Define systolic array's dimension."""
     systolic_row: int
     systolic_col: int
 
@@ -14,41 +14,53 @@ class Systolic:
     output_buffer: float
 
 @dataclass
-class Others:
-    """."""
+class Npuothers:
+    """Dataclass for npu's other parameters."""
     pod_dimension_row: int
     pod_dimension_col: int
-    number_of_chip: int
+    number_of_pods: int
 
     clock_frequency: float
     bandwidth_per_dimm: float
+    number_of_dimms: int
     dataflow: str
 
-class GetConfiguration:
-    """."""
+@dataclass
+class Pimothers:
+    """Dataclass for pim's other parameters."""
+    pod_dimension_row: int
+    pod_dimension_col: int
+    chips_per_dimm: int
+    number_of_dimms: int
+
+    clock_frequency: int
+    bandwidth_per_dimm: float
+    dataflow: str
+
+@dataclass
+class Dnnsave:
+    """Dataclass for saving dnn and save parameters."""
+    topology_path: str
+    batch: int
+
+    pim_flag: bool
+    storing_path: str
+
+class Getconfiguration:
+    """Read hardware configuration and return."""
     def __init__(self):
         self.run_name = "run_name"
         self.form_factor = "Server"
         self.npu_flag = False
 
         #Return parameters
-        self.npu_param = [Systolic(128, 128, 1536, 1536, 512), Others(2, 2, 1, 1050, 12.8, "WS")]
-        self.pim_param = [Systolic(16, 16, 8, 8, 2), Others(2 ,2 ,256 ,1050 ,512 ,"OS")]
-        self.dnn_param = []
-        self.save_param =[]
-
-        #DNN_parameters
-        self.Topology_path = " "
-        self.Batch = 32
-        self.NPU_dataflow = "WS"
-        self.PIM_dataflow = "OS"
-
-        #Save_parameters
-        self.PIM_flag = True
-        self.Storing_Path = " "
+        self.npu_param = [Systolic(128, 128, 1536, 1536, 512),
+                           Npuothers(2, 2, 1, 1050, 12.8, 32, "WS")]
+        self.pim_param = [Systolic(16, 16, 8, 8, 2), Pimothers(2 ,2 ,8, 32, 1024 ,512, "OS")]
+        self.others = Dnnsave("", 0, True, "")
 
     def read_config_file(self, config_file):
-        """ From configuration file, read parameters"""
+        """From configuration file, read parameters."""
         config = cp.ConfigParser()
         config.read(config_file)
 
@@ -59,7 +71,8 @@ class GetConfiguration:
         #In this section, we distribute form factor with two types: Mobile/PC, Server/Supercomputer.
         section = 'Form_Factor'
         self.form_factor = config.get(section, 'Form_Factor')
-        if self.form_factor == ('Mobile' or 'PC'):
+
+        if self.form_factor in ('Mobile', 'PC'):
             self.npu_flag = True
         else:
             self.npu_flag = False
@@ -67,61 +80,71 @@ class GetConfiguration:
         #In this section, we enter parameters for NPUs.
         section = 'NPU_Parameters'
         npu_sys = Systolic(0,0,0,0,0)
-        npu_others = Others(0,0,0,0,0,"")
+        npu_otherparams = Npuothers(0,0,0,0,0,0,"")
 
-        npu_sys.input_buffer = config.getint(section, 'NPU_Input_Buffer')
-        npu_sys.filter_buffer = config.getint(section, 'NPU_Filter_Buffer')
+        npu_sys.input_buffer = config.getint(section, 'input_buffer')
+        npu_sys.filter_buffer = config.getint(section, 'filter_buffer')
+        npu_sys.output_buffer = config.getint(section, 'output_buffer')
 
-        npu_others.pod_dimension_row = config.getint(section, 'NPU_Pod_Dimension_Row')
-        npu_others.pod_dimension_col = config.getint(section, 'NPU_Pod_Dimension_Col')
-        npu_others.number_of_chip = config.getint(section, 'NPU_Number_of_Pod')
+        npu_otherparams.pod_dimension_row = config.getint(section, 'pod_dimension_row')
+        npu_otherparams.pod_dimension_col = config.getint(section, 'pod_dimension_col')
+        npu_otherparams.number_of_pods = config.getint(section, 'number_of_pods')
 
-        npu_others.clock_frequency = config.getfloat(section, 'NPU_Clock_Frequency')
-        npu_others.bandwidth_per_dimm = config.getfloat(section, 'NPU_Total_Bandwidth')
+        npu_otherparams.clock_frequency = config.getfloat(section, 'clock_frequency')
+        npu_otherparams.bandwidth_per_dimm = config.getfloat(section, 'bandwidth_per_dimm')
+        npu_otherparams.number_of_dimms = config.getint(section, 'number_of_dimms')
+        npu_otherparams.dataflow = config.get(section, 'dataflow')
 
         if self.npu_flag is True:
-            throughput = config.getfloat(section, 'NPU_Throughput')
-            npu_sys.systolic_row, npu_sys.systolic_col, npu_others.pod_dimension_row, \
-            npu_others.pod_dimension_col = self.convert_throughput(throughput, \
-            npu_others.pod_dimension_row, npu_others.pod_dimension_col, npu_others.clock_frequency)
+            throughput = config.getfloat(section, 'throughput')
+            npu_sys.systolic_row, npu_sys.systolic_col, npu_otherparams.pod_dimension_row,\
+            npu_otherparams.pod_dimension_col = self.convert_throughput(throughput,
+            npu_otherparams.pod_dimension_row, npu_otherparams.pod_dimension_col,
+            npu_otherparams.clock_frequency)
 
         else:
-            npu_sys.systolic_row = config.getint(section, 'NPU_Systolic_Row')
-            npu_sys.systolic_col = config.getint(section, 'NPU_Systolic_Col')
+            npu_sys.systolic_row = config.getint(section, 'systolic_row')
+            npu_sys.systolic_col = config.getint(section, 'systolic_col')
+        self.npu_param[0] = npu_sys
+        self.npu_param[1] = npu_otherparams
 
         #In this section, enter the parameters for PIM units.
         section = 'PIM_Parameters'
         pim_sys = Systolic(0,0,0,0,0)
-        pim_others = Others(0,0,0,0,0,"")
+        pim_otherparams = Pimothers(0,0,0,0,0,0,"")
 
-        pim_sys.systolic_row = config.getint(section, 'PIM_Systolic_Row')
-        pim_sys.systolic_col = config.getint(section, 'PIM_Systolic_Col')
-        pim_sys.input_buffer = config.getfloat(section, 'PIM_Input_Buffer')
-        pim_sys.filter_buffer = config.getfloat(section, 'PIM_Filter_Buffer')
+        pim_sys.systolic_row = config.getint(section, 'systolic_row')
+        pim_sys.systolic_col = config.getint(section, 'systolic_col')
+        pim_sys.input_buffer = config.getfloat(section, 'input_buffer')
+        pim_sys.filter_buffer = config.getfloat(section, 'filter_buffer')
+        pim_sys.output_buffer = config.getfloat(section, 'output_buffer')
 
-        pim_others.pod_dimension_row = config.getint(section, 'PIM_Pod_Dimension_Row')
-        pim_others.pod_dimension_col = config.getint(section, 'PIM_Pod_Dimension_Col')
-        pim_others.clock_frequency = config.getfloat(section, 'PIM_Clock_Frequency')
-        pim_others.bandwidth_per_dimm = config.getfloat(section, 'PIM_Bandwidth_per_DIMM')
-        chip_per_dimm = config.getint(section, 'Chip_per_DIMM')
-        number_of_dimm = config.getint(section, 'NUmber_of_DIMM')
+        pim_otherparams.pod_dimension_row = config.getint(section, 'pod_dimension_row')
+        pim_otherparams.pod_dimension_col = config.getint(section, 'pod_dimension_col')
+        pim_otherparams.chips_per_dimm = config.getint(section, 'chips_per_dimm')
+        pim_otherparams.number_of_dimms = config.getint(section, 'number_of_dimms')
+
+        pim_otherparams.clock_frequency = config.getfloat(section, 'clock_frequency')
+        pim_otherparams.bandwidth_per_dimm = config.getfloat(section, 'bandwidth_per_dimm')
+        pim_otherparams.dataflow = config.get(section, 'dataflow')
+        self.pim_param[0] = pim_sys
+        self.pim_param[1] = pim_otherparams
 
         #In this section, enter the parameters for DNN Models.
         section = 'DNN_Parameters'
-        self.topology_path = config.get(section, 'Topology_Path')
-        self.batch = config.getint(section, 'Batch')
-        self.npu_dataflow = config.get(section, 'NPU_Dataflow')
-        self.pim_dataflow = config.get(section, 'PIM_Dataflow')
+        self.others.topology_path = config.get(section, 'topology_path')
+        self.others.batch = config.getint(section, 'batch')
 
         #In this section, eneter the parameters for saving results.
         section = 'Save_Parameters'
-        self.PIM_Flag = config.getboolean(section, 'PIM_Flag')
-        self.Storing_Path = config.get(section, 'Storing_Path')
+        self.others.pim_flag = config.getboolean(section, 'pim_flag')
+        self.others.storing_path = config.get(section, 'storing_path')
 
-    def convert_throughput(self, throughput, NPU_Pod_Dimension_Row, NPU_Pod_Dimension_Col, clock_frequency):
-        """."""
-        #Throughput = 2 * # of pod * clock frequency
+    def convert_throughput(self, throughput, pod_row, pod_col, clock_frequency):
+        """
+        Throughput = 2 * # of pod * clock frequency
         #of pod = Throughput / (2 * clock frequency)
+        """
 
         num_pe = throughput * 1024 /(2 * clock_frequency)
         mul_two = int(round(math.log(num_pe) / math.log(2),0))
@@ -133,33 +156,27 @@ class GetConfiguration:
             row = pow(2,int(mul_two/2))
             col = pow(2,int(mul_two/2)+1)
         #For row case
-        if row % NPU_Pod_Dimension_Row == 0:
-            row_dim =  NPU_Pod_Dimension_Row
+        if row % pod_row == 0:
+            row_dim =  pod_row
             row = int(row / row_dim)
         else:
-            print('PIM_Pod_Dimension_Row is set to 1 because NPU_Systolic_Row is not divided with PIM_Pod_Dimension_Row')
-            print('----------------------------------------------------------------------------------------------------')
+            print('NPU pod dimension row is set to 1: row % pod_row != 0')
+            print('-----------------------------------------------------')
             row_dim = 1
 
         #For col case
-        if col % NPU_Pod_Dimension_Col == 0:
-            col_dim = NPU_Pod_Dimension_Col
+        if col % pod_col == 0:
+            col_dim = pod_col
             col = int(col / col_dim)
         else:
-            print('PIM_Pod_Dimension_Col is set to 1 because NPU_Systolic_Col is not divided with PIM_Pod_Dimension_Col')
-            print('----------------------------------------------------------------------------------------------------')
+            print('NPU pod dimension column is set to 1: col % pod_col != 0')
+            print('--------------------------------------------------------')
             col_dim = 1
 
         return row, col, row_dim, col_dim
 
-    def get_parameters(self):
-        """. """
-        pass
+    def return_parameters(self, path):
+        """Return params from configuration file."""
+        self.read_config_file(path)
 
-        return run_name,form_factor, npu_params, pim_params, dnn_params, save_params
-
-    def GetConfiguration(self, config_file):
-        """."""
-        self.read_config_file(config_file)
-
-        return self.get_parameters
+        return self.run_name, self.npu_param, self.pim_param, self.others

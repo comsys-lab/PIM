@@ -11,18 +11,8 @@ class MACenergy:
     mac_idle: float
 
 @dataclass
-class NPUenergy:
-    """energy parameters"""
-    sram_read: float
-    sram_write: float
-    dram_read: float
-    dram_write: float
-    mac_energy: float
-    mac_idle: float
-
-@dataclass
-class PIMenergy:
-    """ energy parameters"""
+class Energy:
+    """Energy parameters"""
     sram_read: float
     sram_write: float
     dram_read: float
@@ -31,14 +21,14 @@ class PIMenergy:
     mac_idle: float
 
 class GetEnergy:
-    """ Get energy parameters from configuration file (.cfg) """
+    """Get energy parameters from configuration file (.cfg)."""
     def __init__(self):
         self.mac_energy = MACenergy(0,0,0,0)
-        self.npu_energy = NPUenergy(0,0,0,0,0,0)
-        self.pim_energy = PIMenergy(0,0,0,0,0,0)
+        self.npu_energy = Energy(0,0,0,0,0,0)
+        self.pim_energy = Energy(0,0,0,0,0,0)
 
     def getenergy(self, path, npu_dataflow, pim_dataflow):
-        """Get energy parameters from configuration file path"""
+        """Get energy parameters from configuration file path."""
         config = cp.ConfigParser()
         config.read(path)
 
@@ -71,7 +61,7 @@ class GetEnergy:
         self.pim_energy.mac_idle = self.mac_energy.mac_idle
 
     def get_mac_energy(self, dataflow) -> float:
-        """ If dataflow is OS, use mac_random, else use mac_reused. """
+        """If dataflow is OS, use mac_random, else use mac_reused."""
         if dataflow == "OS":
             energy = self.mac_energy.mac_random
         else:
@@ -79,6 +69,6 @@ class GetEnergy:
 
         return energy
 
-    def return_energy_parameters(self) -> MACenergy | NPUenergy | PIMenergy:
-        """ Return energy parameters. """
+    def return_energy_parameters(self) -> MACenergy | Energy | Energy:
+        """Return energy parameters."""
         return self.mac_energy, self.npu_energy, self.pim_energy

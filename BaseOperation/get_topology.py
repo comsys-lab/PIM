@@ -2,18 +2,13 @@
 import numpy as np
 
 class GetTopology:
-    """
-    There are functions to read topology files (.csv format).
-    .
-    """
+    """Class for reading topology files (.csv format)."""
     def __init__(self):
         self.topo = []
         self.mnk = []
 
     def get_topology(self, path) -> list | list:
-        """
-        .
-        """
+        """From topology file path, return topology and mnk."""
         length = self.return_layer_length(path)
         topo, mnk, len_one = self.read_csv(length, path)
 
@@ -29,38 +24,42 @@ class GetTopology:
         return self.topo, self.mnk
 
     def return_layer_length(self, path):
-        """
-        .
-        """
+        """Return layer length."""
         with open(path, 'r', encoding="utf-8") as file:
             return sum(1 for _ in file)
 
+    def check_mnk(self, path):
+        """Check whether format of csv file is mnk or not."""
+        file = open(path, 'r', encoding="utf-8")
+        length = len(file.readline().split(','))
+        if length > 5:
+            mnk = False
+        else:
+            mnk = True
+
+        return mnk
+
     #read files from topology file
     def read_csv(self, length, path):
-        """"
-        .
-        """
-        try:
+        """Read csv file and return. Check the length, and MNK format."""
+        mnk = self.check_mnk(path)
+        if not mnk:
             topology = np.loadtxt(path, delimiter=',', usecols=np.arange(1,8), dtype=int)
-        except BaseException:
+        else:
             topology = np.loadtxt(path, delimiter=',', usecols=np.arange(1,4), dtype=int)
 
         #Check Layer length (topology length)
         if length == 1:
             topo = [topology.tolist()]
-            mnk = len(topo[0]) == 3
             len_one = True
         else:
             topo = topology.tolist()
-            mnk = len(topo[0]) == 3
             len_one = False
 
         return topo, mnk, len_one
 
     def change_original_to_mnk(self, topo_all, len_one):
-        """"
-        .
-        """
+        """Change original format to MNK format."""
         if len_one:
             self.mnk.append(self.change_original_to_mnk_one_layer(topo_all[0]))
         else:
@@ -84,9 +83,7 @@ class GetTopology:
         return mnk
 
     def change_mnk_to_original(self, mnk_all, len_one):
-        """
-        .
-        """
+        """Change MNK format to original format."""
         if len_one:
             self.topo.append(self.change_mnk_to_original_one_layer(mnk_all[0]))
         else:
@@ -94,9 +91,7 @@ class GetTopology:
                 self.topo.append(self.change_mnk_to_original_one_layer(mnk))
 
     def change_mnk_to_original_one_layer(self, mnk):
-        """
-        .
-        """
+        """Change MNK format to original format."""
         #MNK is composed of ['run_name',M,N,K]
         topo = [mnk[0],1,1,1,mnk[1],mnk[2],1]
 
