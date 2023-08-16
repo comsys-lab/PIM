@@ -16,7 +16,7 @@ class MakeFilter:
         self.filter_operand = Filteroperand(np.zeros((1,1)),0,0)
 
     def make_filter_opreand(self, topo):
-        """Return filter operand matrix"""
+        """Make filter operand matrix"""
         row = topo[2] * topo[3] * topo[4]
         col = topo[5]
 
@@ -26,7 +26,7 @@ class MakeFilter:
         return filter_operand, row, col
 
     def return_filter_matrix(self,topo):
-        """."""
+        """Return filter operand matrix"""
         filter_operand, row, col = self.make_filter_opreand(topo)
         self.filter_operand.filter_operand = filter_operand
         self.filter_operand.filter_row = row

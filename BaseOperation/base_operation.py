@@ -2,9 +2,7 @@
 import numpy as np
 
 class Baseoperation:
-    """
-    Store functions that will be reused in simulator.
-    """
+    """Store functions that will be reused in simulator."""
     def get_data_size_no_duplication(self, matrix):
         """
         If dnn layer has stride more than one, then it does zero padding.
@@ -16,6 +14,7 @@ class Baseoperation:
             data |= row
         data.discard("[-1,-1,-1]")
         data_size = len(data)
+
         return data_size
 
     def get_data_size_with_duplication(self, matrix):
@@ -37,7 +36,7 @@ class Baseoperation:
         """
         Dimension of operand matrix is not always divisibe with dimension of systolic array.
         Thus, padding needs to satisfy divisible dimension.
-        In case of input operand matrix, padding should done to row direction.
+        In the case of input operation matrix, padding should proceed in the row direction.
         """
         length = systolic.row - (len(input_operand) % systolic.row)
         input_temp = [["[-1,-1,-1]"] * len(input_operand[0]) for _ in range(length)]
@@ -49,7 +48,7 @@ class Baseoperation:
         """
         Dimension of operand matrix is not always divisibe with dimension of systolic array.
         Thus, padding needs to satisfy divisible dimension.
-        In casee of filter operand matrix, padding should done to column direction.
+        In the case of filter operation matrix, padding should proceed in the column direction.
         """
         length = systolic.col - (len(filter_operand[0]) % systolic.col)
         filter_temp = [["[-1,-1,-1]"] * length for _ in range(len(filter_operand))]
@@ -59,7 +58,7 @@ class Baseoperation:
 
     def skew_input_matrix(self, input_matrix):
         """
-        Input operand matrix is skewed in direction of row when the dataflow is OS and WS.
+        Input operand matrix is skewed in direction of row when the dataflow is OS.
         """
         row, col = len(input_matrix), len(input_matrix[0])
         temp = np.full((row, col + row - 1), "[-1,-1,-1]", dtype='U20')
