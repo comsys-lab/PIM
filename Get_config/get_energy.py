@@ -71,5 +71,5 @@ class GetEnergy:
 
     def return_energy_parameters(self) -> MACenergy | Energy | Energy:
         """Return energy parameters."""
-        
+
         return self.mac_energy, self.npu_energy, self.pim_energy

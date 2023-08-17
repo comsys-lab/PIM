@@ -49,12 +49,14 @@ class Scaleupsram:
         return len(operand_matrix), len(operand_matrix[0])
 
     #Calculate input and filter SRAM access count.
-    def return_sram_access_count_stride_one(self, params, input_size, filter_size):
-        input_access_count = params.num_col_tiles
+    def return_sram_access_count_stride_one(self, params) -> int | int | int:
+        """Return sram access count when stride is one."""
+        input_access_count = params.num_col_tiles * params.input_operand.row * params.input_operand.col
+        filter_access_count = params.num_row_tiles * params.filter_operand.row * params.filter_operand.col
+        output_access_count = params.input_operand.row * params.filter_operand.col
 
-        return_sram_access = [0,0,0]
-        return return_sram_access
-
+        return input_access_count, filter_access_count, output_access_count
+    """
     def Return_Input_Access_Count_Stride_One(self, Num_Col_Tiles, Input_Operand):
         return Num_Col_Tiles * len(Input_Operand) * len(Input_Operand[0])
 
@@ -63,19 +65,18 @@ class Scaleupsram:
 
     def Return_Output_Access_Count_Stride_Oned(self, Input_Operand, Filter_Operand):
         return len(Input_Operand) * len(Filter_Operand[0])
+    """
 
-    def os_one(self, params):
-        input_access = self.return_sram_access_count_stride_one(params)
-        filter_access = self.return_sram_access_count_stride_one(params)
-        output_access = self.return_sram_access_count_stride_one(params)
+    def os_one(self, params) -> list:
+        """Dataflow: OS. stride = 1."""
+        input_access, filter_access, output_access = self.return_sram_access_count_stride_one(params)
         return_sram_access = [input_access,filter_access, output_access]
 
         return return_sram_access
 
-    def ws_one(self, params):
-        input_access = self.return_sram_access_count_stride_one(params)
-        filter_access = self.return_sram_access_count_stride_one(params)
-        output_access
+    def ws_one(self, params) -> list:
+        """Dataflow: WS. stride = 1."""
+        input_access, filter_access, output_access = self.return_sram_access_count_stride_one(params)
         return_sram_access = [input_access, filter_access, output_access]
 
         return return_sram_access
