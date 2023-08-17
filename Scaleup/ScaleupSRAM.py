@@ -7,8 +7,9 @@ class Scaleupsram:
         self.base_operation = Baseoperation()
 
     def scaleupsram(self, num_row_tiles, num_col_tiles, input_operand, filter_operand, dataflow, stride):
+        """."""
         if stride == 1:
-            input, filter, output = self.sram_stride_one(Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow)
+            input_access, filter_access, output = self.sram_stride_one(num_row_tiles, num_col_tiles, Input_Operand, Filter_Operand, dataflow)
         else:
             input, filter, output = self.sram_stride_over_one(Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow)
 
@@ -16,6 +17,7 @@ class Scaleupsram:
 
     #Layer with stride 1 doesn't have duplication data in input operand matrix.
     def sram_stride_one(self, Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow):
+        """."""
         dataflow_functions = {
             "OS": self.OS_One,
             "WS": self.WS_One,
