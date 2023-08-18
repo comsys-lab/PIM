@@ -1,24 +1,9 @@
 "Python 3.10.8"
-from dataclasses import dataclass
 import configparser as cp
 
-@dataclass
-class MACenergy:
-    """MAC parameters"""
-    mac_random: float
-    mac_reused: float
-    mac_gated: float
-    mac_idle: float
-
-@dataclass
-class Energy:
-    """Energy parameters"""
-    sram_read: float
-    sram_write: float
-    dram_read: float
-    dram_write: float
-    mac_energy: float
-    mac_idle: float
+#pylint: disable=E0402
+from .._Dataclass.data_class import MACenergy
+from .._Dataclass.data_class import Energy
 
 class GetEnergy:
     """Get energy parameters from configuration file (.cfg)."""
@@ -27,7 +12,7 @@ class GetEnergy:
         self.npu_energy = Energy(0,0,0,0,0,0)
         self.pim_energy = Energy(0,0,0,0,0,0)
 
-    def getenergy(self, path, npu_dataflow, pim_dataflow):
+    def get_energy(self, path, npu_dataflow, pim_dataflow):
         """Get energy parameters from configuration file path."""
         config = cp.ConfigParser()
         config.read(path)
@@ -69,7 +54,8 @@ class GetEnergy:
 
         return energy
 
-    def return_energy_parameters(self) -> MACenergy | Energy | Energy:
+    def return_energy(self, path, npu_dataflow, pim_dataflow) -> MACenergy | Energy | Energy:
         """Return energy parameters."""
+        self.get_energy(path, npu_dataflow, pim_dataflow)
 
         return self.mac_energy, self.npu_energy, self.pim_energy

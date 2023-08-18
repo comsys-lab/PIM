@@ -1,50 +1,12 @@
 "Python 3.10.8"
-from dataclasses import dataclass
 import configparser as cp
 import math
 
-@dataclass
-class Systolic:
-    """Define systolic array's dimension."""
-    systolic_row: int
-    systolic_col: int
-
-    input_buffer: float
-    filter_buffer: float
-    output_buffer: float
-
-@dataclass
-class Npuothers:
-    """Dataclass for npu's other parameters."""
-    pod_dimension_row: int
-    pod_dimension_col: int
-    number_of_pods: int
-
-    clock_frequency: float
-    bandwidth_per_dimm: float
-    number_of_dimms: int
-    dataflow: str
-
-@dataclass
-class Pimothers:
-    """Dataclass for pim's other parameters."""
-    pod_dimension_row: int
-    pod_dimension_col: int
-    chips_per_dimm: int
-    number_of_dimms: int
-
-    clock_frequency: int
-    bandwidth_per_dimm: float
-    dataflow: str
-
-@dataclass
-class Dnnsave:
-    """Dataclass for saving dnn and save parameters."""
-    topology_path: str
-    batch: int
-
-    pim_flag: bool
-    storing_path: str
+#pylint: disable=E0402
+from .._Dataclass.data_class import Systolic
+from .._Dataclass.data_class import Npuothers
+from .._Dataclass.data_class import Pimothers
+from .._Dataclass.data_class import Dnnsave
 
 class GetConfiguration:
     """Read hardware configuration and return."""
@@ -59,6 +21,7 @@ class GetConfiguration:
         self.pim_param = [Systolic(16, 16, 8, 8, 2), Pimothers(2 ,2 ,8, 32, 1024 ,512, "OS")]
         self.others = Dnnsave("", 0, True, "")
 
+    #pylint: disable=R0915
     def read_config_file(self, config_file):
         """From configuration file, read parameters."""
         config = cp.ConfigParser()

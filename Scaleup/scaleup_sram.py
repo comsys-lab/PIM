@@ -1,23 +1,10 @@
 "Python 3.10.8"
-from dataclasses import dataclass
-import numpy as np
-
 from base_operation import Baseoperation
-
-@dataclass
-class Scaleupsram:
-    """Class for scaleup sram count."""
-    num_row_tiles: int
-    num_col_tiles: int
-    input_operand: np.ndarray
-    filter_operand: np.ndarray
-    dataflow: str
 
 class Scaleupsram:
     """Get SRAM access count."""
     def __init__(self):
         self.base_operation = Baseoperation()
-        self.params = Scaleupsram(0,0,np.zeros(1,1),np.zeros(1,1),"WS")
 
     def scaleupsram(self, params, stride):
         """Get scaleup sram count. Divide case with stride."""
@@ -32,32 +19,39 @@ class Scaleupsram:
     def sram_stride_one(self, params):
         """Get SRAM access count when stride is one."""
         dataflow_functions = {
-            "OS": self.OS_One,
-            "WS": self.WS_One,
-            "IS": self.IS_One
+            "OS": self.os_one,
+            "WS": self.ws_one,
+            "IS": self.is_one
         }
 
         dataflow_function = dataflow_functions.get(params.dataflow)
         if dataflow_function:
-            return dataflow_function(params)
+            return_sram_access = dataflow_function(params)
         else:
             raise ValueError("Invalid dataflow value")
 
-    def return_operand_info(self, params):
-        """Return operand information from operand matrix."""
-        #operand_matrix = parameters.
-        return len(operand_matrix), len(operand_matrix[0])
+        return return_sram_access
 
     #Calculate input and filter SRAM access count.
-    def return_sram_access_count_stride_one(self, params) -> int | int | int:
-        """Return sram access count when stride is one."""
-        input_access_count = params.num_col_tiles * params.input_operand.row * params.input_operand.col
-        filter_access_count = params.num_row_tiles * params.filter_operand.row * params.filter_operand.col
-        output_access_count = params.input_operand.row * params.filter_operand.col
+    def return_sram_access_count_stride_one(self, params):
+        """."""
+        input_size, filter_size = self.return_matrix_size(params)
+        input_access_count = params.num_col_tiles
 
-        return input_access_count, filter_access_count, output_access_count
-    """
-    def Return_Input_Access_Count_Stride_One(self, Num_Col_Tiles, Input_Operand):
+        return_sram_access = [0,0,0]
+        return return_sram_access
+    def return_matrix_size(self, params):
+        """."""
+        if params.dataflow == "IS":
+            input_size = 1
+            filter_size = 1
+        else:
+            input_size = 1
+            filter_size =1
+
+        return input_size, filter_size
+
+    def return_input_stride_one(self, Num_Col_Tiles, Input_Operand):
         return Num_Col_Tiles * len(Input_Operand) * len(Input_Operand[0])
 
     def Return_Filter_Access_Count_Stride_One(self, Num_Row_Tiles, Filter_Operand):
@@ -65,18 +59,18 @@ class Scaleupsram:
 
     def Return_Output_Access_Count_Stride_Oned(self, Input_Operand, Filter_Operand):
         return len(Input_Operand) * len(Filter_Operand[0])
-    """
 
-    def os_one(self, params) -> list:
-        """Dataflow: OS. stride = 1."""
+    def os_one(self, params):
         input_access, filter_access, output_access = self.return_sram_access_count_stride_one(params)
+
         return_sram_access = [input_access,filter_access, output_access]
 
         return return_sram_access
 
-    def ws_one(self, params) -> list:
-        """Dataflow: WS. stride = 1."""
-        input_access, filter_access, output_access = self.return_sram_access_count_stride_one(params)
+    def ws_one(self, params):
+        input_access = self.return_sram_access_count_stride_one(params)
+        filter_access = self.return_sram_access_count_stride_one(params)
+        output_access = sel
         return_sram_access = [input_access, filter_access, output_access]
 
         return return_sram_access
@@ -89,7 +83,7 @@ class Scaleupsram:
         return return_sram_access
     #--------------------------------------------------------------------------------------------------------
     #Layer with stride over 1 (especially in CNN models) has duplication data input operand matrix.
-    def SRAM_Stride_Over_One(self, Num_Row_Tiles, Num_Col_Tiles, Input_Operand, Filter_Operand, dataflow):
+    def sram_stride_over_one(self, params):
         """Return SRAM access count when stride is one."""
         dataflow_functions = {
             "OS": self.OS_Over_One,

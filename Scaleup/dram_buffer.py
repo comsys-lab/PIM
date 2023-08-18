@@ -1,23 +1,25 @@
+"Python 3.10.8"
 import numpy as np
 from tqdm import tqdm
 
-from BaseOperation.Baseoperation import BaseOperation
+from base_operation import Baseoperation
 
-class DramBuffer:
+class Drambuffer:
+    """Get Dram memory access count"""
     def __init__(self):
-        self.BaseOperation = BaseOperation()
+        self.BaseOperation = Baseoperation()
 
     def dram_buffer(self,processor,info,input_operand,filter_operand,input_buf,filter_buf,dataflow):
         if dataflow == "OS":
-            input,filter,output =  self.OS(processor,info,input_operand,filter_operand,input_buf,filter_buf)
+            input,filter,output =  self.os_dataflow(processor,info,input_operand,filter_operand,input_buf,filter_buf)
         elif dataflow == "WS":
-            input,filter,output = self.WS(processor,info,input_operand,filter_operand,input_buf,filter_buf)
+            input,filter,output = self.ws_dataflow(processor,info,input_operand,filter_operand,input_buf,filter_buf)
         elif dataflow == "IS":
-            input,filter,output = self.IS(processor,info,input_operand,filter_operand,input_buf,filter_buf)
+            input,filter,output = self.is_dataflow(processor,info,input_operand,filter_operand,input_buf,filter_buf)
 
         return input,filter,output
 
-    def OS(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
+    def os_dataflow(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
         input = 0
         filter = 0
         output = len(input_operand) * len(filter_operand[0])
@@ -93,7 +95,7 @@ class DramBuffer:
 
         return input,filter,output
 
-    def WS(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
+    def ws_dataflow(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
         input = 0
         filter = 0
         output = len(input_operand[0]) * len(filter_operand[0])
@@ -169,7 +171,7 @@ class DramBuffer:
         return input,filter,output
 
 
-    def IS(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
+    def is_dataflow(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
         input = 0
         filter = 0
         output = len(input_operand[0]) * len(filter_operand[0])

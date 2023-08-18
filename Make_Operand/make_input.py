@@ -1,18 +1,13 @@
 "Python 3.10.8"
-from dataclasses import dataclass
 import numpy as np
 
-@dataclass
-class Inputoperand:
-    """Class for input operand matrix"""
-    input_operand: np.ndarray
-    input_row: int
-    input_col: int
+#pylint: disable=E0402
+from .._Dataclass.data_class import Operand
 
 class MakeInput:
     """Make input operand matrix and return"""
     def __init__(self):
-        self.input_operand = Inputoperand(np.zeros((1,1)),0,0)
+        self.input_operand = Operand(np.zeros((1,1)),0,0)
 
     def make_input_matrix(self, topo):
         """Make input matrix"""
@@ -74,8 +69,8 @@ class MakeInput:
         else:
             input_opearnd, row, col = self.make_input_operand_ws_is(topo)
 
-        self.input_operand.input_operand = input_opearnd
-        self.input_operand.input_row = row
-        self.input_operand.input_col = col
+        self.input_operand.operand_matrix = input_opearnd
+        self.input_operand.row = row
+        self.input_operand.col = col
 
         return self.input_operand
