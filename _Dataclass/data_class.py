@@ -79,8 +79,6 @@ class Operand:
 class Scaleupformat:
     """Class for scaleup."""
     systolic: Systolic
-    num_row_tiles: int
-    num_col_tiles: int
     input_operand: np.ndarray
     filter_operand: np.ndarray
     dataflow: str

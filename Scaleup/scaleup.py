@@ -10,7 +10,7 @@ from runtime import Runtime
 #pylint: disable=E0402
 from .._Dataclass.data_class import Systolic
 from .._Dataclass.data_class import Scaleupformat
-
+from .._Dataclass.data_class import Operand
 
 class Scaleup:
     """
@@ -23,16 +23,17 @@ class Scaleup:
         self.efficiency = Efficiency()
         self.runtime = Runtime()
 
-        self.scaleup_param = Scaleupformat(Systolic(0,0,0,0,0),0,0,np.zeros(1,1),np.zeros(1,1),"WS")
+        self.scaleup_param = Scaleupformat(Systolic(0,0,0,0,0),
+            Operand(np.zeros(1,1),0,0),(np.zeros(1,1),0,0),"WS")
 
-    def scaleup(self, params, stride):
+    def scaleup(self, scaleup_param, stride):
         """Top function for scaleup simulation."""
         #Get Information from ScaleupInfo module: # of tiled dimension.
         self.scaleup_param.num_col_tiles, self.scaleup_param.num_row_tiles =\
-            self.scaleupinfo(processor, input_operand, filter_operand, dataflow)
+            self.scaleupinfo(scaleup_param)
 
         #Get Memory Information
-        sram_input, sram_filter, sram_output = self.scaleupsram.scaleupsram(info, input_operand, filter_operand, dataflow, stride)
+        sram_input, sram_filter, sram_output = self.scaleupsram.scaleupsram(scaleup_param, stride)
         dram_input, dram_filter, dram_output = self.drambuffer.dram_buffer(processor, info, input_operand, filter_operand, input_buf, filter_buf, dataflow)
 
         #Get mapping/computation efficiency/Runtime
@@ -41,16 +42,14 @@ class Scaleup:
         return [sram_input, sram_filter, sram_output, dram_input, dram_filter, dram_output, mac, runtime]
 
 
-    def scaleupinfo(self, systolic, input_operand, filter_operand, dataflow):
+    def scaleupinfo(self, scaleup_params):
         """
-        Get scaleup information from input and filter matrix.
-        Dimension of operand matrix is different depending on the dataflow.
-        Get scaleup information form processor and operand matrix.
-        Processor is entered in the form of lists: [sys_row, sys_col, pod_dim_row, pod_dim_col]
-        In scaleup case, simulator only needs the dimension of systolic array: [sys_row, syscol]
+        Get scaleup information form systolic array and operand matrix.
+        Processor is entered in the form of lists: [sys_row, sys_col, ...]
         """
-        sys_row, sys_col = systolic.systolic_row, systolic.systolic_col
-        row, col = self._get_operand_dimensions(input_operand, filter_operand, dataflow)
+        sys_row, sys_col = scaleup_params.systolic.systolic_row, scaleup_params.systolic.systolic_col
+        row, col = self._get_operand_dimensions(scaleup_params.input_operand,
+            scaleup_params.filter_operand, scaleup_params.dataflow)
         num_row_tiles, num_col_tiles = self._get_num_tiles(sys_row, sys_col, row, col)
 
         return num_row_tiles, num_col_tiles
@@ -65,6 +64,7 @@ class Scaleup:
 
     #Calculate number of tiles
     def _get_num_tiles(self, sys_row, sys_col, row, col):
+        """Get number of tiles that will be used."""
         num_row_tiles = int(np.ceil(row / sys_row))
         num_col_tiles = int(np.ceil(col / sys_col))
 
