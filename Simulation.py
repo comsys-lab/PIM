@@ -1,9 +1,9 @@
 "Python 3.10.8"
 import numpy as np
 
-from Base_Operation.get_topology import GetTopology
-from Base_Operation.get_configuration import GetConfiguration
-from Base_Operation.get_energy import GetEnergy
+from Get_config.get_topology import GetTopology
+from Get_config.get_configuration import GetConfiguration
+from Get_config.get_energy import GetEnergy
 
 from Make_Operand.make_operand import MakeOperand
 
@@ -59,12 +59,15 @@ class Simulation:
             self.PIM_Batch_Over_One()
 
     def PIM_Batch_One(self):
+        """For mobile systems."""
         pass
 
     def PIM_Batch_Over_One(self):
+        """For form factor except mobile systems."""
         pass
 
     def Simulation_One_Layer(self):
+        """Simulation one layer with operand matrix and topology."""
         pass
 
     # The Scaleout funtion will return results like this:

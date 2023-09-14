@@ -1,7 +1,12 @@
+"Python 3.11.2"
 import numpy as np
 
 class Runtime:
+    """
+    Runtime from scalesim
+    """
     def get_runtime(self, processor, input_operand, filter_operand, dataflow):
+        """Runtime division with dataflow of each simulation."""
         if dataflow == "OS":
             runtime, MAC = self.OS(processor, input_operand, filter_operand)
         elif dataflow == "WS":
@@ -12,6 +17,7 @@ class Runtime:
         return runtime, MAC
 
     def _get_operand_dimensions(self, input_operand, filter_operand, dataflow):
+        """Return operand dimensions from each dataflow."""
         if dataflow == "IS":
             pass
         elif (dataflow == "OS") or (dataflow == "WS"):
@@ -22,6 +28,7 @@ class Runtime:
         return SR,SC,T
 
     def OS(self, processor, input_operand, filter_operand):
+        """Return OS dataflow runtime."""
         SR,SC,T = self._get_operand_dimensions(input_operand, filter_operand, "OS")
         row_q = SR // processor[0]
         col_q = SC // processor[1]
@@ -46,6 +53,7 @@ class Runtime:
         return runtime, MAC
 
     def WS(self, processor, input_operand, filter_operand):
+        """Return WS dataflow runtime."""
         SR,SC,T = self._get_operand_dimensions(input_operand, filter_operand, "WS")
         row_q = SR // processor[0]
         col_q = SC // processor[1]
@@ -71,5 +79,16 @@ class Runtime:
         return runtime, MAC
 
     def IS(self, processor, input_operand, filter_operand):
+        """Return IS dataflow runtime."""
         SR,SC,T = self._get_operand_dimensions(input_operand, filter_operand, "IS")
         row_q = SR // processor[0]
+        col_q = SC // processor[1]
+
+        row_rest = (SR % processor[0])
+        col_rest = (SC % processor[1])
+
+        row_flag = (SR % processor[0]) != 0
+        col_flag = (SC % processor[1]) != 0
+
+        #CASE1
+        runtime  = T + processor[0] - 1 +

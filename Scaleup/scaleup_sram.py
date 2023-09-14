@@ -1,17 +1,67 @@
 "Python 3.10.8"
 from base_operation import Baseoperation
+from scaleup_class import Scaleupformat
 
-class Scaleupsram:
     """Get SRAM access count."""
     def __init__(self):
         self.base_operation = Baseoperation()
+        self.scaleupformat = Scaleupformat()
 
-    def scaleupsram(self, params, stride):
+    def scaleupsram(self, scaleupformat, stride):
         """Get scaleup sram count. Divide case with stride."""
         if stride == 1:
-            return_sram_access = self.sram_stride_one(params)
+            return_sram_access = self.sram_stride_one(scaleupformat)
         else:
-            return_sram_access = self.sram_stride_over_one(params)
+            return_sram_access = self.sram_stride_over_one(scaleupformat)
+
+        return return_sram_access
+
+    def sram_one(self, scaleupformat, dataflow):
+        """
+        If stride of DNN layer is one, return SRAM access count.
+        """
+        if dataflow == "OS":
+            return_sram_access = self.os_one(scaleupformat)
+        elif dataflow == "WS":
+            return_sram_access = self.ws_one(scaleupformat)
+        elif dataflow == "IS":
+            return_sram_access = self.is_one(scaleupformat)
+
+        return return_sram_access
+
+    def os_one(self, scaleupformat):
+        input_operand = 
+        filter_operand = 
+
+        input = 
+        filter = 
+        output = 
+
+        return_sram_access = [input, filter, output]
+
+        return return_sram_access
+
+    def ws_one(self, scaleupformat):
+        input_operand = 
+        filter_operand = 
+
+        input = 
+        filter = 
+        output = 
+
+        return_sram_access = [input, filter, output]
+
+        return return_sram_access
+
+    def is_one(self, scaleupformat):
+        input_operand = 
+        filter_operand = 
+
+        input = 
+        filter = 
+        output = 
+
+        return_sram_access = [input, filter, output]
 
         return return_sram_access
 
@@ -73,36 +123,6 @@ class Scaleupsram:
 
         return sram_access_count
 
-    def return_input_stride_one(self, Num_Col_Tiles, Input_Operand):
-        return Num_Col_Tiles * len(Input_Operand) * len(Input_Operand[0])
-
-    def Return_Filter_Access_Count_Stride_One(self, Num_Row_Tiles, Filter_Operand):
-        return Num_Row_Tiles * len(Filter_Operand) * len(Filter_Operand[0])
-
-    def Return_Output_Access_Count_Stride_Oned(self, Input_Operand, Filter_Operand):
-        return len(Input_Operand) * len(Filter_Operand[0])
-
-    def os_one(self, params):
-        input_access, filter_access, output_access = self.return_sram_access_count_stride_one(params)
-
-        return_sram_access = [input_access,filter_access, output_access]
-
-        return return_sram_access
-
-    def ws_one(self, params):
-        input_access = self.return_sram_access_count_stride_one(params)
-        filter_access = self.return_sram_access_count_stride_one(params)
-        output_access = sel
-        return_sram_access = [input_access, filter_access, output_access]
-
-        return return_sram_access
-
-    def is_one(self, info, Input_Operand, Filter_Operand):
-        input = len(Input_Operand) * len(Input_Operand[0])
-        filter = info[1] * len(Filter_Operand) * len(Filter_Operand[0])
-        output = info[0] * len(Input_Operand[0]) * len(Filter_Operand[0])
-
-        return return_sram_access
     #for SRAM access count,
     #--------------------------------------------------------------------------------------------------------
     #Layer with stride over 1 (especially in CNN models) has duplication data input operand matrix.
@@ -110,17 +130,17 @@ class Scaleupsram:
         """
         Return SRAM access count when stride is over one.
         - OS dataflow
-        input:
-        filter:
-        output:
+        input: num_col_tiles * input_size
+        filter: num_row_tiles * filter_size
+        output: input_row * filter_col
         - WS dataflow
-        input:
-        filter:
-        output:
+        input: num_col_tiles * input_size
+        filter: filter_size
+        output: num_row_tiles * input_size
         - IS dataflow
-        input:
-        filter:
-        output:
+        input: input_size
+        filter: num_col_tiles * filter_size
+        output: num_row_tiles * filter_size
         """
         dataflow_functions = {
             "OS": self.os_over_one,
@@ -144,7 +164,7 @@ class Scaleupsram:
         """Return data size from input and filter operand matrix."""
         input_data_size = self.base_operation._get_data_size_no_duplication(input_operand)
         filter_data_size = self.base_operation._get_data_size_no_duplication(filter_operand)
-        output_data_size = self.base_operation._get_data_size_no_duplication()
+        output_data_size = 1
 
         return [input_data_size, filter_data_size, output_data_size]
 
