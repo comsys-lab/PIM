@@ -1,9 +1,8 @@
 "Python 3.10.8"
 import configparser as cp
 
-#pylint: disable=E0402
-from .._Dataclass.data_class import MACenergy
-from .._Dataclass.data_class import Energy
+from get_class import MACenergy
+from get_class import Energy
 
 class GetEnergy:
     """Get energy parameters from configuration file (.cfg)."""
@@ -12,7 +11,8 @@ class GetEnergy:
         self.npu_energy = Energy(0,0,0,0,0,0)
         self.pim_energy = Energy(0,0,0,0,0,0)
 
-    def get_energy(self, path, npu_dataflow, pim_dataflow):
+    #Input: str | str | str
+    def get_energy(self, path, npu_df, pim_df):
         """Get energy parameters from configuration file path."""
         config = cp.ConfigParser()
         config.read(path)
@@ -32,7 +32,7 @@ class GetEnergy:
         self.npu_energy.sram_write = config.getfloat(section, 'sram_write')
         self.npu_energy.dram_read = config.getfloat(section, 'dram_read')
         self.npu_energy.dram_write = config.getfloat(section, 'dram_write')
-        self.npu_energy.mac_energy = self.get_mac_energy(npu_dataflow)
+        self.npu_energy.mac_energy = self.get_mac_energy(npu_df)
         self.npu_energy.mac_idle = self.mac_energy.mac_idle
 
         #Enter the PIM_Parameters
@@ -42,9 +42,10 @@ class GetEnergy:
         self.pim_energy.sram_write = config.getfloat(section, 'sram_write')
         self.pim_energy.dram_read = config.getfloat(section, 'dram_read')
         self.pim_energy.dram_write = config.getfloat(section, 'dram_write')
-        self.pim_energy.mac_energy = self.get_mac_energy(pim_dataflow)
+        self.pim_energy.mac_energy = self.get_mac_energy(pim_df)
         self.pim_energy.mac_idle = self.mac_energy.mac_idle
 
+    #Input: str / Return: float
     def get_mac_energy(self, dataflow) -> float:
         """If dataflow is OS, use mac_random, else use mac_reused."""
         if dataflow == "OS":
@@ -54,8 +55,9 @@ class GetEnergy:
 
         return energy
 
-    def return_energy(self, path, npu_dataflow, pim_dataflow) -> MACenergy | Energy | Energy:
+    #Input: str | str | str / Return: MACenergy | Energy | Energy
+    def return_energy(self, path, npu_df, pim_df):
         """Return energy parameters."""
-        self.get_energy(path, npu_dataflow, pim_dataflow)
+        self.get_energy(path, npu_df, pim_df)
 
         return self.mac_energy, self.npu_energy, self.pim_energy

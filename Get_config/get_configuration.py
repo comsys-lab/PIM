@@ -1,12 +1,11 @@
-"Python 3.10.8"
+"Python 3.11.5"
 import configparser as cp
 import math
 
-#pylint: disable=E0402
-from .._Dataclass.data_class import Systolic
-from .._Dataclass.data_class import Npuothers
-from .._Dataclass.data_class import Pimothers
-from .._Dataclass.data_class import Dnnsave
+from get_class import Systolic
+from get_class import Npuothers
+from get_class import Pimothers
+from get_class import Dnnsave
 
 class GetConfiguration:
     """Read hardware configuration and return."""
@@ -21,7 +20,7 @@ class GetConfiguration:
         self.pim_param = [Systolic(16, 16, 8, 8, 2), Pimothers(2 ,2 ,8, 32, 1024 ,512, "OS")]
         self.others = Dnnsave("", 0, True, "")
 
-    #pylint: disable=R0915
+    #Input: str
     def read_config_file(self, config_file):
         """From configuration file, read parameters."""
         config = cp.ConfigParser()
@@ -103,6 +102,7 @@ class GetConfiguration:
         self.others.pim_flag = config.getboolean(section, 'pim_flag')
         self.others.storing_path = config.get(section, 'storing_path')
 
+    #Input: float | int | int | float / Return: int | int | int | int
     def convert_throughput(self, throughput, pod_row, pod_col, clock_frequency):
         """
         Throughput = 2 * # of pod * clock frequency
@@ -138,6 +138,7 @@ class GetConfiguration:
 
         return row, col, row_dim, col_dim
 
+    #Input: str / Return: str | list | list | Dnnsave
     def return_parameters(self, path):
         """Return params from configuration file."""
         self.read_config_file(path)

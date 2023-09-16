@@ -1,14 +1,14 @@
-"Python 3.10.8"
+"Python 3.11.2"
 import numpy as np
 
-#pylint: disable=E0402
-from .._Dataclass.data_class import Operand
+from operand import Operand
 
 class MakeFilter:
     """Make filter operand matrix and return"""
     def __init__(self):
         self.filter_operand = Operand(np.zeros((1,1)),0,0)
 
+    #Input: list / Return: np.ndarray | int | int
     def make_filter_opreand(self, topo):
         """Make filter operand matrix"""
         row = topo[2] * topo[3] * topo[4]
@@ -19,6 +19,7 @@ class MakeFilter:
 
         return filter_operand, row, col
 
+   #Input: list / Return: Operand
     def return_filter_matrix(self,topo):
         """Return filter operand matrix"""
         filter_operand, row, col = self.make_filter_opreand(topo)

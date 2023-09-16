@@ -1,22 +1,21 @@
-"Python 3.10.8"
+"Python 3.11.2"
 from dataclasses import dataclass
 import numpy as np
 
 @dataclass
 class Systolic:
     """Define systolic array's dimension."""
-    systolic_row: int
-    systolic_col: int
+    row: int
+    col: int
 
     input_buffer: float
     filter_buffer: float
     output_buffer: float
 
-#Operand_matrix
 @dataclass
 class Operand:
-    """Class for filter operand matrix"""
-    operand_matrix: np.ndarray
+    """Dataclass for operand matrix."""
+    operand: np.ndarray
     row: int
     col: int
 

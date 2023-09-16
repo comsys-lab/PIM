@@ -1,4 +1,4 @@
-"Python 3.10.8"
+"Python 3.11.2"
 import numpy as np
 
 class GetTopology:
@@ -6,8 +6,10 @@ class GetTopology:
     def __init__(self):
         self.topo = []
         self.mnk = []
+        self.MAC = 0
 
-    def get_topology(self, path) -> list | list:
+    #Input: str / Return: list | list
+    def get_topology(self, path):
         """From topology file path, return topology and mnk."""
         length = self.return_layer_length(path)
         topo, mnk, len_one = self.read_csv(length, path)
@@ -21,13 +23,15 @@ class GetTopology:
             self.topo = topo
             self.change_original_to_mnk(self.topo,len_one)
 
-        return self.topo, self.mnk
+        return self.topo, self.mnk, self.MAC
 
+    #Input: str
     def return_layer_length(self, path):
         """Return layer length."""
         with open(path, 'r', encoding="utf-8") as file:
             return sum(1 for _ in file)
 
+    #Input: str / Return: bool
     def check_mnk(self, path):
         """Check whether format of csv file is mnk or not."""
         file = open(path, 'r', encoding="utf-8")
@@ -39,7 +43,7 @@ class GetTopology:
 
         return mnk
 
-    #read files from topology file
+    #Input: int | str / Return: list, bool, bool
     def read_csv(self, length, path):
         """Read csv file and return. Check the length, and MNK format."""
         mnk = self.check_mnk(path)
@@ -58,6 +62,7 @@ class GetTopology:
 
         return topo, mnk, len_one
 
+    #Input: list | bool
     def change_original_to_mnk(self, topo_all, len_one):
         """Change original format to MNK format."""
         if len_one:
@@ -66,6 +71,7 @@ class GetTopology:
             for topo in topo_all:
                 self.mnk.append(self.change_original_to_mnk_one_layer(topo))
 
+    #Input: list / Return: bool
     def change_original_to_mnk_one_layer(self, topo):
         """
         Topology is composed of [Input_W, Input_H, Filter_W, Filter_H, Channel, Num_filter, Stride]
@@ -80,8 +86,13 @@ class GetTopology:
         os_filter_col = topo[5]
         mnk = [os_input_row, os_input_col, os_filter_col]
 
+        #for the number of MAC operation
+        MAC = os_input_row * os_input_col * os_filter_col
+        self.MAC += MAC
+
         return mnk
 
+    #Input: list | bool / Return: bool
     def change_mnk_to_original(self, mnk_all, len_one):
         """Change MNK format to original format."""
         if len_one:
@@ -94,5 +105,9 @@ class GetTopology:
         """Change MNK format to original format."""
         #MNK is composed of ['run_name',M,N,K]
         topo = [mnk[0],1,1,1,mnk[1],mnk[2],1]
+
+        #for the number of MAC operation
+        MAC = mnk[0] * mnk[1] * mnk[2]
+        self.MAC += MAC
 
         return topo

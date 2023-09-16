@@ -1,8 +1,7 @@
-"Python 3.10.8"
+"Python 3.11.2"
 import numpy as np
 
-#pylint: disable=E0402
-from .._Dataclass.data_class import Operand
+from operand import Operand
 
 class MakeInput:
     """Make input operand matrix and return"""

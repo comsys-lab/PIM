@@ -25,6 +25,7 @@ class Simulation:
         self.pim_results = []
 
     def simulation(self,topology_path, configuration_path, energy_file_path):
+        """."""
         #Get Simulation settings: topology, hardware configuration, energy configuration
         self.get_setting(topology_path, configuration_path, energy_file_path)
 

@@ -1,10 +1,8 @@
 "Python 3.11.2"
 from dataclasses import dataclass
-import numpy as np
 
 #Define dataclass that will be used.
 #get_configuration
-
 
 @dataclass
 class Npuothers:
@@ -57,3 +55,13 @@ class Energy:
     dram_write: float
     mac_energy: float
     mac_idle: float
+
+@dataclass
+class Systolic:
+    """Define systolic array's dimension."""
+    systolic_row: int
+    systolic_col: int
+
+    input_buffer: float
+    filter_buffer: float
+    output_buffer: float

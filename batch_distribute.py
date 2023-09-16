@@ -1,11 +1,9 @@
-import sys
-sys.path.append('/home/sj/simulation/')
-
-from scaleup.Runtime import Runtime
+"Python 3.11.2"
 
 class batch_distribute:
+    """"."""
     def batch_distribute(self, npu_proc, pim_proc, dnn_param,  MNK):
-
+        """."""
         batch = dnn_param[1]
         NPU_df = dnn_param[2]
         PIM_df = dnn_param[3]

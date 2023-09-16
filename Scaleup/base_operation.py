@@ -4,10 +4,7 @@ import numpy as np
 class Baseoperation:
     """Store functions that will be reused in simulator."""
     def _get_data_size_no_duplication(self, matrix):
-        """
-        If dnn layer has stride more than one, then it does zero padding.
-        zero padding data = [-1,-1,-1], and simulator use this function when get the sram access.
-        """
+        """Get the data size in matrix without duplication"""
         data = set()
         for row in matrix:
             row = set(row)
@@ -17,6 +14,14 @@ class Baseoperation:
 
         return data_size
 
+    #Input: np.ndarray / Return: int
+    def return_no_duplication(self,matrix):
+        """Return data with no duplication"""
+        data = self._get_data_size_no_duplication(matrix)
+
+        return data
+
+    #Input: np.ndrarray / Return: int
     def _get_data_size_with_duplication(self, matrix):
         """
         If dnn layer has stride more than one, then it does zero padding.
@@ -26,12 +31,14 @@ class Baseoperation:
 
         return data_size
 
+    #Input: np.ndarray / Return: int
     def get_num_zero_padding(self, matrix):
         """Function that number of zeros in the operand matrix."""
         data_size = sum(1 for row in matrix for item in row if item == "[-1,-1,-1]")
 
         return data_size
 
+    #Input: / Return: 
     def input_padding(self, systolic, input_operand):
         """
         Dimension of operand matrix is not always divisibe with dimension of systolic array.
@@ -44,6 +51,7 @@ class Baseoperation:
 
         return input_operand
 
+    #Input: / Return: 
     def filter_padding(self, systolic, filter_operand):
         """
         Dimension of operand matrix is not always divisibe with dimension of systolic array.
@@ -55,7 +63,7 @@ class Baseoperation:
         filter_operand = np.concatenate((filter_operand, filter_temp), axis=1)
 
         return filter_operand
-
+    #Input: / Return: 
     def skew_input_matrix(self, input_matrix):
         """
         Input operand matrix is skewed in direction of row when the dataflow is OS.
@@ -66,7 +74,7 @@ class Baseoperation:
             temp[i, i:i+col] = input_matrix[i]
 
         return temp
-
+    #Input: / Return: 
     def skew_filter_matrix(self, filter_matrix):
         """
         Filter operand matrix is skewed in direction of column when the dataflow is WS and IS.
