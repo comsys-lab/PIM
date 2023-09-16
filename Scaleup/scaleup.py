@@ -29,7 +29,7 @@ class Scaleup:
 
         #Get Memory Information
         sram_access = self.scaleupsram.scaleupsram(scaleupformat, stride)
-        sram_access = self.drambuffer.dram_buffer(processor, info, input_operand, filter_operand, input_buf, filter_buf, dataflow)
+        dram_access = self.drambuffer.dram_buffer(processor, info, input_operand, filter_operand, input_buf, filter_buf, dataflow)
 
 
         runtime, mac = self.runtime.get_runtime(processor, input_operand, filter_operand, dataflow)

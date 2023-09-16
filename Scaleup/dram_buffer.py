@@ -9,7 +9,10 @@ class Drambuffer:
     def __init__(self):
         self.BaseOperation = Baseoperation()
 
-    def dram_buffer(self,processor,info,input_operand,filter_operand,input_buf,filter_buf,dataflow):
+    #Input: scaleupformat
+    def dram_buffer(self, scaleupformat,processor,info,input_operand,filter_operand,input_buf,filter_buf,dataflow):
+        """Get information with scaleu"""
+
         if dataflow == "OS":
             input,filter,output =  self.os_dataflow(processor,info,input_operand,filter_operand,input_buf,filter_buf)
         elif dataflow == "WS":
@@ -18,6 +21,14 @@ class Drambuffer:
             input,filter,output = self.is_dataflow(processor,info,input_operand,filter_operand,input_buf,filter_buf)
 
         return input,filter,output
+
+    def df_os(self, scaleupformat):
+        pass
+    def df_ws(self, scaleupformat):
+        pass
+    def df_is(self, scaleupformat):
+        pass
+
 
     def os_dataflow(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
         input = 0
