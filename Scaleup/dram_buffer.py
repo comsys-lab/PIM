@@ -22,14 +22,6 @@ class Drambuffer:
 
         return input,filter,output
 
-    def df_os(self, scaleupformat):
-        pass
-    def df_ws(self, scaleupformat):
-        pass
-    def df_is(self, scaleupformat):
-        pass
-
-
     def os_dataflow(self,processor,info,input_operand,filter_operand,input_buf,filter_buf):
         input = 0
         filter = 0

@@ -1,6 +1,6 @@
 "Python 3.11.5"
 
-class Runtime:
+class Scaleupruntime:
     """Get runtime."""
     #Input: scaleupformat / Return: int | int | int
     def get_operand_dimensions(self, scaleupformat):

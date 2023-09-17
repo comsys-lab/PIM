@@ -2,6 +2,28 @@
 from dataclasses import dataclass
 
 #Define dataclass that will be used.
+@dataclass
+class Systolic:
+    """Define systolic array's dimension."""
+    systolic_row: int
+    systolic_col: int
+
+    input_buffer: float
+    filter_buffer: float
+    output_buffer: float
+
+@dataclass
+class Others:
+    """Dataclass for paramters of NPU except systolic array."""
+    pod_dimension_row: int
+    pod_dimension_col: int
+
+    num_of_systolic: int
+
+    bandwidth: float
+    latency: float
+
+    dataflow: str
 
 @dataclass
 class Npuothers:
@@ -54,12 +76,3 @@ class Energy:
     mac_energy: float
     mac_idle: float
 
-@dataclass
-class Systolic:
-    """Define systolic array's dimension."""
-    systolic_row: int
-    systolic_col: int
-
-    input_buffer: float
-    filter_buffer: float
-    output_buffer: float
