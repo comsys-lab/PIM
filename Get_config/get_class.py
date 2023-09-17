@@ -1,8 +1,7 @@
-"Python 3.11.2"
+"Python 3.11.5"
 from dataclasses import dataclass
 
 #Define dataclass that will be used.
-#get_configuration
 
 @dataclass
 class Npuothers:
@@ -37,7 +36,6 @@ class Dnnsave:
     pim_flag: bool
     storing_path: str
 
-#get_energy
 @dataclass
 class MACenergy:
     """MAC parameters"""

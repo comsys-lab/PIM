@@ -1,10 +1,11 @@
-"Python 3.11.2"
+"Python 3.11.5"
 import numpy as np
 
 class Baseoperation:
-    """Store functions that will be reused in simulator."""
-    def _get_data_size_no_duplication(self, matrix):
-        """Get the data size in matrix without duplication"""
+    """Base operation used in scaleup simulation"""
+    #Input: np.ndrarray / Return: int
+    def get_data_size_no_duplication(self, matrix):
+        """Data size with duplication."""
         data = set()
         for row in matrix:
             row = set(row)
@@ -14,74 +15,47 @@ class Baseoperation:
 
         return data_size
 
-    #Input: np.ndarray / Return: int
-    def return_no_duplication(self,matrix):
-        """Return data with no duplication"""
-        data = self._get_data_size_no_duplication(matrix)
-
-        return data
-
     #Input: np.ndrarray / Return: int
-    def _get_data_size_with_duplication(self, matrix):
-        """
-        If dnn layer has stride more than one, then it does zero padding.
-        zero padding data = [-1,-1,-1], and simulator use this function when get the dram access.
-        """
+    def get_data_size_with_duplication(self, matrix):
+        """Data size with no duplication."""
         data_size = sum(1 for row in matrix for item in row if item != "[-1,-1,-1]")
 
         return data_size
 
-    #Input: np.ndarray / Return: int
-    def get_num_zero_padding(self, matrix):
-        """Function that number of zeros in the operand matrix."""
-        data_size = sum(1 for row in matrix for item in row if item == "[-1,-1,-1]")
-
-        return data_size
-
-    #Input: / Return: 
+    #Input: systolic | operand / Return: np.ndarray
     def input_padding(self, systolic, input_operand):
-        """
-        Dimension of operand matrix is not always divisibe with dimension of systolic array.
-        Thus, padding needs to satisfy divisible dimension.
-        In the case of input operation matrix, padding should proceed in the row direction.
-        """
-        length = systolic.row - (len(input_operand) % systolic.row)
-        input_temp = [["[-1,-1,-1]"] * len(input_operand[0]) for _ in range(length)]
+        """To adjust size of input operand matrix."""
+        length = systolic.row - (input_operand.row % systolic.row)
+        input_temp = [["[-1,-1,-1]"] * input_operand.col for _ in range(length)]
         input_operand = np.concatenate((input_operand, input_temp), axis=0)
 
         return input_operand
 
-    #Input: / Return: 
+    #Input: systolic | operand / Return: np.ndarray
     def filter_padding(self, systolic, filter_operand):
-        """
-        Dimension of operand matrix is not always divisibe with dimension of systolic array.
-        Thus, padding needs to satisfy divisible dimension.
-        In the case of filter operation matrix, padding should proceed in the column direction.
-        """
-        length = systolic.col - (len(filter_operand[0]) % systolic.col)
-        filter_temp = [["[-1,-1,-1]"] * length for _ in range(len(filter_operand))]
-        filter_operand = np.concatenate((filter_operand, filter_temp), axis=1)
+        """To adjust size of filter operand matrix."""
+        length = systolic.col - (filter_operand.col % systolic.col)
+        filter_temp = [["[-1,-1,-1]"] * length for _ in range(filter_operand.row)]
+        filter_operand = np.concatenate((filter_operand.systolic, filter_temp), axis=1)
 
         return filter_operand
-    #Input: / Return: 
-    def skew_input_matrix(self, input_matrix):
-        """
-        Input operand matrix is skewed in direction of row when the dataflow is OS.
-        """
-        row, col = len(input_matrix), len(input_matrix[0])
-        temp = np.full((row, col + row - 1), "[-1,-1,-1]", dtype='U20')
-        for i in range(row):
-            temp[i, i:i+col] = input_matrix[i]
 
-        return temp
-    #Input: / Return: 
-    def skew_filter_matrix(self, filter_matrix):
-        """
-        Filter operand matrix is skewed in direction of column when the dataflow is WS and IS.
-        """
-        row, col = len(filter_matrix), len(filter_matrix[0])
+    #Input: operand / Return: np.ndarray
+    def skew_input_matrix(self, input_operand):
+        """Skew input operand matrix."""
+        row, col = input_operand.row, input_operand.col
+        input_temp = np.full((row, col + row - 1), "[-1,-1,-1]", dtype='U20')
+        for i in range(row):
+            input_temp[i, i:i+col] = input_operand.systolic[i]
+
+        return input_temp
+
+    #Input: operand / Return: np.ndarray
+    def skew_filter_matrix(self, filter_operand):
+        """Skew filter operand matrix."""
+        row, col = filter_operand.row, filter_operand.col
         temp = np.full((col + row - 1, col), "[-1,-1,-1]", dtype='U20')
         for j in range(col):
-            temp[j:j+row, j] = filter_matrix[:, j]
+            temp[j:j+row, j] = filter_operand.systolic[:, j]
 
         return temp

@@ -34,6 +34,7 @@ class GetConfiguration:
         section = 'Form_Factor'
         self.form_factor = config.get(section, 'Form_Factor')
 
+
         if self.form_factor in ('Mobile', 'PC'):
             self.npu_flag = True
         else:

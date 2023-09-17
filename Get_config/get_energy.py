@@ -1,4 +1,4 @@
-"Python 3.10.8"
+"Python 3.11.5"
 import configparser as cp
 
 from get_class import MACenergy

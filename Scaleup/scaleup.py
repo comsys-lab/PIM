@@ -1,9 +1,9 @@
-"Python 3.11.2"
+"Python 3.11.5"
 import numpy as np
 
 from scaleup_sram import Scaleupsram
 from dram_buffer import Drambuffer
-from efficiency import Efficiency
+
 from runtime import Runtime
 
 from scaleup_class import Systolic
@@ -15,7 +15,6 @@ class Scaleup:
     def __init__(self):
         self.scaleupsram = Scaleupsram()
         self.drambuffer = Drambuffer()
-        self.efficiency = Efficiency()
         self.runtime = Runtime()
 
         self.scaleup_param = Scaleupformat(Systolic(0,0,0,0,0),
@@ -25,7 +24,7 @@ class Scaleup:
         """With scaleupformat and stride, get information from scaleup"""
 
         #Get Information from ScaleupInfo module: # of tiled dimension.
-        num_tiles_row, num_tiles_col = self._get_num_tiles(scaleupformat)
+        num_tiles_row, num_tiles_col = self.get_num_tiles(scaleupformat)
 
         #Get Memory Information
         sram_access = self.scaleupsram.scaleupsram(scaleupformat, stride)
@@ -37,7 +36,7 @@ class Scaleup:
         return 1
 
     #Input: scaleupformat / Return: int | int
-    def _get_operand_dimensions(self, scaleupformat):
+    def get_operand_dimensions(self, scaleupformat):
         """
         Get operand dimension.
         Dimension of operand matrix is different only with IS dataflow.
@@ -48,7 +47,7 @@ class Scaleup:
             return scaleupformat.input_operand.row, scaleupformat.filter_operand.col
 
     #Input: scaleupformat / Return: int | int
-    def _get_num_tiles(self, scaleupformat):
+    def get_num_tiles(self, scaleupformat):
         """Get number of tiles that will be used."""
         row, col = self._get_operand_dimensions(scaleupformat)
         num_tiles_row = int(np.ceil(row/ scaleupformat.systolic.row ))

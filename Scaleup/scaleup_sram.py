@@ -1,23 +1,22 @@
-"Python 3.10.8"
+"Python 3.11.5"
 import numpy as np
 
 from base_operation import Baseoperation
-from scaleup_class import Scaleupformat
 
 class Scaleupsram:
     """Get SRAM access count."""
     def __init__(self):
         self.base_operation = Baseoperation()
-        self.scaleupformat = Scaleupformat(0,0,0,0)
 
     #Input: scaleupformat | int / Return: list
-    def scaleupsram(self, scaleupformat, stride):
+    def scaleup_sram(self, scaleupformat, stride):
         """Get scaleup sram count. Divide case with stride."""
-        if scaleupformat.dataflow == "OS":
+        dataflow = scaleupformat.dataflow
+        if dataflow == "OS":
             return_sram_access = self.df_os(scaleupformat, stride)
-        elif scaleupformat.dataflow == "WS":
+        elif dataflow == "WS":
             return_sram_access = self.df_ws(scaleupformat, stride)
-        elif scaleupformat.dataflow == "IS":
+        elif dataflow == "IS":
             return_sram_access = self.df_is(scaleupformat, stride)
 
         return return_sram_access
@@ -33,7 +32,7 @@ class Scaleupsram:
     #Input: scaleupformat / Return: int | int
     def return_size_over_one(self, scaleupformat):
         """Return operand matrix size when stride is over one."""
-        input_size = self.base_operation._get_data_size_no_duplication(scaleupformat.input_operand.operand)
+        input_size = self.base_operation.get_data_size_no_duplication(scaleupformat.input_operand.operand)
         _,filter_size = self.return_size_one(scaleupformat)
 
         return input_size, filter_size

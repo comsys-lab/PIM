@@ -3,7 +3,7 @@ import numpy as np
 
 class Baseoperation:
     """Store functions that will be reused in simulator."""
-    def _get_data_size_no_duplication(self, matrix):
+    def get_data_size_no_duplication(self, matrix):
         """
         If dnn layer has stride more than one, then it does zero padding.
         zero padding data = [-1,-1,-1], and simulator use this function when get the sram access.
@@ -17,7 +17,7 @@ class Baseoperation:
 
         return data_size
 
-    def _get_data_size_with_duplication(self, matrix):
+    def get_data_size_with_duplication(self, matrix):
         """
         If dnn layer has stride more than one, then it does zero padding.
         zero padding data = [-1,-1,-1], and simulator use this function when get the dram access.

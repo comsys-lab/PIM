@@ -1,94 +1,45 @@
-"Python 3.11.2"
-import numpy as np
+"Python 3.11.5"
 
 class Runtime:
-    """
-    Runtime from scalesim
-    """
-    def get_runtime(self, processor, input_operand, filter_operand, dataflow):
-        """Runtime division with dataflow of each simulation."""
-        if dataflow == "OS":
-            runtime, MAC = self.OS(processor, input_operand, filter_operand)
-        elif dataflow == "WS":
-            runtime, MAC = self.WS(processor, input_operand, filter_operand)
-        elif dataflow == "IS":
-            runtime, MAC = 0,0
+    """Get runtime."""
+    #Input: scaleupformat / Return: int | int | int
+    def get_operand_dimensions(self, scaleupformat):
+        """Get dimension on matrix."""
+        dataflow = scaleupformat.dataflow
+        if scaleupformat.dataflow == "IS":
+            SR = scaleupformat.input_operand.row
+            SC = scaleupformat.filter_operand.col
+            T = scaleupformat.input_operand.col
+        else:
+            SR = scaleupformat.filter_operand.row
+            SC = scaleupformat.input_operand.col
+            T = scaleupformat.filter_operand.col
 
-        return runtime, MAC
+        return SR, SC, T
 
-    def _get_operand_dimensions(self, input_operand, filter_operand, dataflow):
-        """Return operand dimensions from each dataflow."""
-        if dataflow == "IS":
-            pass
-        elif (dataflow == "OS") or (dataflow == "WS"):
-            SR = len(input_operand)
-            SC = len(filter_operand[0])
-            T = len(input_operand[0])
-
-        return SR,SC,T
-
-    def OS(self, processor, input_operand, filter_operand):
+    #Input: scaleupformat / Return: int
+    def get_runtime(self, scaleupformat):
         """Return OS dataflow runtime."""
-        SR,SC,T = self._get_operand_dimensions(input_operand, filter_operand, "OS")
-        row_q = SR // processor[0]
-        col_q = SC // processor[1]
+        SR, SC, T = self.get_operand_dimensions(scaleupformat)
 
-        row_rest = (SR % processor[0])
-        col_rest = (SC % processor[1])
+        row_q = SR // scaleupformat.systolic.row
+        col_q = SC // scaleupformat.systolic.col
 
-        row_flag = (SR % processor[0]) != 0
-        col_flag = (SC % processor[1]) != 0
+        row_rest = (SR % scaleupformat.systolic.row)
+        col_rest = (SC % scaleupformat.systolic.col)
+
+        row_flag = (SR % scaleupformat.systolic.row) != 0
+        col_flag = (SC % scaleupformat.systolic.col) != 0
 
         #CASE1
-        runtime1 = T + processor[0] + (processor[0] + processor[1] - 2)
+        runtime1 = (T + scaleupformat.systolic.row + (scaleupformat.systolic.row + scaleupformat.systolic.col - 2)) * row_q * col_q
         #CASE2
-        runtime2 = T + processor[0] + (row_rest + processor[1] - 2)
+        runtime2 = (T + scaleupformat.systolic.row + (row_rest + scaleupformat.systolic.col - 2)) * row_flag * col_q
         #CASE3
-        runtime3 = T + processor[0] + (processor[0] + col_rest - 2)
+        runtime3 = (T + scaleupformat.systolic.row + (scaleupformat.systolic.row + col_rest - 2)) * row_q * col_flag
         #CASE4
-        runtime4 = T + processor[0] + (row_rest + col_rest - 2)
+        runtime4 = (T + scaleupformat.systolic.row + (row_rest + col_rest - 2)) * row_flag * col_flag
 
-        runtime = runtime1 * row_q * col_q + runtime2 * row_flag * col_q + runtime3 * row_q * col_flag + runtime4 * row_flag * col_flag
-        MAC = SR * SC * T
-        return runtime, MAC
+        runtime = runtime1 + runtime2 + runtime3 + runtime4
 
-    def WS(self, processor, input_operand, filter_operand):
-        """Return WS dataflow runtime."""
-        SR,SC,T = self._get_operand_dimensions(input_operand, filter_operand, "WS")
-        row_q = SR // processor[0]
-        col_q = SC // processor[1]
-
-        row_rest = (SR % processor[0])
-        col_rest = (SC % processor[1])
-
-        row_flag = (SR % processor[0]) != 0
-        col_flag = (SC % processor[1]) != 0
-
-        #CASE1
-        runtime1 = T + processor[0] - 1 + (processor[0] + processor[1] - 1)
-        #CASE2
-        runtime2 = T + processor[0] - 1 + (row_rest + processor[1] - 1)
-        #CASE3
-        runtime3 = T + processor[0] - 1 + (processor[0] + col_rest- 1)
-        #CASE4
-        runtime4 = T + processor[0] - 1 + (row_rest + col_rest - 1)
-
-        runtime = runtime1 * row_q * col_q + runtime2 * row_flag * col_q + runtime3 * row_q * col_flag + runtime4 * row_flag * col_flag
-
-        MAC = SR * SC * T
-        return runtime, MAC
-
-    def IS(self, processor, input_operand, filter_operand):
-        """Return IS dataflow runtime."""
-        SR,SC,T = self._get_operand_dimensions(input_operand, filter_operand, "IS")
-        row_q = SR // processor[0]
-        col_q = SC // processor[1]
-
-        row_rest = (SR % processor[0])
-        col_rest = (SC % processor[1])
-
-        row_flag = (SR % processor[0]) != 0
-        col_flag = (SC % processor[1]) != 0
-
-        #CASE1
-        runtime  = T + processor[0] - 1 +
+        return runtime

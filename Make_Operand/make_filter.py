@@ -1,4 +1,4 @@
-"Python 3.11.2"
+"Python 3.11.5"
 import numpy as np
 
 from operand import Operand
