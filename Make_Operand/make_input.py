@@ -1,12 +1,8 @@
 "Python 3.11.5"
 import numpy as np
 
-from operand import Operand
-
 class MakeInput:
     """Make input operand matrix and return"""
-    def __init__(self):
-        self.input_operand = Operand(np.zeros((1,1)),0,0)
 
     def make_input_matrix(self, topo):
         """Make input matrix"""
@@ -37,7 +33,7 @@ class MakeInput:
         row = output_row * output_col
         col = topo[2] * topo[3] * topo[4]
 
-        return input_operand_matrix, row, col
+        return input_operand_matrix
 
     def make_input_one_row(self, topo, output_row, output_col, input_matrix):
         """Make one row for input matrix"""
@@ -56,10 +52,10 @@ class MakeInput:
 
     def make_input_operand_ws_is(self, topo):
         """Make input operand matrix for WS and IS dataflow."""
-        input_operand, row, col = self.make_input_operand_os(topo)
+        input_operand = self.make_input_operand_os(topo)
         return_operand = np.transpose(input_operand)
 
-        return return_operand, col, row
+        return return_operand
 
     def return_input_operand(self, topo, dataflow):
         """Return input operand matrix."""
@@ -68,8 +64,6 @@ class MakeInput:
         else:
             input_opearnd, row, col = self.make_input_operand_ws_is(topo)
 
-        self.input_operand.operand_matrix = input_opearnd
-        self.input_operand.row = row
-        self.input_operand.col = col
+        self.input_operand = input_opearnd
 
         return self.input_operand

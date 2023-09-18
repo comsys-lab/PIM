@@ -1,10 +1,14 @@
-"Python 3.10.8"
+"Python 3.11.5"
 import numpy as np
 
-class Single_Layer:
+from Make_operand.make_operand import MakeOperand
+
+class Singlelayer:
     """. """
     def __init__(self):
-        pass
+        self.make_operand = MakeOperand()
 
-    def a(self):
-        pass
+    def single_layer(self, topo_one):
+        input_operand, filter_operand = self.make_operand.return_operand_matrix(topo_one)
+
+    def 

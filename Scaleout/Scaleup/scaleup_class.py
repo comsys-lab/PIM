@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 import numpy as np
 
+#scaleup
 @dataclass
 class Systolic:
     """Define systolic array's dimension."""
@@ -12,7 +13,6 @@ class Systolic:
     filter_buffer: float
     output_buffer: float
 
-#scaleup
 @dataclass
 class Scaleupformat:
     """Class for scaleup."""

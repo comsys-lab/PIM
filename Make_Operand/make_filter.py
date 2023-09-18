@@ -17,14 +17,12 @@ class MakeFilter:
         filter_operand = \
             np.array([[str([i, j]) for j in range(col)] for i in range(row)], dtype='U20')
 
-        return filter_operand, row, col
+        return filter_operand
 
    #Input: list / Return: Operand
-    def return_filter_matrix(self,topo):
+    def return_filter_operand(self,topo):
         """Return filter operand matrix"""
-        filter_operand, row, col = self.make_filter_opreand(topo)
-        self.filter_operand.operand_matrix = filter_operand
-        self.filter_operand.row = row
-        self.filter_operand.col = col
+        filter_operand = self.make_filter_opreand(topo)
+        self.filter_operand = filter_operand
 
         return self.filter_operand
