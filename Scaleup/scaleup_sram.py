@@ -24,8 +24,8 @@ class Scaleupsram:
     #Input: scaleupformat / Return: int | int
     def return_size_one(self, scaleupformat):
         """Return operand matrix size when stride is one."""
-        input_size = scaleupformat.input_operand.row * scaleupformat.input_operand.col
-        filter_size = scaleupformat.filter_operand.row * scaleupformat.filter_operand.col
+        input_size = scaleupformat.input_operand.shape[0] * scaleupformat.input_operand.shape[1]
+        filter_size = scaleupformat.filter_operand.shape[0] * scaleupformat.filter_operand.shape[1]
 
         return input_size, filter_size
 
@@ -52,9 +52,9 @@ class Scaleupsram:
         """When dataflow is os"""
         input_size, filter_size = self.return_size(scaleupformat, stride)
 
-        input_sram = int(np.ceil(scaleupformat.filter_operand.col / scaleupformat.systolic.col)) * input_size
-        filter_sram = int(np.ceil(scaleupformat.input_operand.row / scaleupformat.systolic.row)) * filter_size
-        output_sram = scaleupformat.input_operand.row * scaleupformat.filter_operand.col
+        input_sram = int(np.ceil(scaleupformat.filter_operand.shape[1] / scaleupformat.systolic.shape[1])) * input_size
+        filter_sram = int(np.ceil(scaleupformat.input_operand.shape[0] / scaleupformat.systolic.shape[0])) * filter_size
+        output_sram = scaleupformat.input_operand.shape[0] * scaleupformat.filter_operand.shape[1]
 
         return_sram_access = [input_sram, filter_sram, output_sram]
 
@@ -65,10 +65,10 @@ class Scaleupsram:
         """When dataflow is ws"""
         input_size, filter_size = self.return_size(scaleupformat, stride)
 
-        input_sram = int(np.ceil(scaleupformat.filter_operand.col / scaleupformat.systolic.col)) * input_size
+        input_sram = int(np.ceil(scaleupformat.filter_operand.shape[1] / scaleupformat.systolic.shape[1])) * input_size
         filter_sram = filter_size
-        output_sram = int(np.ceil(scaleupformat.input_operand.col / scaleupformat.systolic.row)) \
-            * scaleupformat.input_operand.col * scaleupformat.filter_operand.col
+        output_sram = int(np.ceil(scaleupformat.input_operand.shape[1] / scaleupformat.systolic.shape[0])) \
+            * scaleupformat.input_operand.shape[1] * scaleupformat.filter_operand.shape[1]
 
         return_sram_access = [input_sram, filter_sram, output_sram]
 
@@ -80,9 +80,9 @@ class Scaleupsram:
         input_size, filter_size = self.return_size(scaleupformat, stride)
 
         input_sram = input_size
-        filter_sram = int(np.ceil(scaleupformat.input_operand.col / scaleupformat.systolic.col)) * filter_size
-        output_sram = int(np.ceil(scaleupformat.filter_operand.row / scaleupformat.systolic.row)) \
-            * scaleupformat.input_operand.col * scaleupformat.filter_operand.col
+        filter_sram = int(np.ceil(scaleupformat.input_operand.shape[1] / scaleupformat.systolic.shape[1])) * filter_size
+        output_sram = int(np.ceil(scaleupformat.filter_operand.shape[0] / scaleupformat.systolic.shape[0])) \
+            * scaleupformat.input_operand.shape[1] * scaleupformat.filter_operand.shape[1]
 
         return_sram_access = [input_sram, filter_sram, output_sram]
 

@@ -1,8 +1,8 @@
 "Python 3.11.5"
 import configparser as cp
 
-from get_class import MACenergy
-from get_class import Energy
+from .get_class import MACenergy
+from .get_class import Energy
 
 class GetEnergy:
     """Get energy parameters from configuration file (.cfg)."""
@@ -18,7 +18,7 @@ class GetEnergy:
         config.read(path)
 
         #Enter the mac_Parameters
-        section = 'mac_Parameters'
+        section = 'mac_parameters'
 
         self.mac_energy.mac_random = config.getfloat(section, 'mac_random')
         self.mac_energy.mac_reused = config.getfloat(section, 'mac_reused')
@@ -26,7 +26,7 @@ class GetEnergy:
         self.mac_energy.mac_idle = config.getfloat(section, 'mac_idle')
 
         #Enter the NPU_Parameters
-        section = 'NPU_Parameters'
+        section = 'NPU_parameters'
 
         self.npu_energy.sram_read = config.getfloat(section, 'sram_read')
         self.npu_energy.sram_write = config.getfloat(section, 'sram_write')
@@ -36,7 +36,7 @@ class GetEnergy:
         self.npu_energy.mac_idle = self.mac_energy.mac_idle
 
         #Enter the PIM_Parameters
-        section = 'PIM_Parameters'
+        section = 'PIM_parameters'
 
         self.pim_energy.sram_read = config.getfloat(section, 'sram_read')
         self.pim_energy.sram_write = config.getfloat(section, 'sram_write')
@@ -60,4 +60,4 @@ class GetEnergy:
         """Return energy parameters."""
         self.get_energy(path, npu_df, pim_df)
 
-        return self.mac_energy, self.npu_energy, self.pim_energy
+        return self.npu_energy, self.pim_energy

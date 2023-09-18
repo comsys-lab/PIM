@@ -1,7 +1,7 @@
 "Python 3.11.5"
 from dataclasses import dataclass
 
-#Define dataclass that will be used.
+#Get_configuration.py
 @dataclass
 class Systolic:
     """Define systolic array's dimension."""
@@ -11,31 +11,6 @@ class Systolic:
     input_buf: float
     filter_buf: float
     output_buf: float
-
-@dataclass
-class Others:
-    """Dataclass for paramters of NPU except systolic array."""
-    pod_row: int
-    pod_col: int
-
-    num_systolic: int
-
-    bandwidth: float
-    latency: float
-
-    dataflow: str
-
-@dataclass
-class Npuothers:
-    """Dataclass for npu's other parameters."""
-    pod_row: int
-    pod_col: int
-    num_pods: int
-
-    clock_frequency: float
-    bandwidth_per_dimm: float
-    num_dimms: int
-    dataflow: str
 
 @dataclass
 class Others:
@@ -50,14 +25,14 @@ class Others:
     dataflow: str
 
 @dataclass
-class Dnnsave:
+class Otherparams:
     """Dataclass for saving dnn and save parameters."""
     topology_path: str
     batch: int
-
     pim_flag: bool
     storing_path: str
 
+#Get_energy.py
 @dataclass
 class MACenergy:
     """MAC parameters"""

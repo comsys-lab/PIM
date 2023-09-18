@@ -33,6 +33,20 @@ class Scaleup_dram:
 
         return return_dram_access
 
+    def make_input_1d(self, input_operand):
+        pass
+
+    def make_filter_1d(self, filter_operand):
+        pass
+
+    def _df_os(sefl, scaleupformat, stride):
+        """."""
+        if stride == 1:
+            pass
+        else:
+            pass
+
+
     def df_os(self, scaleupformat, stride):
         """When dataflow is os"""
         #Divide case with stride.
@@ -40,6 +54,7 @@ class Scaleup_dram:
             pass
         else:
             pass
+
         systolic = scaleupformat.systolic
         input_operand = scaleupformat.input_operand
         filter_operand = scaleupformat.filter_operand

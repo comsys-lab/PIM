@@ -21,3 +21,7 @@ def check_topology(topology):
     return new_topo
 
 print(check_topology(topo))
+
+length = len(topo)
+for i in range(length):
+    pass

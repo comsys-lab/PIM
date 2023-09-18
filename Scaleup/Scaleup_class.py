@@ -12,18 +12,11 @@ class Systolic:
     filter_buffer: float
     output_buffer: float
 
-@dataclass
-class Operand:
-    """Dataclass for operand matrix."""
-    operand: np.ndarray
-    row: int
-    col: int
-
 #scaleup
 @dataclass
 class Scaleupformat:
     """Class for scaleup."""
     systolic: Systolic
-    input_operand: Operand
-    filter_operand: Operand
+    input_operand: np.ndarray
+    filter_operand: np.ndarray
     dataflow: str

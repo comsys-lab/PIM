@@ -1,4 +1,5 @@
 "Python 3.11.5"
+from typing_extensions import runtime
 import numpy as np
 
 from scaleup_sram import Scaleupsram
@@ -28,10 +29,9 @@ class Scaleup:
 
         #Get Memory Information
         sram_access = self.scaleupsram.scaleupsram(scaleupformat, stride)
-        dram_access = self.drambuffer.dram_buffer(processor, info, input_operand, filter_operand, input_buf, filter_buf, dataflow)
+        dram_access = 0
 
-
-        runtime, mac = self.runtime.get_runtime(processor, input_operand, filter_operand, dataflow)
+        runtime = 0
 
         return 1
 
@@ -42,16 +42,16 @@ class Scaleup:
         Dimension of operand matrix is different only with IS dataflow.
         """
         if scaleupformat.dataflow == "IS":
-            return scaleupformat.filter_operand.row, scaleupformat.input_operand.col
+            return scaleupformat.filter_operand.shape[0], scaleupformat.input_operand.shape[1]
         else:
-            return scaleupformat.input_operand.row, scaleupformat.filter_operand.col
+            return scaleupformat.input_operand.shape[0], scaleupformat.filter_operand.shape[1]
 
     #Input: scaleupformat / Return: int | int
     def get_num_tiles(self, scaleupformat):
         """Get number of tiles that will be used."""
         row, col = self._get_operand_dimensions(scaleupformat)
-        num_tiles_row = int(np.ceil(row/ scaleupformat.systolic.row ))
-        num_tiles_col = int(np.ceil(col /scaleupformat.systolc.col))
+        num_tiles_row = int(np.ceil(row/ scaleupformat.systolic.shape[0] ))
+        num_tiles_col = int(np.ceil(col /scaleupformat.systolc.shape[1]))
 
         return num_tiles_row, num_tiles_col
 
