@@ -4,7 +4,7 @@ import numpy as np
 from scaleup_sram import Scaleupsram
 from dram_buffer import Drambuffer
 
-from runtime import Runtime
+from scaleup_runtime import Runtime
 
 from scaleup_class import Systolic
 from scaleup_class import Scaleupformat
@@ -54,3 +54,4 @@ class Scaleup:
         num_tiles_col = int(np.ceil(col /scaleupformat.systolc.col))
 
         return num_tiles_row, num_tiles_col
+

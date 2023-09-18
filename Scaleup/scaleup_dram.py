@@ -21,7 +21,25 @@ class Scaleup_dram:
         return return_dram_access
     #what about bandwidth and latency?
 
-    def df_os(self, scaleupformat):
+    def scaleup_dram(self, scaleupformat, stride):
+        """Get scaleup dram count. Divide case with stride."""
+        dataflow = scaleupformat.dataflow
+        if dataflow == "OS":
+            return_dram_access = self.df_os(scaleupformat, stride)
+        elif dataflow == "WS":
+            return_dram_access = self.df_ws(scaleupformat, stride)
+        elif dataflow == "IS":
+            return_dram_access = self.df_is(scaleupformat, stride)
+
+        return return_dram_access
+
+    def df_os(self, scaleupformat, stride):
+        """When dataflow is os"""
+        #Divide case with stride.
+        if stride == 1:
+            pass
+        else:
+            pass
         systolic = scaleupformat.systolic
         input_operand = scaleupformat.input_operand
         filter_operand = scaleupformat.filter_operand
@@ -33,8 +51,26 @@ class Scaleup_dram:
         if input_operand.row % systolic.row != 0:
             pass
 
-    def df_ws(self):
+    def df_ws(self, scaleupformat, stride):
+        """When dataflow is ws."""
+        if stride == 1:
+            pass
+        else:
+            pass
+
+        return 1
+
+    def df_is(self, scaleupformat, stride):
+        """When dataflow is is."""
+        if stride == 1:
+            pass
+        else:
+            pass
+
+        return 1
+
+    def skew_input(self, input_operand):
         pass
 
-    def df_is(self):
+    def skew_filter(self, filter_operand):
         pass

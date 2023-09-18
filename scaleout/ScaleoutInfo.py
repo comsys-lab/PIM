@@ -1,6 +1,8 @@
+"Python 3.11.5"
 import numpy as np
 
 class ScaleoutInfo:
+    """For scaleout function."""
     def scaleout_get_info(self, processor, input_operand, filter_operand, dataflow):
         if dataflow == "OS":
             return self._scaleout_get_info_OS(processor, input_operand, filter_operand)
@@ -8,6 +10,13 @@ class ScaleoutInfo:
             return self._scaleout_get_info_WS(processor, input_operand, filter_operand)
         elif dataflow == "IS":
             return self._scaleout_get_info_IS(processor, input_operand, filter_operand)
+
+    def df_os(self):
+        pass
+    def df_ws(self):
+        pass
+    def df_is(self):
+        pass
 
     def _scaleout_get_info_OS(self, processor, input_operand, filter_operand):
         return self._scaleout_get_info_common(processor, len(input_operand), len(filter_operand[0]))

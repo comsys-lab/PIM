@@ -6,6 +6,7 @@ class GetTopology:
     def __init__(self):
         self.topo = []
         self.mnk = []
+        self.new_topo = []
         self.MAC = 0
 
     #Input: str / Return: list | list
@@ -23,7 +24,9 @@ class GetTopology:
             self.topo = topo
             self.change_original_to_mnk(self.topo,len_one)
 
-        return self.topo, self.mnk, self.MAC
+        self.new_topo = self.check_topology(self.topo)
+
+        return self.topo, self.mnk, self.new_topo, self.MAC
 
     #Input: str
     def return_layer_length(self, path):
@@ -111,3 +114,22 @@ class GetTopology:
         self.MAC += MAC
 
         return topo
+
+    def check_topology(self, topology):
+        """Remove duplication in layer, and check stride."""
+        check_layer = []
+        for layer in topology:
+            if layer not in check_layer:
+                check_layer.append(layer)
+
+        new_topo = []
+        for i in range(len(check_layer)):
+            new_topo.append([0,[]])
+
+        for layer in topology:
+            index = check_layer.index(layer)
+            new_topo[index][0] += 1
+            if new_topo[index][1] == []:
+                new_topo[index][1] = layer
+
+        return new_topo

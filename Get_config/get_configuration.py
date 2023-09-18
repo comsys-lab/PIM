@@ -7,6 +7,8 @@ from get_class import Npuothers
 from get_class import Pimothers
 from get_class import Dnnsave
 
+from get_class import Others
+
 class GetConfiguration:
     """Read hardware configuration and return."""
     def __init__(self):
@@ -15,10 +17,79 @@ class GetConfiguration:
         self.npu_flag = False
 
         #Return parameters
+        self.npu_systolic = Systolic(128, 128, 1536, 1536, 512)
+        self.npu_others = Others(0,0,0,0,0,0)
+
+        self.pim_systolic = Systolic(128, 128, 1536, 1536, 512)
+        self.pim_others = Others(0,0,0,0,0,0)
+
+        self.dnn_save = Dnnsave()
+
+
         self.npu_param = [Systolic(128, 128, 1536, 1536, 512),
                            Npuothers(2, 2, 1, 1050, 12.8, 32, "WS")]
         self.pim_param = [Systolic(16, 16, 8, 8, 2), Pimothers(2 ,2 ,8, 32, 1024 ,512, "OS")]
         self.others = Dnnsave("", 0, True, "")
+
+    def _read_config_file(self, path):
+        "Read config file from file path"
+        config = cp.ConfigParser()
+        config.read(path)
+
+        section = 'Form_Factor'
+        self.form_factor = config.get(section, 'form_factor')
+
+        if self.form_factor in ('Mobile', 'PC'):
+            self.npu_flag = True
+        else:
+            self.npu_flag = False
+
+        #NPU systolic array parameters
+        section = 'NPU_systolic'
+        if not self.npu_flag:
+            self.npu_systolic.row = config.getint(section, 'row')
+            self.npu_systolic.col = config.getint(section, 'col')
+        else:
+            npu_throughput = config.get(section, 'throughput')
+            self.npu_systolic.row, self.npu_systolic.col = \
+                self.convert_throughput(throughput, )
+        self.npu_systolic.input_buf = config.getfloat(section, 'input_buffer')
+        self.npu_systolic.filter_buf = config.getfloat(section, 'filter_buffer')
+        self.npu_systolic.output_buf = config.getfloat(section, 'output_buffer')
+
+        #NPU other parameters
+        section = 'NPU_others'
+        self.npu_others.pod_row = config.getint(section, 'pod_dimension_row')
+        self.npu_others.pod_col = config.getint(section, 'pod_dimension_col')
+        self.npu_others.num_pods = config.getint(section, ' number_of_pods')
+
+        self.npu_others.clock_freq = config.getfloat(section, 'clock_frequency')
+        self.npu_others.bandwidth = config.getfloat(section, 'bandwidth')
+        self.npu_others.latency = config.getfloat(section, 'latency')
+        self.npu_others.dataflow = config.get(section, 'dataflow')
+
+        #PIM systolic array paramters
+        section = 'PIM_systolic'
+        self.pim_systolic.row = config.getint(section, 'row')
+        self.pim_systolic.col = config.getint(section, 'col')
+
+        self.npu_systolic.input_buf = config.getfloat(section, 'input_buffer')
+        self.npu_systolic.filter_buf = config.getfloat(section, 'filter_buf')
+        self.npu_systolic.output_buf = config.getfloat(section, 'output_buf')
+
+        #PIM other parameters
+        section = 'PIM_others'
+        self.pim_others.row = config.getint(section, 'pod_dimension_row')
+        self.pim_others.col = config.getint(section, 'pod_dimension_col')
+
+        dimm = config.getint(section, 'number_of_dimms')
+        chips = config.getint(section, 'chips_per_dimm')
+        self.pim_others.num_pods = dimm * chips
+
+        self.pim_others.clock_freq = config.getfloat(section, 'clock_frequency')
+        self.pim_others.bandwidth = config.getfloat(section, 'bandwidth')
+        self.pim_others.latency = config.getfloat(section, 'latency')
+        self.pim_others.dataflow = config.get(section, 'dataflow')
 
     #Input: str
     def read_config_file(self, config_file):
