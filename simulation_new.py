@@ -4,9 +4,7 @@ from Get_config.get_topology import GetTopology
 from Get_config.get_configuration import Getconfiguration
 from Get_config.get_energy import GetEnergy
 
-
-
-class simulation_new:
+class Simulation:
     """Simulation code."""
     def __init__(self) -> None:
         self.get_topology = GetTopology()
@@ -14,6 +12,7 @@ class simulation_new:
         self.get_energy = GetEnergy()
 
     def simulation_settings(self, topo_path, config_path, energy_path):
+        """Get topology, configuration, and energy information settings."""
         self.topo, self.mnk, self.new_topo, self.mac = self.get_topology.get_topology(topo_path)
         self.npu_others, self.npu_systolic, self.pim_others, self.pim_systolic, self.other_params = \
         self.get_configuration.return_parameters(config_path)
@@ -23,6 +22,9 @@ class simulation_new:
         self.simulation_settings(topo_path, config_path, energy_path)
 
 
+
+
+        
 
 """
 a = simulation_new()
