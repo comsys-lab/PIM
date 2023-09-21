@@ -1,8 +1,8 @@
 "Python 3.11.5"
 import configparser as cp
 
-from .get_class import MACenergy
-from .get_class import Energy
+from get_class import MACenergy
+from get_class import Energy
 
 class GetEnergy:
     """Get energy parameters from configuration file (.cfg)."""

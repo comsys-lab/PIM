@@ -7,7 +7,7 @@ class GetTopology:
         self.topo = []
         self.mnk = []
         self.new_topo = []
-        self.MAC = 0
+        self.mac = 0
 
     #Input: str / Return: list | list
     def get_topology(self, path):
@@ -26,7 +26,7 @@ class GetTopology:
 
         self.new_topo = self.check_topology(self.topo)
 
-        return self.topo, self.mnk, self.new_topo, self.MAC
+        return self.topo, self.mnk, self.new_topo, self.mac
 
     #Input: str
     def return_layer_length(self, path):
@@ -90,8 +90,8 @@ class GetTopology:
         mnk = [os_input_row, os_input_col, os_filter_col]
 
         #for the number of MAC operation
-        MAC = os_input_row * os_input_col * os_filter_col
-        self.MAC += MAC
+        mac = os_input_row * os_input_col * os_filter_col
+        self.mac += mac
 
         return mnk
 
@@ -110,8 +110,8 @@ class GetTopology:
         topo = [mnk[0],1,1,1,mnk[1],mnk[2],1]
 
         #for the number of MAC operation
-        MAC = mnk[0] * mnk[1] * mnk[2]
-        self.MAC += MAC
+        mac = mnk[0] * mnk[1] * mnk[2]
+        self.mac += mac
 
         return topo
 

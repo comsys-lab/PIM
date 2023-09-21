@@ -3,11 +3,13 @@ import numpy as np
 
 class MakeInput:
     """Make input operand matrix and return"""
+    def __init__(self):
+        self.input_operand = np.zeros((1,1), dtype='U20')
 
     def make_input_matrix(self, topo):
         """Make input matrix"""
         input_matrix = np.array([[[[i, j, k] for k in range(topo[1])] \
-                                  for j in range(topo[0])] for i in range(topo[4])])
+                                for j in range(topo[0])] for i in range(topo[4])])
 
         return input_matrix
 

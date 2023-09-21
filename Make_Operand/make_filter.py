@@ -1,12 +1,10 @@
 "Python 3.11.5"
 import numpy as np
 
-from operand import Operand
-
 class MakeFilter:
     """Make filter operand matrix and return"""
     def __init__(self):
-        self.filter_operand = Operand(np.zeros((1,1)),0,0)
+        self.filter_operand = np.zeros((1,1), dtype='U20')
 
     #Input: list / Return: np.ndarray | int | int
     def make_filter_opreand(self, topo):
@@ -19,7 +17,7 @@ class MakeFilter:
 
         return filter_operand
 
-   #Input: list / Return: Operand
+    #Input: list / Return: Operand
     def return_filter_operand(self,topo):
         """Return filter operand matrix"""
         filter_operand = self.make_filter_opreand(topo)

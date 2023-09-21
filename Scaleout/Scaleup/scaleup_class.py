@@ -14,9 +14,20 @@ class Systolic:
     output_buffer: float
 
 @dataclass
-class Scaleupformat:
-    """Class for scaleup."""
-    systolic: Systolic
+class Operand:
+    """Class for operand."""
     input_operand: np.ndarray
     filter_operand: np.ndarray
+
+@dataclass
+class Others:
+    """Class for others"""
+    latency: float
+    bandwidth: float
     dataflow: str
+
+@dataclass
+class Scaleup:
+    """Class for scaleup"""
+    systolic: Systolic(0,0,0,0,0)
+    others: Others(0,0,0)

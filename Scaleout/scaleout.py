@@ -9,9 +9,11 @@ class Scaleout:
 
     def scaleout(self):
         pass
+        #something->maybe dimension of pods
+    def scaleout_info(self, something):
+        row_dim,col_dim = something.row_dim, something.col_dim
+        
 
-    def scaleout_info(self, scaleoutformat):
-        pass
     def _scaleout_get_info_common(self, processor, row, col):
         row_dim, col_dim = processor[2], processor[3]
         row_count = min(row, row_dim)
