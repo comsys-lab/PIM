@@ -2,37 +2,31 @@
 import numpy as np
 
 from scaleup_sram import Scaleupsram
-from dram_buffer import Drambuffer
-from 
-
+from scaleup_runtime import Scaleupruntime
 
 from scaleup_class import Systolic
-from scaleup_class import Scaleup
+
 
 class Scaleup:
     """Scaleup simulation"""
     def __init__(self):
         self.scaleupsram = Scaleupsram()
-        self.drambuffer = Drambuffer()
-        self.runtime = Runtime()
+        self.scaleupruntime = Scaleupruntime()
 
-        self.scaleup = []
-        self.scaleup_param = Scaleupformat(Systolic(0,0,0,0,0),
-            Operand(np.zeros(1,1),0,0),(np.zeros(1,1),0,0),"WS")
-
-    def scaleup(self, scaleupformat, stride):
-        """With scaleupformat and stride, get information from scaleup"""
+    def scaleup(self, scaleup, operand, stride):
+        """With scaleup(format), operand and stride get information from scaleup"""
 
         #Get Information from ScaleupInfo module: # of tiled dimension.
-        num_tiles_row, num_tiles_col = self.get_num_tiles(scaleup, operand)
+        scaleupinfo = self.scaleup_info(scaleup, operand)
+
+        #Get runtime with scaleup information and operand information.
+        runtime = self.scaleupruntime.get_runtime(scaleup, operand)
 
         #Get Memory Information
-        sram_access = self.scaleupsram.scaleupsram(scaleupformat, stride)
-        dram_access = 0
+        sram_access = self.scaleupsram.scaleup_sram(scaleup, operand, stride)
+        dram_access, stall = 0, 0
 
-        runtime = 0
-
-        return 1
+        return sram_access, dram_access, runtime, stall
 
     #Input: scaleupformat / Return: int | int
     def get_operand_dimensions(self, scaleup, operand):
@@ -46,11 +40,11 @@ class Scaleup:
             return operand.input_operand.shape[0], operand.filter_operand.shape[1]
 
     #Input: scaleupformat / Return: int | int
-    def get_num_tiles(self, scaleupformat):
+    def scaleup_info(self, scaleup, operand):
         """Get number of tiles that will be used."""
-        row, col = self.get_operand_dimensions(scaleupformat)
-        num_tiles_row = int(np.ceil(row/ scaleupformat.systolic.shape[0] ))
-        num_tiles_col = int(np.ceil(col /scaleupformat.systolc.shape[1]))
-
-        return num_tiles_row, num_tiles_col
+        row, col = self.get_operand_dimensions(scaleup, operand)
+        num_tiles_row = int(np.ceil(row / scaleup.systolic.row ))
+        num_tiles_col = int(np.ceil(col / scaleup.systolc.col ))
+        scaleupinfo = [num_tiles_row, num_tiles_col]
+        return scaleupinfo
 

@@ -6,6 +6,7 @@ from Scaleup.scaleup_class import Operand
 
 @dataclass
 class Scaleout:
-    """."""
-    scaleup: Scaleup()
-    operand: Operand(0,0)
+    """Dataclass for scaleout."""
+    scaleup: Scaleup(0,0)
+    row_dim: int
+    row_col: int

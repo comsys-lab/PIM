@@ -1,5 +1,7 @@
 "Python 3.11.5"
 import multiprocessing
+import sys
+sys.path.append('/Users/seongjun/Desktop/PIM/')
 
 from Get_config.get_topology import GetTopology
 from Get_config.get_configuration import Getconfiguration
@@ -31,8 +33,6 @@ class Simulationnew:
         self.npu_energy = []
         self.pim_energy = []
 
-        self.pim_scaleout = Scaleout(0,0)
-        self.npu_scaleout = Scaleout(0,0)
 
     def simulation_settings(self, topo_path, config_path, energy_path):
         """Get simlulation settings."""
@@ -44,14 +44,13 @@ class Simulationnew:
     def simulation(self, topo_path, config_path, energy_path):
         """Simulation code."""
         self.simulation_settings(topo_path, config_path, energy_path)
-        self.pim_scaleout()
         self.pim_scaleout =[]
         self.npu_scaleout = []
-    
+        self.pim_energy = []
 
 
 
-"""
+
+
 a = simulation_new()
 a.simulation('/Users/seongjun/Desktop/PIM/_Topology/ex.csv','/Users/seongjun/Desktop/PIM/_Hardware/configuration2.cfg','/Users/seongjun/Desktop/PIM/_Energy/Energy_Config1.cfg')
-"""
