@@ -46,5 +46,5 @@ class Scaleup:
         num_tiles_row = int(np.ceil(row / scaleup.systolic.row ))
         num_tiles_col = int(np.ceil(col / scaleup.systolc.col ))
         scaleupinfo = [num_tiles_row, num_tiles_col]
-        return scaleupinfo
 
+        return scaleupinfo
