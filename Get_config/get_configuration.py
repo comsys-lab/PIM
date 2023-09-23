@@ -2,9 +2,9 @@
 import configparser as cp
 import math
 
-from get_class import Systolic
-from get_class import Others
-from get_class import Otherparams
+from .get_class import Systolic
+from .get_class import Others
+from .get_class import Otherparams
 
 class Getconfiguration:
     """Read hardware configuration and return."""

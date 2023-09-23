@@ -1,7 +1,7 @@
 "Python 3.11.5"
 import numpy as np
 
-from base_operation import Baseoperation
+from .base_operation import Baseoperation
 
 class Scaleupsram:
     """Get SRAM access count."""

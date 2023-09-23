@@ -55,6 +55,7 @@ class Scaleup_dram:
         input_access = 0
         filter_access = 0
         output_access = 0
+        count = 0
         stall = 0
 
         input_total = [["[-1,-1,-1]"] for i in range(scaleup.systolic.row)]
@@ -70,16 +71,15 @@ class Scaleup_dram:
             filter_operand= self.base_operation.filter_padding(scaleup.systolic, filter_operand)
 
         for i in range(info[0]):
-            input_tile = self.base_operation.skew_input_matrix(input_operand[i*systolic.row:(i+1)*systolic.row])
-            for j in range(info[1]):
-                input_total = np.concatenate((input_total, input_tile), axis = 1)
-        input_total = np.transpose(input_total)
+            input_tile = self.BaseOperation.skew_input_matrix(input_operand[i * systolic.row: (i + 1) * systolic.row])
+            input_total.append(input_tile)
+        input_total = np.transpose(np.concatenate(input_total, axis=1))
         print("Making input tiling matrix completed")
 
         for i in range(info[1]):
-            filter_tile = self.base_operation.skew_filter_matrix(filter_operand[:i*systolic.col:(i+1)*systolic.col])
-            filter_total = np.concatenate((filter_total, filter_tile), axis = 0)
-        print("Making filter tiling matrix completed")
+            filter_tile = self.base_operation.skew_filter_matrix(filter_operand[i * systolic.col: (i + 1) * systolic.col])
+            filter_total.append(filter_tile)
+        filter_total = np.concatenate(filter_total, axis=0)
 
         print("Calculate Input DRAM access")
         input_buffer = set()
@@ -89,8 +89,6 @@ class Scaleup_dram:
 
         while count < input_length:
             pass
-
-
 
         return_dram_access = [input_access, filter_access, output_access]
         return return_dram_access, stall

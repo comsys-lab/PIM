@@ -1,6 +1,6 @@
 "Python 3.11.5"
-from make_input import MakeInput
-from make_filter import MakeFilter
+from .make_input import MakeInput
+from .make_filter import MakeFilter
 
 class MakeOperand:
     """Make input and filter operand matrix and return"""

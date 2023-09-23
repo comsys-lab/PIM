@@ -27,7 +27,7 @@ class Others:
     dataflow: str
 
 @dataclass
-class Scaleup:
+class Scale_up:
     """Class for scaleup"""
     systolic: Systolic(0,0,0,0,0)
     others: Others(0,0,0)

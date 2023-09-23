@@ -7,7 +7,7 @@ from Get_config.get_topology import GetTopology
 from Get_config.get_configuration import Getconfiguration
 from Get_config.get_energy import GetEnergy
 
-from Scaleout.scaleout_class import Scaleout
+from Scaleout.scaleout_class import Scale_out
 
 from single_layer import Singlelayer
 
@@ -52,5 +52,6 @@ class Simulationnew:
 
 
 
-a = simulation_new()
+a = Simulationnew()
 a.simulation('/Users/seongjun/Desktop/PIM/_Topology/ex.csv','/Users/seongjun/Desktop/PIM/_Hardware/configuration2.cfg','/Users/seongjun/Desktop/PIM/_Energy/Energy_Config1.cfg')
+print(a.npu_energy)

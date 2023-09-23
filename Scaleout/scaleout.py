@@ -1,13 +1,13 @@
 "Python 3.11.5"
 import numpy as np
 
-from Scaleup.scaleup import Scaleup
-from scaleout_class import Scaleout
+from .Scaleup.scaleup import Scale_up
+from .scaleout_class import Scaleout
 
 class Scaleout:
     """."""
     def __init__(self) -> None:
-        self.scaleup = Scaleup()
+        self.scaleup = Scale_up()
 
     def scaleout(self):
         pass

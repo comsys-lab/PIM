@@ -1,10 +1,10 @@
 "Python 3.11.5"
 import numpy as np
 
-from scaleup_sram import Scaleupsram
-from scaleup_runtime import Scaleupruntime
+from .scaleup_sram import Scaleupsram
+from .scaleup_runtime import Scaleupruntime
 
-from scaleup_class import Systolic
+from .scaleup_class import Systolic
 
 
 class Scaleup:
