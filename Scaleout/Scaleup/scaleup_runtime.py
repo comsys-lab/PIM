@@ -2,43 +2,44 @@
 
 class Scaleupruntime:
     """Get runtime."""
-    #Input: scaleupformat / Return: int | int | int
-    def get_operand_dimensions(self, scaleupformat):
+    #Input: scaleup / Return: int | int | int
+    #scaleup, operand
+    def get_operand_dimensions(self, scaleup, operand):
         """Get dimension on matrix."""
-        dataflow = scaleupformat.dataflow
-        if scaleupformat.dataflow == "IS":
-            SR = scaleupformat.input_operand.shape[0]
-            SC = scaleupformat.filter_operand.shape[1]
-            T = scaleupformat.input_operand.shape[1]
+        dataflow = scaleup.others.dataflow
+        if dataflow == "IS":
+            sr = operand.input_operand.shape[0]
+            sc = operand.filter_operand.shape[1]
+            t = operand.input_operand.shape[1]
         else:
-            SR = scaleupformat.filter_operand.shape[0]
-            SC = scaleupformat.input_operand.shape[1]
-            T = scaleupformat.filter_operand.shape[1]
+            sr = operand.filter_operand.shape[0]
+            sc = operand.input_operand.shape[1]
+            t = operand.filter_operand.shape[1]
 
-        return SR, SC, T
+        return sr, sc, t
 
-    #Input: scaleupformat / Return: int
-    def get_runtime(self, scaleupformat):
+    #Input: scaleup / Return: int
+    def get_runtime(self, scaleup, operand):
         """Return OS dataflow runtime."""
-        SR, SC, T = self.get_operand_dimensions(scaleupformat)
+        sr,sc, t = self.get_operand_dimensions(scaleup, operand)
 
-        row_q = SR // scaleupformat.systolic.shape[0]
-        col_q = SC // scaleupformat.systolic.shape[1]
+        row_q = sr // scaleup.systolic.row
+        col_q = sc // scaleup.systolic.col
 
-        row_rest = (SR % scaleupformat.systolic.shape[0])
-        col_rest = (SC % scaleupformat.systolic.shape[1])
+        row_rest = (sr % scaleup.systolic.row)
+        col_rest = (sc % scaleup.systolic.col)
 
-        row_flag = (SR % scaleupformat.systolic.shape[0]) != 0
-        col_flag = (SC % scaleupformat.systolic.shape[1]) != 0
+        row_flag = (sr % scaleup.systolic.row) != 0
+        col_flag = (sc % scaleup.systolic.col) != 0
 
         #CASE1
-        runtime1 = (T + scaleupformat.systolic.shape[0] + (scaleupformat.systolic.shape[0] + scaleupformat.systolic.shape[1] - 2)) * row_q * col_q
+        runtime1 = (t + scaleup.systolic.row + (scaleup.systolic.row + scaleup.systolic.col - 2)) * row_q * col_q
         #CASE2
-        runtime2 = (T + scaleupformat.systolic.shape[0] + (row_rest + scaleupformat.systolic.shape[1] - 2)) * row_flag * col_q
+        runtime2 = (t + scaleup.systolic.row + (row_rest + scaleup.systolic.col - 2)) * row_flag * col_q
         #CASE3
-        runtime3 = (T + scaleupformat.systolic.shape[0] + (scaleupformat.systolic.shape[0] + col_rest - 2)) * row_q * col_flag
+        runtime3 = (t + scaleup.systolic.row + (scaleup.systolic.row + col_rest - 2)) * row_q * col_flag
         #CASE4
-        runtime4 = (T + scaleupformat.systolic.shape[0] + (row_rest + col_rest - 2)) * row_flag * col_flag
+        runtime4 = (t + scaleup.systolic.row + (row_rest + col_rest - 2)) * row_flag * col_flag
 
         runtime = runtime1 + runtime2 + runtime3 + runtime4
 

@@ -9,6 +9,9 @@ from .get_class import Otherparams
 class Getconfiguration:
     """Read hardware configuration and return."""
     def __init__(self):
+        self.form_factor = ''
+        self.npu_flag = False
+
         #NPU params
         self.npu_others = Others(0,0,0,0,0,0,0)
         self.npu_systolic = Systolic(128, 128, 1536, 1536, 512)

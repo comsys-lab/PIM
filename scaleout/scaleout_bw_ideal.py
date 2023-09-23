@@ -1,17 +1,33 @@
-import sys
-sys.path.append('/home/sj/simulation/')
+"Python 3.11.5"
+from Scaleup.scaleup import Scaleup
+from Scaleup.base_operation import Baseoperation
+
+from scaleout_class import Scaleout
 
 from scaleup.ScaleupBWIdeal import ScaleupBWIdeal
 from Base.BaseOperation import BaseOperation
 from Base.ScaleoutInfo import ScaleoutInfo
 
-class scaleout_bw_ideal:
+class Scaleout:
+    """Scaleout simulation."""
     def __init__(self):
-        self.ScaleupBWIdeal = ScaleupBWIdeal()
-        self.BaseOperation = BaseOperation()
-        self.ScaleoutInfo = ScaleoutInfo()
 
-    def scaleout_bw_ideal(self,processor,input_operand,filter_operand,input_buf,filter_buf,dataflow,stride):
+        self.scaleup = Scaleup()
+        self.baseoperation = Baseoperation()
+
+    def _scaleout(self, scaleout, operand):
+        """With scaleup(format), operand and stride get information from scaleup"""
+        dataflow = scaleout.scaleup.others.dataflow
+        if dataflow == "OS":
+            pass
+        elif dataflow == "WS":
+            pass
+        elif dataflow == "IS":
+            pass
+
+        return 1
+    def scaleout(self,processor,input_operand,filter_operand,input_buf,filter_buf,dataflow,stride):
+        """With scaleup(format), operand and stride get information from scaleup"""
         if dataflow == "OS":
             return_info = self.scaleout_OS(processor,input_operand,filter_operand,input_buf,filter_buf,stride)
         elif dataflow == "WS":
@@ -20,7 +36,9 @@ class scaleout_bw_ideal:
             return_info = self.scaleout_IS(processor,input_operand,filter_operand,input_buf,filter_buf,stride)
 
         return return_info
-
+    def df_os(self, scaleout, operand, info, stride):
+        """When dataflow is os."""
+        for i in range(in)
     def scaleout_OS(self,processor,input_operand,filter_operand,input_buf,filter_buf,stride):
         print('SCALEOUT START','\n')
         info = self.ScaleoutInfo._scaleout_get_info_OS(processor,input_operand,filter_operand)
@@ -80,6 +98,13 @@ class scaleout_bw_ideal:
             result[-1] = max(result[-1],components[-1])
  
         return result
+    
+    def scaleout_os(self, scaleout, operand, stride):
+        pass
+    def scaleout_ws(self, scaleout, oeprand, stride):
+        pass
+    def scaleout_is(self, scaleout, operand, stride):
+        pass
     """
     def scaleout_IS(self,processor,input_operand,filter_operand,input_buf,filter_buf,check,stride):
         print('SCALEOUT START','\n')
@@ -109,3 +134,39 @@ class scaleout_bw_ideal:
         
         return result
         """
+    def os_info(self, scaleout, operand):
+        pass
+    def ws_info(self, scaleout, operand):
+        pass
+    def is_info(self, scaleout, operand):
+        pass
+
+    def scaleout_info(self, scaleout, operand, row, col):
+        row_dim, col_dim
+        row_count = min(row, scaleout.row_dim)
+        col_cout = min(col, scaleout.col_dim)
+        per_row = int(np.ceil(row / row_count))
+        per_col = int(np.ceil(col / col_count))
+        #For energy case
+        row_E_eff = row / row_dim if row <= row_dim else 1
+        #col_E_eff = col / col_dim if 
+
+    def _scaleout_get_info_OS(self, processor, input_operand, filter_operand):
+        return self._scaleout_get_info_common(processor, len(input_operand), len(filter_operand[0]))
+
+    def _scaleout_get_info_WS(self, processor, input_operand, filter_operand):
+        return self._scaleout_get_info_common(processor, len(input_operand), len(filter_operand[0]))
+
+    def _scaleout_get_info_IS(self, processor, input_operand, filter_operand):
+        return self._scaleout_get_info_common(processor, len(filter_operand), len(input_operand[0]))
+
+    def _scaleout_get_info_common(self, processor, row, col):
+        row_dim, col_dim = processor[2], processor[3]
+        row_count = min(row, row_dim)
+        col_count = min(col, col_dim)
+        per_row = int(np.ceil(row / row_count))
+        per_col = int(np.ceil(col / col_count))
+        row_E_eff = row / row_dim if row <= row_dim else 1
+        col_E_eff = col / col_dim if col <= col_dim else 1
+
+        return [row_count, per_row, col_count, per_col, row_E_eff * col_E_eff]

@@ -25,3 +25,12 @@ print(check_topology(topo))
 length = len(topo)
 for i in range(length):
     pass
+
+        #CASE1
+        runtime1 = (t + scaleup.systolic.row + (scaleup.systolic.row + scaleup.systolic.col - 2)) * row_q * col_q
+        #CASE2
+        runtime2 = (t + scaleup.systolic.row + (row_rest + scaleup.systolic.col - 2)) * row_flag * col_q
+        #CASE3
+        runtime3 = (t + scaleup.systolic.row + (scaleup.systolic.row + col_rest - 2)) * row_q * col_flag
+        #CASE4
+        runtime4 = (t + scaleup.systolic.row + (row_rest + col_rest - 2)) * row_flag * col_flag
