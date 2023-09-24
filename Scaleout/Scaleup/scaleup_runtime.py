@@ -7,7 +7,7 @@ class Scaleupruntime:
     def get_operand_dimensions(self, scaleup, operand):
         """Get dimension on matrix."""
         dataflow = scaleup.others.dataflow
-        if dataflow == "IS":
+        if dataflow != "IS":
             sr = operand.input_operand.shape[0]
             sc = operand.filter_operand.shape[1]
             t = operand.input_operand.shape[1]

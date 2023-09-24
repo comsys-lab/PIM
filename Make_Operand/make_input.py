@@ -48,7 +48,7 @@ class MakeInput:
                     if row < topo[0] and col < topo[1]:
                         temp.append(str(input_matrix[i, row, col]))
                     else: #for zero padding (stride over 1)
-                        temp.append("[-1,-1,-1]")
+                        temp.append(0)
 
         return temp
 
@@ -62,9 +62,9 @@ class MakeInput:
     def return_input_operand(self, topo, dataflow):
         """Return input operand matrix."""
         if dataflow == "OS":
-            input_opearnd, row, col = self.make_input_operand_os(topo)
+            input_opearnd = self.make_input_operand_os(topo)
         else:
-            input_opearnd, row, col = self.make_input_operand_ws_is(topo)
+            input_opearnd = self.make_input_operand_ws_is(topo)
 
         self.input_operand = input_opearnd
 

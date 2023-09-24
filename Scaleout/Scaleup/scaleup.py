@@ -7,13 +7,13 @@ from .scaleup_runtime import Scaleupruntime
 from .scaleup_class import Systolic
 
 
-class Scaleup:
+class ScaleUp:
     """Scaleup simulation"""
     def __init__(self):
         self.scaleupsram = Scaleupsram()
         self.scaleupruntime = Scaleupruntime()
 
-    def scaleup(self, scaleup, operand, stride):
+    def scale_up(self, scaleup, operand, stride):
         """With scaleup(format), operand and stride get information from scaleup"""
 
         #Get Information from ScaleupInfo module: # of tiled dimension.
@@ -44,7 +44,7 @@ class Scaleup:
         """Get number of tiles that will be used."""
         row, col = self.get_operand_dimensions(scaleup, operand)
         num_tiles_row = int(np.ceil(row / scaleup.systolic.row ))
-        num_tiles_col = int(np.ceil(col / scaleup.systolc.col ))
+        num_tiles_col = int(np.ceil(col / scaleup.systolic.col ))
         scaleupinfo = [num_tiles_row, num_tiles_col]
 
         return scaleupinfo

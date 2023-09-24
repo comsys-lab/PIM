@@ -9,13 +9,12 @@ from Get_config.get_energy import GetEnergy
 
 
 
-class simulation_new:
+class Simulation:
     """Simulation code."""
     def __init__(self) -> None:
         self.get_topology = GetTopology()
         self.get_configuration = Getconfiguration()
         self.get_energy = GetEnergy()
-        self.single_layer = Singlelayer()
 
         self.topo = []
         self.mnk = []
@@ -48,10 +47,12 @@ class simulation_new:
 
 
 
+import os
+path = os.getcwd()
+topo_path = path + '/_Topology/ex.csv'
+config_path = path + '/_Hardware/configuration2.cfg'
+energy_path = path + '/_Energy/Energy_Config1.cfg'
 
-
-        
-
-a = Simulationnew()
-a.simulation('/Users/seongjun/Desktop/PIM/_Topology/ex.csv','/Users/seongjun/Desktop/PIM/_Hardware/configuration2.cfg','/Users/seongjun/Desktop/PIM/_Energy/Energy_Config1.cfg')
+a = Simulation()
+a.simulation(topo_path, config_path, energy_path)
 print(a.npu_energy)
