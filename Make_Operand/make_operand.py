@@ -2,7 +2,7 @@
 from .make_input import MakeInput
 from .make_filter import MakeFilter
 from .make_output import MakeOutput
-
+import time
 class MakeOperand:
     """Make input and filter operand matrix and return"""
     def __init__(self):

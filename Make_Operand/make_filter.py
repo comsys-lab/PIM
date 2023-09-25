@@ -13,7 +13,7 @@ class MakeFilter:
         col = topo[5]
 
         filter_operand = \
-            np.array([[str([i, j]) for j in range(col)] for i in range(row)], dtype='U20')
+            np.array([[i*100000+j for j in range(col)] for i in range(row)])
 
         return filter_operand
 

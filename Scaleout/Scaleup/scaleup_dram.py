@@ -2,59 +2,185 @@
 import numpy as np
 
 from .base_operation import Baseoperation
+from .scaleup_runtime import Scaleupruntime
 
 class Scaleupdram:
     """Get DRAM access count."""
     def __init__(self):
         self.base_operation = Baseoperation()
+        self.scaleup_runtime = Scaleupruntime()
 
     def scaleup_dram(self, scaleup, operand, info):
         """Get scaleup dram count. Divide case with stride."""
         dataflow = scaleup.others.dataflow
         if dataflow == "OS":
-            return_dram_access = self.df_os(scaleup, operand, info)
-        # elif dataflow == "WS":
-        #     return_dram_access = self.df_ws(scaleup, operand, info)
-        # elif dataflow == "IS":
-        #     return_dram_access = self.df_is(scaleup, operand, info)
+            return_dram_access, stall = self.df_os(scaleup, operand, info)
+        elif dataflow == "WS":
+            return_dram_access, stall = self.df_ws(scaleup, operand, info)
+        elif dataflow == "IS":
+            return_dram_access, stall = self.df_is(scaleup, operand, info)
 
-        return return_dram_access
+        return return_dram_access, stall
 
-    def df_os(self, scaleup, operand, info):
+    def df_os(self, scaleup, operand, scaleup_info):
         """When dataflow is os."""
         #Initialize return parameters.
-        # input_access = 0
-        # filter_access = 0
-        # output_access = 0
-        # count = 0
-        # stall = 0
+        input_dram = 0
+        filter_dram = 0
+        output_dram = 0
+        stall = 0
 
         #Define parameters.
         systolic = scaleup.systolic
         input_operand = operand.input_operand
         filter_operand = operand.filter_operand
+        output_operand = operand.output_operand
 
-        #Padding
-        input_operand = self.base_operation.input_padding(scaleup.systolic, input_operand)
-        filter_operand= self.base_operation.filter_padding(scaleup.systolic, filter_operand)
+        info = scaleup_info[0]
+        row_padding = scaleup_info[1]
+        col_padding = scaleup_info[2]
 
         input_matrice = []
-        for i in range(info[0]):
-            input_tile = self.base_operation.skew_input_matrix(input_operand[i * systolic.row: (i + 1) * systolic.row])
-            for _ in range(info[1]):
-                input_matrice.append(input_tile)
-        input_final = np.transpose(np.array(input_matrice).reshape(systolic.row,-1))
-        print("Making input tiling matrix completed\n")
-
         filter_matrice = []
-        for i in range(info[1]):
-            filter_tile = self.base_operation.skew_filter_matrix(filter_operand[:,i * systolic.col:(i+1) * systolic.col])
-            for j in range(info[0]):
-                filter_matrice.append(filter_tile)
-        filter_total = np.array(filter_matrice).reshape(-1,systolic.col)
-        print("Finish Making Filter tiling Matrix",'\n')
+        output_matrice = []
 
-        #print(info[0]*info[1]*(systolic.row +9+ (input_total.shape[0]-1)/48))
-        print(input_final.shape, filter_total.shape)
+        for row in range(info[0]):
+            #Input tiling
+            if row != info[0] - 1:
+                input_tile = input_operand[row * systolic.row: (row + 1) * systolic.row]
+            else:
+                input_tile = input_operand[row * systolic.row: ]
+            #check padding_row
+            row_val = self.base_operation.row_check(systolic, input_tile)
+            pad_row = row_padding[row_val]
+            input_tile = self.base_operation.skew_input_matrix(self.base_operation.input_padding(systolic, input_tile))
 
+            for col in range(info[1]):
+                #Filter tiling
+                if col != info[1] - 1:
+                    filter_tile = filter_operand[:,col * systolic.col: (col + 1) * systolic.col]
+                else:
+                    filter_tile = filter_operand[:,col * systolic.col: ]
+
+                #check padding_col
+                col_val = self.base_operation.col_check(systolic, filter_tile)
+                pad_col = col_padding[col_val]
+                filter_tile = self.base_operation.skew_filter_matrix(self.base_operation.filter_padding(systolic, filter_tile))
+
+                #Concatenate input operand
+                input_other_padding = np.full((systolic.row, pad_row + pad_col - 1), -1)
+                input_one_tile = np.concatenate((input_tile, input_other_padding), axis=1)
+                input_matrice.append(input_one_tile)
+                out_pad = input_tile.shape[1]
+                #Concatenate filter operand
+                filter_other_padding = np.full((pad_row + pad_col - 1, systolic.col),-1)
+                filter_one_tile = np.concatenate((filter_tile, filter_other_padding), axis=0)
+                filter_matrice.append(filter_one_tile)
+
+                output_tile = output_operand[row * pad_row : (row + 1) * pad_row, col * pad_col : (col + 1) * pad_col]
+                output_tile = self.base_operation.skew_filter_matrix(self.base_operation.filter_padding(systolic, output_tile))
+                output_other_padding = np.full((out_pad, systolic.col), -1)
+                output_ont_tile = np.concatenate((output_tile, output_other_padding), axis=0)
+                output_matrice.append(output_ont_tile)
+
+        input_final = np.transpose(np.array(input_matrice).reshape(systolic.row, -1))
+        filter_final = np.array(filter_matrice).reshape(-1, systolic.col)
+        ouptut_final = np.array(output_matrice).reshape(-1, systolic.col)
+        print("Making operand matrix completed\n")
+
+        check_count = 0
+
+        runtime = self.scaleup_runtime.get_runtime(scaleup, operand)
+        buffer1_flag = True
+        buffer2_flag = False
+        buffer1 = set()
+        buffer2 = set()
+        while count > 0:
+            pass
+        return_dram_access = [input_dram, filter_dram, output_dram]
+
+        return return_dram_access, stall
+
+    def df_ws(self, scaleup, operand, scaleup_info):
+        """When dataflow is ws."""
+        #Initialize return parameters.
+        input_dram = 0
+        filter_dram = 0
+        output_dram = 0
+        stall = 0
+
+        #Define parameters.
+        systolic = scaleup.systolic
+        input_operand = operand.input_operand
+        filter_operand = operand.filter_operand
+        output_operand = operand.output_operand
+
+        info = scaleup_info[0]
+        row_padding = scaleup_info[1]
+        col_padding = scaleup_info[2]
+
+        input_matrice = []
+        filter_matrice = []
+        output_matrice = []
+
+        for col in range(info[1]):
+            for row in range(info[0]):
+                #Input tiling
+                if row != info[0] - 1:
+                    input_tile = input_operand[row * systolic.row: (row + 1) * systolic.row]
+                else:
+                    input_tile = input_operand[row * systolic.row: ]
+
+            #check padding_row
+            row_val = self.base_operation.row_check(systolic, input_tile)
+            pad_row = row_padding[row_val]
+            input_tile = self.base_operation.skew_input_matrix(self.base_operation.input_padding(systolic, input_tile))
+
+        for row in range(info[0]):
+            #Input tiling
+            if row != info[0] - 1:
+                input_tile = input_operand[row * systolic.row: (row + 1) * systolic.row]
+            else:
+                input_tile = input_operand[row * systolic.row: ]
+            #check padding_row
+            row_val = self.base_operation.row_check(systolic, input_tile)
+            pad_row = row_padding[row_val]
+            input_tile = self.base_operation.skew_input_matrix(self.base_operation.input_padding(systolic, input_tile))
+
+            for col in range(info[1]):
+                #Filter tiling
+                if col != info[1] - 1:
+                    filter_tile = filter_operand[:,col * systolic.col: (col + 1) * systolic.col]
+                else:
+                    filter_tile = filter_operand[:,col * systolic.col: ]
+
+                #check padding_col
+                col_val = self.base_operation.col_check(systolic, filter_tile)
+                pad_col = col_padding[col_val]
+                filter_tile = self.base_operation.skew_filter_matrix(self.base_operation.filter_padding(systolic, filter_tile))
+
+                #Concatenate input operand
+                input_other_padding = np.full((systolic.row, pad_row + pad_col - 1), -1)
+                input_one_tile = np.concatenate((input_tile, input_other_padding), axis=1)
+                input_matrice.append(input_one_tile)
+                out_pad = input_tile.shape[1]
+                #Concatenate filter operand
+                filter_other_padding = np.full((pad_row + pad_col - 1, systolic.col),-1)
+                filter_one_tile = np.concatenate((filter_tile, filter_other_padding), axis=0)
+                filter_matrice.append(filter_one_tile)
+
+                output_tile = output_operand[row * pad_row : (row + 1) * pad_row, col * pad_col : (col + 1) * pad_col]
+                output_tile = self.base_operation.skew_filter_matrix(self.base_operation.filter_padding(systolic, output_tile))
+                output_other_padding = np.full((out_pad, systolic.col), -1)
+                output_ont_tile = np.concatenate((output_tile, output_other_padding), axis=0)
+                output_matrice.append(output_ont_tile)
+
+        input_final = np.transpose(np.array(input_matrice).reshape(systolic.row, -1))
+        filter_final = np.array(filter_matrice).reshape(-1, systolic.col)
+        ouptut_final = np.array(output_matrice).reshape(-1, systolic.col)
+        print("Making operand matrix completed\n")
+
+
+    def df_is(self, scaleup, operand, info):
+        """When dataflow is is."""
         return 1

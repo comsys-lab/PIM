@@ -24,7 +24,7 @@ class ScaleUp:
 
         #Get Memory Information
         sram_access = self.scaleupsram.scaleup_sram(scaleup, operand, stride)
-        dram_access, stall = 0, 0
+        dram_access, stall = self.scaleupdram.scaleup_dram(scaleup, operand, scaleupinfo)
 
         return sram_access, dram_access, runtime, stall
 
@@ -43,8 +43,15 @@ class ScaleUp:
     def scaleup_info(self, scaleup, operand):
         """Get number of tiles that will be used."""
         row, col = self.get_operand_dimensions(scaleup, operand)
-        num_tiles_row = int(np.ceil(row / scaleup.systolic.row ))
-        num_tiles_col = int(np.ceil(col / scaleup.systolic.col ))
-        scaleupinfo = [num_tiles_row, num_tiles_col]
+
+        full_row = scaleup.systolic.row
+        full_col = scaleup.systolic.col
+        rest_row = row % scaleup.systolic.row
+        rest_col = col % scaleup.systolic.col
+
+        num_row = int(np.ceil(row / scaleup.systolic.row ))
+        num_col = int(np.ceil(col / scaleup.systolic.col ))
+
+        scaleupinfo = [[num_row,num_col],[full_row, rest_row],[full_col, rest_col]]
 
         return scaleupinfo

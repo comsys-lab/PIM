@@ -30,26 +30,38 @@ class MakeInput:
             for col in range(output_col):
                 one_row = self.make_input_one_row(topo, row, col, input_matrix)
                 input_operand_matrix.append(one_row)
-
+        buffer = set()
+        for i in range(len(input_operand_matrix)):
+            for j in range(len(input_operand_matrix[i])):
+                buffer.add(input_operand_matrix[i][j])
+        print(len(buffer))
         input_operand_matrix = np.array(input_operand_matrix, dtype='U20')
-        row = output_row * output_col
-        col = topo[2] * topo[3] * topo[4]
 
         return input_operand_matrix
 
     def make_input_one_row(self, topo, output_row, output_col, input_matrix):
         """Make one row for input matrix"""
         temp = []
-        for i in range(topo[4]):
-            for j in range(topo[2]):
-                for k in range(topo[3]):
-                    row = output_row * topo[6] + j
-                    col = output_col * topo[6] + k
-                    if row < topo[0] and col < topo[1]:
-                        temp.append(str(input_matrix[i, row, col]))
-                    else: #for zero padding (stride over 1)
-                        temp.append(0)
+        input_row = topo[0]
+        input_col = topo[1]
+        filter_row = topo[2]
+        filter_col = topo[3]
+        channel = topo[4]
+        stride = topo[6]
 
+        for i in range(channel):
+            for j in range(filter_row):
+                for k in range(filter_col):
+                    row = output_row * stride+ j
+                    col = output_col * stride+ k
+                    if row < input_row and col < input_col:
+                        #temp.append(i*10000000000+row*100000+col)
+                        if filter_row == 1 and filter_col == 1:
+                            temp.append(i*100000+row*output_row+col)
+                        else:
+                            temp.append(i*10000000000+row*100000+col)
+                    else: #for zero padding (stride over 1)
+                        temp.append(-1)
         return temp
 
     def make_input_operand_ws_is(self, topo):

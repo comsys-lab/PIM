@@ -10,7 +10,7 @@ class Baseoperation:
         for row in matrix:
             row = set(row)
             data |= row
-        data.discard(0)
+        data.discard(-1)
         data_size = len(data)
 
         return data_size
@@ -18,16 +18,17 @@ class Baseoperation:
     #Input: np.ndrarray / Return: int
     def get_data_size_with_duplication(self, matrix):
         """Data size with no duplication."""
-        data_size = sum(1 for row in matrix for item in row if item != 0)
+        data_size = sum(1 for row in matrix for item in row if item != -1)
 
         return data_size
 
     def input_padding(self, systolic, input_operand):
         """To adjust the size of the input operand matrix."""
         row_remainder = input_operand.shape[0] % systolic.row
+        print(row_remainder)
         if row_remainder != 0:
             padding_rows = systolic.row - row_remainder
-            padding_matrix = np.full((padding_rows, input_operand.shape[1]), 0, dtype='U20')
+            padding_matrix = np.full((padding_rows, input_operand.shape[1]), -1)
             input_operand = np.concatenate((input_operand, padding_matrix), axis=0)
 
         return input_operand
@@ -37,7 +38,7 @@ class Baseoperation:
         col_remainder = filter_operand.shape[1] % systolic.col
         if col_remainder != 0:
             padding_cols = systolic.col - col_remainder
-            padding_matrix = np.full((filter_operand.shape[0], padding_cols), 0, dtype='U20')
+            padding_matrix = np.full((filter_operand.shape[0], padding_cols), -1)
             filter_operand = np.concatenate((filter_operand, padding_matrix), axis=1)
 
         return filter_operand
@@ -45,7 +46,7 @@ class Baseoperation:
     def skew_input_matrix(self, input_operand):
         """Skew input operand matrix."""
         row, col = input_operand.shape
-        skewed_matrix = np.full((row, col + row - 1), 0, dtype='U20')
+        skewed_matrix = np.full((row, col + row - 1), -1)
 
         for i in range(row):
             skewed_matrix[i, i:i+col] = input_operand[i, :]
@@ -55,16 +56,28 @@ class Baseoperation:
     def skew_filter_matrix(self, filter_operand):
         """Skew filter operand matrix."""
         row, col = filter_operand.shape
-        skewed_matrix = np.full((col + row - 1, col), 0, dtype='U20')
+        skewed_matrix = np.full((col + row - 1, col), -1)
 
         for j in range(col):
             skewed_matrix[j:j+row, j] = filter_operand[:, j]
 
         return skewed_matrix
 
-    def return_os_padding(self, scaleup):
-        """Return operand size padding."""
-        return scaleup.systolic.row * scaleup.systolic.col
+    def row_check(self, systolic, matrix):
+        if matrix.shape[0] != systolic.row:
+            return_value = True
+        else:
+            return_value = False
+
+        return return_value
+
+    def col_check(self, systolic, matrix):
+        if matrix.shape[1] != systolic.col:
+            return_value = True
+        else:
+            return_value = False
+
+        return return_value
 
     # #Input: systolic | operand / Return: np.ndarray
     # def input_padding(self, systolic, input_operand):

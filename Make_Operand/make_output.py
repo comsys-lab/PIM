@@ -15,7 +15,7 @@ class MakeOutput:
         Nfilter = topo[5]
 
         output_operand = \
-            np.array([[str([i, j]) for j in range(Nfilter)] for i in range(Nofmap)], dtype='U20')
+            np.array([[i*100000+j for j in range(Nfilter)] for i in range(Nofmap)], dtype='U20')
 
         return output_operand
 
