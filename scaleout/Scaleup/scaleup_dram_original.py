@@ -27,33 +27,22 @@ class Scaleupdram:
         #Initialize return parameters.
         input_dram = 0
         filter_dram = 0
-        output_dram = operand.input_operand.shape[0] * operand.filter_operand.shape[1]
+        output_dram = 0
         stall = 0
 
         #Define parameters.
         systolic = scaleup.systolic
         input_operand = operand.input_operand
         filter_operand = operand.filter_operand
+        output_operand = operand.output_operand
 
         info = scaleup_info[0]
         row_padding = scaleup_info[1]
         col_padding = scaleup_info[2]
 
-        input_buffer = np.array([],dtype=np.int32)
-        filter_buffer = np.array([],dtype=np.int32)
-
-        input_check=[]
-        filter_check = []
-
-        input_stall_check = 10000000
-        filter_stall_check = 10000000
-
-        count = 0
-        input_dram_access = 0
-        filter_dram_access = 0
-        input_buffer_size = scaleup.systolic.input_buffer
-        filter_buffer_size = scaleup.systolic.filter_buffer
-
+        input_matrice = []
+        filter_matrice = []
+        output_matrice = []
         for row in range(info[0]):
             #Input tiling
             if row != info[0] - 1:
@@ -79,107 +68,85 @@ class Scaleupdram:
 
                 #Concatenate input operand
                 input_other_padding = np.full((systolic.row, pad_row + pad_col - 1), -1)
-                input_one_tile = np.transpose(np.concatenate((input_tile, input_other_padding), axis=1))
-
+                input_one_tile = np.concatenate((input_tile, input_other_padding), axis=1)
+                input_matrice.append(input_one_tile)
+                out_pad = input_tile.shape[1]
                 #Concatenate filter operand
                 filter_other_padding = np.full((pad_row + pad_col - 1, systolic.col),-1)
                 filter_one_tile = np.concatenate((filter_tile, filter_other_padding), axis=0)
+                filter_matrice.append(filter_one_tile)
 
-                length = input_one_tile.shape[0]
-
-                input_length_counter = 0
-                while input_length_counter < length:
-                    input_checking = np.union1d(input_buffer,input_one_tile[input_length_counter])
-                    if input_checking[0] == -1:
-                        input_checking = input_checking[1:]
-                    input_temp = input_checking.size
-
-                    if input_temp > input_buffer_size:
-                        input_dram_access += len(input_buffer)
-                        count_now = count+input_length_counter+1
-                        if len(input_check) != 0:
-                            input_stall_check = min(input_stall_check, count_now - input_check[0])
-                        input_check.append(count_now)
-                        input_buffer = np.array([],dtype=np.int32)
-                        input_length_counter -= 1
-                    else:
-                        input_buffer = input_checking
-
-                    input_length_counter += 1
-
-                filter_length_counter = 0
-                while filter_length_counter < length:
-                    filter_checking = np.union1d(filter_buffer,filter_one_tile[filter_length_counter])
-                    if filter_checking[0] == -1:
-                        filter_checking = filter_checking[1:]
-                    filter_temp = filter_checking.size
-
-                    if filter_temp > filter_buffer_size:
-                        filter_dram_access += len(filter_buffer)
-                        count_now = count+input_length_counter+1
-                        if len(filter_check) != 0:
-                            filter_stall_check = min(filter_stall_check, count_now - filter_check[0])
-                        filter_check.append(count_now)
-                        filter_buffer = np.array([],dtype=np.int32)
-                        filter_length_counter -= 1
-                    else:
-                        filter_buffer = filter_checking
-
-                    filter_length_counter += 1
-
-                count += length
-
-        if input_buffer.size != 0:
-            if input_dram_access == 0:
-                input_dram_access = input_buffer.size
-                input_stall_check = 0
-            else:
-                input_dram_access += len(input_buffer)
-        if filter_buffer.size != 0:
-            if filter_dram_access == 0:
-                filter_dram_access = filter_buffer.size
-                filter_stall_check = 0
-            else:
-                filter_dram_access += len(filter_buffer)
+                output_tile = output_operand[row * pad_row : (row + 1) * pad_row, col * pad_col : (col + 1) * pad_col]
+                output_tile = self.base_operation.skew_filter_matrix(self.base_operation.filter_padding(systolic, output_tile))
+                output_other_padding = np.full((out_pad, systolic.col), -1)
+                output_ont_tile = np.concatenate((output_tile, output_other_padding), axis=0)
+                output_matrice.append(output_ont_tile)
 
 
-        #fucntion for stall
+
         runtime = self.scaleup_runtime.get_runtime(scaleup, operand)
-        # if input_stall_check <
 
+        input_final = np.transpose(np.concatenate(input_matrice,axis=1))
+        filter_final = np.concatenate(filter_matrice, axis = 0)
+        ouptut_final = np.concatenate(output_matrice, axis = 0)
+        print("Making operand matrix completed\n")
 
+        check_count = 0
 
-
-
+        buffer1_flag = True
+        buffer2_flag = False
+        buffer1 = set()
+        buffer2 = set()
+        size = 785408
+        buffer = np.array([-1])
+        temp = []
+        while check_count < runtime:
+            buf = len(buffer)
+            one = self.check(input_final[check_count])
+            checking = np.union1d(buffer,one)
+            if buf + len(one) > size:
+                temp.append(check_count)
+                buffer = np.array([-1])
+                check_count -= 1
+            else:
+                buffer = checking
+            # if (check_count == runtime - 1) and len(buffer) != 0:
+            #     temp.append(len(buffer))
+            check_count += 1
+        df_t= []
+        for i in range(1,len(temp)):
+            dif = temp[i] - temp[i-1]
+            df_t.append(dif)
+        print(min(df_t))
+        print(temp)
         return_dram_access = [input_dram, filter_dram, output_dram]
         return return_dram_access, stall
+
+    def check(self, operand):
+        a = np.unique(operand)
+        return a
 
     def df_ws(self, scaleup, operand, scaleup_info):
         """When dataflow is ws."""
         #Initialize return parameters.
         input_dram = 0
         filter_dram = 0
-        output_dram = operand.input_operand.shape[0] * operand.filter_operand.shape[1]
+        output_dram = 0
         stall = 0
 
         #Define parameters.
         systolic = scaleup.systolic
         input_operand = operand.input_operand
         filter_operand = operand.filter_operand
+        output_operand = operand.output_operand
 
         info = scaleup_info[0]
         row_padding = scaleup_info[1]
         col_padding = scaleup_info[2]
 
-        input_buffer = np.array([],dtype=np.int32)
-        filter_buffer = np.array([],dtype=np.int32)
-
-        input_check=[]
-        filter_check = []
-
-        count = 0
-        input_dram_access = 0
-        filter_dram_access = 0
+        input_matrice = []
+        filter_matrice = []
+        output_matrice = []
 
         for col in range(info[1]):
             for row in range(info[0]):
@@ -279,27 +246,3 @@ class Scaleupdram:
         return_dram_access = [input_dram, filter_dram, output_dram]
 
         return return_dram_access, stall
-
-    def check_stall(self, input_check, filter_check, input_buffer_size, filter_buffer_size, input_bandwidth, filter_bandwidth, runtime):
-        """Check stall."""
-        stall = 0
-        input_buffer1_flag = True
-        input_buffer2_flag = False
-
-        filter_buffer1_flag = True
-        filter_buffer2_flag = False
-
-        input_buffer1 = input_buffer_size
-        input_buffer2 = 0
-
-        filter_buffer1 = filter_buffer_size
-        filter_buffer2 = 0
-
-        input_filling = np.ceil(input_buffer_size / input_bandwidth)
-        filter_filling = np.ceil(filter_buffer_size / filter_bandwidth)
-        filling_time = max(input_filling, filter_filling)
-
-        for i in range(runtime):
-
-
-        return filling, stall

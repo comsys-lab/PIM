@@ -18,6 +18,6 @@ class MakeOperand:
         """Return input and filter operand matrix"""
         self.input_operand = self.make_input.return_input_operand(topo, dataflow)
         self.filter_operand = self.make_filter.return_filter_operand(topo)
-        self.output_operand = self.make_output.return_output_operand(topo,dataflow)
+        #self.output_operand = self.make_output.return_output_operand(topo,dataflow)
 
-        return self.input_operand, self.filter_operand, self.output_operand
+        return self.input_operand, self.filter_operand#, self.output_operand

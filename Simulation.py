@@ -29,7 +29,7 @@ class Simulation:
         #Get Simulation settings: topology, hardware configuration, energy configuration
         self.get_setting(topology_path, configuration_path, energy_file_path)
 
-        if not self.save_params[0]:
+        if not self.save_params[2]:
             self.Only_NPU()
         else:
             self.With_PIM()
@@ -39,7 +39,7 @@ class Simulation:
         self.topology, self.MNK = self.get_topology.get_topology(topology_path)
 
         #From Configuration file path, get hardware confiugration parameters.
-        self.run_name, self.form_factor, self.npu_params, self.pim_params, self.dnn_params, self.save_params =\
+        self.npu_others, self.npu_systolic, self.pim_others, self.pim_systolic, self.other_params =\
         self.get_configuration.get_configuration(configuration_path)
 
         #From Energy configuration file path, get Energyr pataemters.
@@ -74,31 +74,6 @@ class Simulation:
     # The Scaleout funtion will return results like this:
     # [SRAM input access, SRAM filter access, SRAM output access, DRAM input access, DRAM filter access, DRAM output access, number of MAC operation]
     # Returns seven simulation results from the scale-out function. The total energy consumption can be obtained by multiplying this by the energy parameter.
-
-    def simulation1(self,npu_param,pim_param,dnn_param,save_param):
-        self.get_settings(npu_param,pim_param,dnn_param,save_param)
-        temp = ""
-        for i in range(8):
-            x = str(self.npu_param[i])+"_"
-            temp += x
-
-        if not self.save_param[0]:
-            name = "NPU_"
-        else:
-            name =  "PIM_"
-            temp += "__"
-            for i in range(8):
-                temp+=str(self.pim_param[i])+"_"
-
-        topo_name = "__"+self.dnn_param[0].split("/")[-1].split(".")[0]
-        name += temp+topo_name
-
-        #Case with only NPU -> save_param[0] == False
-        #Case with PIM -> save_param[0] == True
-        if self.save_param[0]:
-            self.with_pim(name)
-        else:
-            self.only_npu(name)
 
     def only_npu(self,name):
 

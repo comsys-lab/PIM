@@ -11,9 +11,10 @@ class MakeFilter:
         """Make filter operand matrix"""
         row = topo[2] * topo[3] * topo[4]
         col = topo[5]
+        maximum = len(str(row))
 
         filter_operand = \
-            np.array([[i*100000+j for j in range(col)] for i in range(row)])
+            np.array([[i*pow(10,maximum)+j for j in range(col)] for i in range(row)], dtype = np.int32)
 
         return filter_operand
 

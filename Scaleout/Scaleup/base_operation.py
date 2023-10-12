@@ -25,11 +25,10 @@ class Baseoperation:
     def input_padding(self, systolic, input_operand):
         """To adjust the size of the input operand matrix."""
         row_remainder = input_operand.shape[0] % systolic.row
-        print(row_remainder)
         if row_remainder != 0:
             padding_rows = systolic.row - row_remainder
-            padding_matrix = np.full((padding_rows, input_operand.shape[1]), -1)
-            input_operand = np.concatenate((input_operand, padding_matrix), axis=0)
+            padding_matrix = np.full((padding_rows, input_operand.shape[1]), -1, dtype = np.int32)
+            input_operand = np.concatenate((input_operand, padding_matrix), axis=0, dtype = np.int32)
 
         return input_operand
 
@@ -38,15 +37,15 @@ class Baseoperation:
         col_remainder = filter_operand.shape[1] % systolic.col
         if col_remainder != 0:
             padding_cols = systolic.col - col_remainder
-            padding_matrix = np.full((filter_operand.shape[0], padding_cols), -1)
-            filter_operand = np.concatenate((filter_operand, padding_matrix), axis=1)
+            padding_matrix = np.full((filter_operand.shape[0], padding_cols), -1, dtype = np.int32)
+            filter_operand = np.concatenate((filter_operand, padding_matrix), axis=1, dtype = np.int32)
 
         return filter_operand
 
     def skew_input_matrix(self, input_operand):
         """Skew input operand matrix."""
         row, col = input_operand.shape
-        skewed_matrix = np.full((row, col + row - 1), -1)
+        skewed_matrix = np.full((row, col + row - 1), -1, dtype = np.int32)
 
         for i in range(row):
             skewed_matrix[i, i:i+col] = input_operand[i, :]
@@ -56,7 +55,7 @@ class Baseoperation:
     def skew_filter_matrix(self, filter_operand):
         """Skew filter operand matrix."""
         row, col = filter_operand.shape
-        skewed_matrix = np.full((col + row - 1, col), -1)
+        skewed_matrix = np.full((col + row - 1, col), -1, dtype = np.int32)
 
         for j in range(col):
             skewed_matrix[j:j+row, j] = filter_operand[:, j]

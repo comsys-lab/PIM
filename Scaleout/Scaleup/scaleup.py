@@ -2,15 +2,15 @@
 import numpy as np
 
 from .scaleup_sram import Scaleupsram
+from .scaleup_dram_original import Scaleupdram
 from .scaleup_runtime import Scaleupruntime
-
-from .scaleup_class import Systolic
 
 
 class ScaleUp:
     """Scaleup simulation"""
     def __init__(self):
         self.scaleupsram = Scaleupsram()
+        self.scaleupdram = Scaleupdram()
         self.scaleupruntime = Scaleupruntime()
 
     def scale_up(self, scaleup, operand, stride):
