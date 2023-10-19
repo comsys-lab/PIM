@@ -1,11 +1,7 @@
 "Python 3.11.5"
 import numpy as np
 
-from .Scaleup.scaleup_class import Scaleup
-from .Scaleup.scaleup_class import Operand
-from .scaleout_class import Scaleout
-
-from .Scaleup.scaleup_class import Systolic
+from .Scaleup.base_class import Operand
 
 from .Scaleup.scaleup import ScaleUp
 
@@ -14,24 +10,31 @@ class ScaleOut:
     def __init__(self) -> None:
         self.scaleup = ScaleUp()
 
-    def scaleout(self):
-        pass
+    def scaleout(self, scaleout, stride, layer_info):
+        dataflow = scaleout.scaleup.others.dataflow
+        if dataflow == "OS":
+            sram_info, dram_info, runtime, ene_eff = self.scaleout_os(scaleout, stride, layer_info)
+        elif dataflow == "WS":
+            sram_info, dram_info, runtime, ene_eff = self.scaleout_ws(scaleout, stride, layer_info)
+        elif dataflow == "IS":
+            sram_info, dram_info, runtime, ene_eff = self.scaleout_is(scaleout, stride, layer_info)
+
+        return sram_info, dram_info, runtime, ene_eff
 
     def dimension_info(self, scaleout):
+        """Return dimension information of each dataflow"""
         dataflow = scaleout.scaleup.others.dataflow
         operand = scaleout.operand
 
-        if dataflow == "OS":
-            row, col = operand.input_operand.row, operand.filter_operand.col
-        elif dataflow == "WS":
-            row, col = operand.input_operand.col, operand.filter_operand.col
-        elif dataflow == "IS":
-            row, col = operand.filter_operand.row, operand.input_operand.col
+        if dataflow == "IS":
+            row, col = operand.filter_operand.shape[0], operand.input_operand.shape[1]
+        else:
+            row, col = operand.input_operand.shape[0], operand.filter_operand.shape[1]
 
         return row, col
 
     def scaleout_info(self, scaleout):
-        """."""
+        """Return scaleout information,"""
         row_dim, col_dim = scaleout.row_dim, scaleout.col_dim
         row, col = self.dimension_info(scaleout)
         row_count = min(row, row_dim)
@@ -42,17 +45,46 @@ class ScaleOut:
         row_ene_eff = row / row_dim if row <= row_dim else 1
         col_ene_eff = col / col_dim if col <= col_dim else 1
 
+        return [row_count, per_row], [col_count, per_col], [row_ene_eff, col_ene_eff]
 
-        return [[row_count, per_row], [col_count, per_col], [row_ene_eff, col_ene_eff]]
+    def iteration_check(self, scaleout, operand):
+        """To reduce total runtime of simulation."""
+        dataflow = scaleout.scaleup.others.dataflow
+        row, col = self.dimension_info(scaleout)
 
-    def scaleout_os(self, scaleout, scaleoutinfo):
-        print('SCALEOUT START\n')
-        row_info = scaleoutinfo[0]
-        col_info = scaleoutinfo[1]
-        ene_info = scaleoutinfo[2]
+        row_dim, col_dim = scaleout.row_dim, scaleout.col_dim
+        row_flag = (row_dim % row) == 0
+        col_flag = (col_dim % col) == 0
 
-        result = []
+        return row_flag, col_flag
 
+    def scaleout_os(self, scaleout, stride, layer_info):
+        """Scaleout function for OS dataflow."""
+        print('Scaleout Start layer {}/{}\n'.format(layer_info[0] + 1, layer_info[1]))
+        row_info, col_info, energy_info = self.scaleout_info(scaleout)
+
+        scaleup = scaleout.scaleup
+
+        sram_store = []
+        dram_store = []
+        runtime_store = []
+        #Energy efficiency for unused chips
+        ene_eff = energy_info[0] * energy_info[1]
+
+        #check for iteration
+        row_flag, col_flag = self.iteration_check(scaleout, scaleout.operand)
+        if stride == 1:
+            if row_flag == 1 and col_flag:
+                pass #This case, we have to simulate only once.
+
+        else:
+            pass
+        last_row = (row_info[0] - 1) * row_info[1]
+        last_col = (col_info[0] - 1) * col_info[1]
+
+        #four cases - 1,2,3,4.
+
+        #black box for scaleout function
         for row in range(row_info[0]):
             if row != row_info[0] - 1:
                 input_tile = scaleout.operand.input_operand[row * row_info[1] : (row + 1) * row_info[1]]
@@ -65,57 +97,50 @@ class ScaleOut:
                 else:
                     filter_tile = scaleout.operand.filter_operand[:, col * col_info[1] : ]
 
-                systolic = scaleout.scaleup.systolic
                 operand = Operand(input_tile, filter_tile)
 
-            scaleup = ScaleUp(systolic, operand)
+                sram_info, dram_info, runtime = self.scaleup.scale_up(scaleup, operand, stride)
+                sram_store.append(sram_info)
+                dram_store.append(dram_info)
+                runtime_store.append(runtime)
 
-            return_temp = self.scaleup.scale_up(scaleup)
-            result_temp.append(return_temp)
-        return_info = []
 
-        print("SCALEOUT END\n")
+        #Memory access
+        sram_info = self.return_memory(sram_store)
+        dram_info = self.return_memory(dram_store)
+        #Runtime
+        runtime = self.return_runtime(runtime_store)
 
-        return return_info
+        print('Scaleout End layer {}/{}\n'.format(layer_info[0] + 1, layer_info[1]))
+        return sram_info, dram_info, runtime, ene_eff
 
-    def _scaleout_ws(self, scaleout, scaleoutinfo):
-        """."""
-        print('SCALEOUT START\n')
-        row_info = scaleoutinfo[0]
-        col_info = scaleoutinfo[1]
-        ene_info = scaleoutinfo[2]
+    def _scaleout_ws(self, scaleout, stride):
+        """When dataflow is WS, scaleout function."""
+        print('Scaleout Start\n')
+        row_info, col_info, energy_info = self.scaleout_info(scaleout)
 
-        return_info = []
-        print("SCALEOUT END\n")
+        scaleup = scaleout.scaleup
 
-        return return_info
+        sram_store = []
+        dram_store = []
+        runtime_store = []
+        ene_eff = energy_info[0] * energy_info[1]
 
-    def scaleout_OS(self,processor,input_operand,filter_operand,input_buf,filter_buf,stride):
-        print('SCALEOUT START','\n')
-        info = self.ScaleoutInfo._scaleout_get_info_OS(processor,input_operand,filter_operand)
-        result_list = []
-        result = [0,0,0,0,0,0,0,0]
-        for i in range(info[0]):
-            if i != info[0] - 1:
-                input_temp = input_operand[i*info[1]:(i+1)*info[1]]
-            else:
-                input_temp = input_operand33[i*info[1]:]
 
-            for j in range(info[2]):
-                print('SCALEUP FOR POD {}X{}'.format(i+1,j+1))
-                if j != info[2] - 1:
-                    filter_temp = filter_operand[:,j*info[3]:(j+1)*info[3]]
-                else:
-                    filter_temp = filter_operand[:,j*info[3]:]
 
-                return_info = self.ScaleupBWIdeal.scaleup_bw_ideal(processor,input_temp,filter_temp,input_buf,filter_buf,"OS",stride)
-                result_list.append(return_info)
+    def return_memory(self, memory_store):
+        """Return total memory access of each memory."""
+        input_access = 0
+        filter_access = 0
+        output_access = 0
 
-                print('SCALEUP FOR POD {}X{} finished'.format(i+1,j+1),'\n')
+        for access in memory_store:
+            input_access += access[0]
+            filter_access += access[1]
+            output_access += access[2]
 
-        for components in result_list:
-            for i in range(len(components[:-1])):
-                result[i] = result[i] + components[i]
-            result[-1] = max(result[-1],components[-1])
+        return [input_access, filter_access, output_access]
 
-        return result
+    def return_runtime(self, runtime_store):
+        """Return runtime in scaleout function."""
+        return max(runtime_store)

@@ -25,9 +25,9 @@ class Scaleupdram:
     def df_os(self, scaleup, operand, scaleup_info):
         """When dataflow is os."""
         #Initialize return parameters.
-        input_dram = 0
-        filter_dram = 0
-        output_dram = operand.input_operand.shape[0] * operand.filter_operand.shape[1]
+        input_dram_access = 0
+        filter_dram_access = 0
+        output_dram_access = operand.input_operand.shape[0] * operand.filter_operand.shape[1]
         stall = 0
 
         #Define parameters.
@@ -49,8 +49,6 @@ class Scaleupdram:
         filter_stall_check = 10000000
 
         count = 0
-        input_dram_access = 0
-        filter_dram_access = 0
         input_buffer_size = scaleup.systolic.input_buffer
         filter_buffer_size = scaleup.systolic.filter_buffer
 
@@ -129,6 +127,7 @@ class Scaleupdram:
 
                 count += length
 
+
         if input_buffer.size != 0:
             if input_dram_access == 0:
                 input_dram_access = input_buffer.size
@@ -151,7 +150,7 @@ class Scaleupdram:
 
 
 
-        return_dram_access = [input_dram, filter_dram, output_dram]
+        return_dram_access = [input_dram_access, filter_dram_access, output_dram_access]
         return return_dram_access, stall
 
     def df_ws(self, scaleup, operand, scaleup_info):
@@ -180,6 +179,19 @@ class Scaleupdram:
         count = 0
         input_dram_access = 0
         filter_dram_access = 0
+
+        for col in range(info[1]):
+            if col != info[1] - 1:
+                filter_temp = filter_operand[:,col * systolic.col : (col + 1) * systolic.col]
+            else:
+                filter_temp = filter_operand[:,col * systolic.col : ]
+            for row in range(info[0]):
+                if row != info[0] - 1:
+                    filter_tile = filter_temp[row * systolic.row : (row + 1),:]
+                    input_tile = input_operand[row * systolic.row : (row + 1),:]
+                else:
+                    filter_tile = filter_temp[row :,:]
+                    input_tile = input_operand[row * systolic.row :, : ]
 
         for col in range(info[1]):
             for row in range(info[0]):
@@ -283,23 +295,21 @@ class Scaleupdram:
     def check_stall(self, input_check, filter_check, input_buffer_size, filter_buffer_size, input_bandwidth, filter_bandwidth, runtime):
         """Check stall."""
         stall = 0
+
+        input_stall_flag = False
+        filter_stall_flag = False
+
         input_buffer1_flag = True
         input_buffer2_flag = False
 
         filter_buffer1_flag = True
         filter_buffer2_flag = False
 
-        input_buffer1 = input_buffer_size
-        input_buffer2 = 0
+        input_filling = input_buffer_size / input_bandwidth
+        filter_filling = filter_buffer_size / filter_bandwidth
 
-        filter_buffer1 = filter_buffer_size
-        filter_buffer2 = 0
-
-        input_filling = np.ceil(input_buffer_size / input_bandwidth)
-        filter_filling = np.ceil(filter_buffer_size / filter_bandwidth)
-        filling_time = max(input_filling, filter_filling)
+        input_buffer_check = 0
+        filter_buffer_check = 0
 
         for i in range(runtime):
-
-
-        return filling, stall
+            pass

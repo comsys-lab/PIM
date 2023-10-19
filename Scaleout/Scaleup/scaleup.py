@@ -2,7 +2,7 @@
 import numpy as np
 
 from .scaleup_sram import Scaleupsram
-from .scaleup_dram_original import Scaleupdram
+from .scaleup_dram import Scaleupdram
 from .scaleup_runtime import Scaleupruntime
 
 
@@ -19,14 +19,13 @@ class ScaleUp:
         #Get Information from ScaleupInfo module: # of tiled dimension.
         scaleupinfo = self.scaleup_info(scaleup, operand)
 
-        #Get runtime with scaleup information and operand information.
-        runtime = self.scaleupruntime.get_runtime(scaleup, operand)
 
         #Get Memory Information
-        sram_access = self.scaleupsram.scaleup_sram(scaleup, operand, stride)
-        dram_access, stall = self.scaleupdram.scaleup_dram(scaleup, operand, scaleupinfo)
-
-        return sram_access, dram_access, runtime, stall
+        sram_info = self.scaleupsram.scaleup_sram(scaleup, operand, stride)
+        dram_info, stall = self.scaleupdram.scaleup_dram(scaleup, operand, scaleupinfo)
+        #Get runtime with scaleup information and operand information.
+        runtime = self.scaleupruntime.get_runtime(scaleup, operand) + stall
+        return sram_info, dram_info, runtime
 
     #Input: scaleupformat / Return: int | int
     def get_operand_dimensions(self, scaleup, operand):
@@ -49,8 +48,8 @@ class ScaleUp:
         rest_row = row % scaleup.systolic.row
         rest_col = col % scaleup.systolic.col
 
-        num_row = int(np.ceil(row / scaleup.systolic.row ))
-        num_col = int(np.ceil(col / scaleup.systolic.col ))
+        num_row = int(np.ceil(row / scaleup.systolic.row))
+        num_col = int(np.ceil(col / scaleup.systolic.col))
 
         scaleupinfo = [[num_row,num_col],[full_row, rest_row],[full_col, rest_col]]
 

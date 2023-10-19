@@ -2,9 +2,11 @@
 import configparser as cp
 import math
 
-from .get_class import Systolic
-from .get_class import Others
-from .get_class import Otherparams
+from .get_class import NPU_others
+from .get_class import NPU_systolic
+from .get_class import PIM_others
+from .get_class import PIM_sysotlic
+from .get_class import Other_params
 
 class Getconfiguration:
     """Read hardware configuration and return."""
@@ -13,15 +15,15 @@ class Getconfiguration:
         self.npu_flag = False
 
         #NPU params
-        self.npu_others = Others(0,0,0,0,0,0,0)
-        self.npu_systolic = Systolic(128, 128, 1536, 1536, 512)
+        self.npu_others = NPU_others(0,0,0,0,0,0,0)
+        self.npu_systolic = NPU_systolic(128, 128, 0, 1536, 1536, 512)
 
         #PIM params
-        self.pim_others = Others(0,0,0,0,0,0,0)
-        self.pim_systolic = Systolic(128, 128, 1536, 1536, 512)
+        self.pim_others = PIM_others(0,0,0,0,0,0,0,0)
+        self.pim_systolic = PIM_sysotlic(128, 128, 1536, 1536, 512)
 
         #Other params
-        self.other_params = Otherparams(0,0,0,0)
+        self.other_params = Other_params(0,0,0,0)
 
     def read_config_file(self, path):
         """Read config file from file path"""
@@ -46,7 +48,7 @@ class Getconfiguration:
         self.npu_others.pod_col = config.getint(section, 'pod_dimension_col')
         self.npu_others.num_pods = config.getint(section, 'number_of_pods')
 
-        self.npu_others.clock_freq = config.getfloat(section, 'clock_frequency')
+        self.npu_others.clk_freq = config.getfloat(section, 'clock_frequency')
         self.npu_others.bandwidth = config.getfloat(section, 'bandwidth')
         self.npu_others.latency = config.getfloat(section, 'latency')
         self.npu_others.dataflow = config.get(section, 'dataflow')
@@ -63,20 +65,19 @@ class Getconfiguration:
             self.npu_others.pod_row = pod_row
             self.npu_others.pod_col = pod_col
 
-        self.npu_systolic.input_buf = config.getfloat(section, 'input_buffer')
-        self.npu_systolic.filter_buf = config.getfloat(section, 'filter_buffer')
-        self.npu_systolic.output_buf = config.getfloat(section, 'output_buffer')
+        self.npu_systolic.input_buffer = config.getfloat(section, 'input_buffer')
+        self.npu_systolic.filter_buffer = config.getfloat(section, 'filter_buffer')
+        self.npu_systolic.output_buffer = config.getfloat(section, 'output_buffer')
 
         #PIM other parameters
         section = 'PIM_others'
-        self.pim_others.row = config.getint(section, 'pod_dimension_row')
-        self.pim_others.col = config.getint(section, 'pod_dimension_col')
+        self.pim_others.pod_row = config.getint(section, 'pod_dimension_row')
+        self.pim_others.pod_col = config.getint(section, 'pod_dimension_col')
 
-        dimm = config.getint(section, 'number_of_dimms')
-        chips = config.getint(section, 'chips_per_dimm')
-        self.pim_others.num_pods = dimm * chips
+        self.pim_others.num_dimms = config.getint(section, 'number_of_dimms')
+        self.pim_others.chips_per_dimm = config.getint(section, 'chips_per_dimm')
 
-        self.pim_others.clock_freq = config.getfloat(section, 'clock_frequency')
+        self.pim_others.clk_freq = config.getfloat(section, 'clock_frequency')
         self.pim_others.bandwidth = config.getfloat(section, 'bandwidth')
         self.pim_others.latency = config.getfloat(section, 'latency')
         self.pim_others.dataflow = config.get(section, 'dataflow')
@@ -86,9 +87,9 @@ class Getconfiguration:
         self.pim_systolic.row = config.getint(section, 'row')
         self.pim_systolic.col = config.getint(section, 'col')
 
-        self.npu_systolic.input_buf = config.getfloat(section, 'input_buffer')
-        self.npu_systolic.filter_buf = config.getfloat(section, 'filter_buffer')
-        self.npu_systolic.output_buf = config.getfloat(section, 'output_buffer')
+        self.pim_systolic.input_buffer = config.getfloat(section, 'input_buffer')
+        self.pim_systolic.filter_buffer = config.getfloat(section, 'filter_buffer')
+        self.pim_systolic.output_buffer = config.getfloat(section, 'output_buffer')
 
         #Other parameters
         section = 'Other_parameters'
@@ -135,4 +136,4 @@ class Getconfiguration:
         """Return params from configuration file."""
         self.read_config_file(path)
 
-        return self.npu_others, self.npu_systolic, self.pim_others, self.pim_systolic, self.other_params
+        return self.form_factor, self.npu_others, self.npu_systolic, self.pim_others, self.pim_systolic, self.other_params
