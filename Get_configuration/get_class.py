@@ -47,10 +47,8 @@ class PIM_sysotlic:
 @dataclass
 class Other_params:
     """Class for other parameters."""
-    topo_path: str
     batch: int
     pim_flag: bool
-    storing_path: str
 
 #Get_energy.py
 @dataclass

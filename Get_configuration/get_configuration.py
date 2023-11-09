@@ -23,7 +23,7 @@ class Getconfiguration:
         self.pim_systolic = PIM_sysotlic(128, 128, 1536, 1536, 512)
 
         #Other params
-        self.other_params = Other_params(0,0,0,0)
+        self.other_params = Other_params(0,0)
 
     def read_config_file(self, path):
         """Read config file from file path"""
@@ -61,7 +61,7 @@ class Getconfiguration:
         else:
             throughput = config.getfloat(section, 'throughput')
             self.npu_systolic.row, self.npu_systolic.col, pod_row, pod_col = self.convert_throughput(\
-                throughput, self.npu_others.pod_row, self.npu_others.pod_col, self.npu_others.clock_freq)
+                throughput, self.npu_others.pod_row, self.npu_others.pod_col, self.npu_others.clk_freq)
             self.npu_others.pod_row = pod_row
             self.npu_others.pod_col = pod_col
 
@@ -93,10 +93,9 @@ class Getconfiguration:
 
         #Other parameters
         section = 'Other_parameters'
-        self.other_params.topology_path = config.get(section, 'topology_path')
         self.other_params.batch = config.getint(section, 'batch')
         self.other_params.pim_flag = config.getboolean(section, 'pim_flag')
-        self.other_params.storing_path = config.get(section, 'storing_path')
+
 
     #Input: float | int | int | float / Return: int | int | int | int
     def convert_throughput(self, throughput, pod_row, pod_col, clock_frequency):

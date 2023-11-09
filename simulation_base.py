@@ -4,6 +4,10 @@ import os
 path = os.getcwd()
 sys.path.append(path)
 
+import numpy as np
+
+from simulation_setting import Simulation_settings
+
 from Get_configuration.get_topology import GetTopology
 from Get_configuration.get_configuration import Getconfiguration
 from Get_configuration.get_energy import GetEnergy
@@ -12,17 +16,19 @@ from Make_Operand.make_operand import MakeOperand
 
 from Scaleout.scaleout import ScaleOut
 
-
 from Scaleout.Scaleup.base_class import Scaleout
 from Scaleout.Scaleup.base_class import Scaleup
 from Scaleout.Scaleup.base_class import Operand
-from Scaleout.Scaleup.base_class import Operand
-from Scaleout.Scaleup.base_class import Systolic
-from Scaleout.Scaleup.base_class import Others
+
+from Scaleout.Scaleup.scaleup_runtime import Scaleupruntime
+
+from mobile_distribution import MobileDistribution()
 
 class Simulation:
     """Simulation code."""
     def __init__(self):
+        self.simulation_settings = Simulation_settings()
+
         self.get_topology = GetTopology()
         self.get_configuration = Getconfiguration()
         self.get_energy = GetEnergy()
@@ -31,168 +37,170 @@ class Simulation:
 
         self.scaleout = ScaleOut()
 
+        self.scaleup_runtime = Scaleupruntime()
+
+        self.mobile_distribution = MobileDistribution()
+
         self.npu_scaleout = Scaleout(Scaleup(None,None),Operand(None,None),None,None)
         self.pim_scaleout = Scaleout(Scaleup(None,None),Operand(None,None),None,None)
 
-    def simulation_settings(self, topo_path, config_path, energy_path, storage_path):
-        """Get configurations from hardware, topology, energy configuration files."""
-        self.topo, self.mnk, self.new_topo, self.mac = self.get_topology.get_topology(topo_path)
-        self.form_factor, self.npu_others, self.npu_systolic, self.pim_others, self.pim_systolic, self.other_params = \
-        self.get_configuration.return_parameters(config_path)
-        self.npu_energy, self.pim_energy = self.get_energy.return_energy(energy_path, self.npu_others.dataflow, self.pim_others.dataflow)
-        self.storage_path = storage_path
-        self.npu_scaleout = self.npu_params_set()
-        self.pim_scaleout = self.pim_params_set()
-
-    def npu_params_set(self):
-        """Function for NPU parameters setting."""
-        npu_scaleout = Scaleout(Scaleup(None,None),Operand(None,None),None,None)
-
-        #Get NPU systolic array parameters
-        npu_systolic = Systolic(None,None,None,None,None)
-
-        npu_systolic.row = self.npu_systolic.row
-        npu_systolic.col = self.npu_systolic.col
-        npu_systolic.input_buffer = self.npu_systolic.input_buffer
-        npu_systolic.filter_buffer = self.npu_systolic.filter_buffer
-        npu_systolic.output_buffer = self.npu_systolic.output_buffer
-
-        #Get NPU others parameters
-        npu_others = Others(None,None,None,None)
-
-        npu_others.latency = self.npu_others.latency
-        npu_others.bandwidth = self.npu_others.bandwidth
-        npu_others.dataflow = self.npu_others.dataflow
-        npu_others.clk_freq = self.npu_others.clk_freq
-
-        total_chips = self.npu_others.pod_row * self.npu_others.pod_col
-        npu_others.bandwidth = self.convert_bandwidth(npu_others.bandwidth, total_chips, npu_others.clk_freq)
-
-        npu_scaleout.scaleup.systolic = npu_systolic
-        npu_scaleout.scaleup.others = npu_others
-        npu_scaleout.row_dim = self.npu_others.pod_row
-        npu_scaleout.col_dim = self.npu_others.pod_col
-
-        return npu_scaleout
-
-    def pim_params_set(self):
-        """Function for PIM parameters setting."""
-        pim_scaleout = Scaleout(Scaleup(None,None),Operand(None,None),None,None)
-
-        #Get PIM systolic array parameters
-        pim_systolic = Systolic(None,None,None,None,None)
-
-        pim_systolic.row = self.pim_systolic.row
-        pim_systolic.col = self.pim_systolic.col
-        pim_systolic.input_buffer = self.pim_systolic.input_buffer
-        pim_systolic.filter_buffer = self.pim_systolic.filter_buffer
-        pim_systolic.output_buffer = self.pim_systolic.output_buffer
-
-        #Get PIM others parameters
-        pim_others = Others(None,None,None,None)
-
-        pim_others.latency = self.pim_others.latency
-        pim_others.bandwidth = self.pim_others.bandwidth
-        pim_others.dataflow = self.pim_others.dataflow
-        pim_others.clk_freq = self.pim_others.clk_freq
-
-        total_chips = self.pim_others.chips_per_dimm * self.pim_others.pod_row * self.pim_others.pod_col
-        pim_others.bandwidth = self.convert_bandwidth(pim_others.bandwidth, total_chips, pim_others.clk_freq)
-
-        pim_scaleout.scaleup.systolic = pim_systolic
-        pim_scaleout.scaleup.others = pim_others
-        pim_scaleout.row_dim = self.pim_others.pod_row
-        pim_scaleout.col_dim = self.pim_others.pod_col
-
-        return pim_scaleout
-
-    def convert_bandwidth(self, bandwidth, total_chips, clk_freq):
-        """Convert bandwidth to cycle."""
-        #BW = GB/s, clk_freq = MHz
-        bw_per_cycle = round(bandwidth * 1024 / (2 * total_chips * clk_freq),2)
-
-        return bw_per_cycle
-
-    def mobile(self):
-        if self.other_params.pim_flag == True: #With PIM
-            pass
-        else: #Only NPU
-            pass
-
-    def other_form_factor(self):
-        if self.other_params.pim_flag == True: #With PIM
-            pass
-        else: #Only NPU
-            pass
-
-
-
-
-    def mobile_with_pim(self):
-        pass
-
     #Assume entire layer simulation
     def pim_simulation(self):
-        sram_store = []
-        dram_sore = []
-        runtime_store = []
+        """NPU simulation code."""
+
+        result_list = []
+
+        print('PIM Simulation Starts\n')
+        length = len(self.topo)
+        for idx in range(length):
+            topo = self.topo[idx][1]
+            input_operand, filter_operand = self.make_operand.return_operand_matrix(topo, self.pim_scaleout.scaleup.others.dataflow)
+            stride = topo[-1]
+            layer_info = [idx, length]
+            self.pim_scaleout.operand.input_operand = input_operand
+            self.pim_scaleout.operand.filter_operand = filter_operand
+
+            #Scaleout function
+            results = self.scaleout.scaleout(self.pim_scaleout, stride, layer_info)
+            result_list.append(results)
+        print('PIM Simulation Complete\n')
+
+        return result_list
 
     #Assume entire layer simulation
     def npu_simulation(self):
         """NPU simulation code."""
-        results = []
-        print('NPU simulation\n')
-        length = len(self.new_topo)
+
+        result_list = []
+
+        print('NPU Simulation Start\n')
+        length = len(self.topo)
         for idx in range(length):
-            topo = self.new_topo[idx][1]
+            topo = self.topo[idx][1]
             input_operand, filter_operand = self.make_operand.return_operand_matrix(topo, self.npu_scaleout.scaleup.others.dataflow)
             stride = topo[-1]
             layer_info = [idx, length]
             self.npu_scaleout.operand.input_operand = input_operand
             self.npu_scaleout.operand.filter_operand = filter_operand
+
             #Scaleout function
-            sram_info, dram_info, runtime, ene_eff = self.scaleout.scaleout(self.npu_scaleout, stride, layer_info)
+            results = self.scaleout.scaleout(self.npu_scaleout, stride, layer_info)
+            result_list.append(results)
+        print('NPU Simulation Complete\n')
 
-    def store_information(self):
+        return result_list
+
+    def check_filter(self):
+        """Check filter size."""
+        filter_size = 0
+        for topo in self.topo:
+            filter_size += np.ceil(topo[1][4] * topo[1][5] / self.npu_scaleout.col_dim)
+        """
+        filter_size = self.check_filter()
+        if self.npu_scaleout.scaleup.systolic.input_buffer >= filter_size:
+            filter_dram = filter_size
+        """
+        return filter_size
+
+    def mobile_with_pim(self, default_path):
+        """Case 1: Mobile with PIM."""
+        row = self.pim_scaleout.row_dim * self.pim_scaleout.col_dim
+        col = self.pim_others.chips_per_dimm
+
+        self.pim_scaleout.row_dim = row
+        self.pim_scaleout.col_dim = col
+
+        length = len(self.topo)
+        for idx in range(length):
+            topo = self.topo[idx][1]
+            npu_input, npu_filter = self.make_operand.return_operand_matrix(topo, self.npu_scaleout.scaleup.others.dataflow)
+            pim_input, pim_filter = self.make_operand.return_operand_matrix(topo, self.pim_scaleout.scaleup.others.dataflow)
+            stride = topo[-1]
+            layer_info = [idx, length]
+
+            pim_return, npu_return, didx = self.mobile_distribution(npu_input, npu_filter, pim_input, pim_filter, stride)
+            print(pim_return, npu_return, didx)
+            # self.npu_scaleout.operand.input_operand = input_operand
+            # self.npu_scaleout.operand.filter_operand = filter_operand
+
+            # #Scaleout function
+            # results = self.scaleout.scaleout(self.npu_scaleout, stride, layer_info)
+            # result_list.append(results)
+        return 1,1,1
+        # return something
+
+    def other_simulation(self, default_path):
+        npu_result_list = self.npu_simulation()
+        pim_result_list = self.pim_simulation()
+
+        npu_runtime = 0
+        pim_runtime = 0
+        length = len(npu_result_list)
+        for idx in range(length):
+            npu_runtime += npu_result_list[idx].runtime * self.topo[idx][0]
+            pim_runtime += pim_result_list[idx].runtime * self.topo[idx][0]
+
+        npu_batch, pim_batch = self.batch_distribution(npu_runtime, pim_runtime)
+
+    def results_write(self):
+        pass
+
+    def batch_distribution(self, npu_runtime, pim_runtime):
+        """Return batch distribution."""
+        npu_total = self.npu_others.num_pods
+        pim_total = self.pim_others.num_dimms * self.pim_others.chips_per_dimm
+
+        runtime = 100000000000000
+        batch_size = self.other_params.batch
+        for batch in range(1,batch_size):
+            npu_runtime_temp = np.ceil((batch_size - batch) /npu_total)* npu_runtime
+            pim_runtime_temp = np.ceil(batch/pim_total)* pim_runtime
+            runtime_temp = max(npu_runtime_temp ,pim_runtime_temp)
+            if runtime_temp < runtime:
+                runtime = runtime_temp
+                batch_var = batch
+
+        npu_batch = batch_size - batch_var
+        pim_batch = batch_var
+
+        return npu_batch, pim_batch
+
+    def store_file_name(self, topo_path, config_path, energy_path, storage_path):
         """Store information into csv file."""
-        path_name = ''
-        file = open(path_name, 'w')
-        #Write Hardware configuration and topology name, and energy configuration name.
-        file.write('Hardware configuration: ' + self.config_path + '\n')
-        file.write('Topology: ' + self.topo_path + '\n')
-        file.write('Energy configuration: ' + self.energy_path + '\n')
+        #Storing file name must be store in order of hardware configuration.
+        topo_name = topo_path.split('/')[-1].split('.')[0]
+        energy_name = energy_path.split('/')[-1].split('.')[0]
+        energy_path = energy_name.split('_')[-1]
+        configuration_name  = config_path.split('/')[-2] + '_' + config_path.split('/')[-1].split('.')[0]
 
+        if storage_path[-1] != '/':
+            storage_path += '/'
+
+        default_path = storage_path + topo_name + '/' + energy_path + '/' + energy_name + '_' + configuration_name + '.csv'
+        dir_path = storage_path + topo_name + '/' + energy_path + '/' + energy_name + '/' + str(self.pim_others.num_dimms)
+
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+
+        return default_path
 
     def simulation(self, topo_path, config_path, energy_path, storage_path):
         """Simulation code."""
-        self.simulation_settings(topo_path, config_path, energy_path, storage_path)
+        self.topo, self.mac, self.form_factor, self.npu_scaleout, self.pim_scaleout, self.npu_energy, self.pim_energy, self.other_params,\
+            self.npu_others, self.pim_others = self.simulation_settings.simulation_settings(topo_path, config_path, energy_path)
+        self.storage_path = storage_path
+        default_path = self.store_file_name(topo_path, config_path, energy_path, storage_path)
 
-        self.npu_simulation()
-
-    def etc(self):
-        if self.form_factor == 'Mobile' and self.other_params.pim_flag == True:
-            self.mobile_with_pim()
+        if self.form_factor == 'Mobile':
+            self.mobile_with_pim(default_path)
         else:
-            if self.pim_flag == True:
-                self.npu_simulation()
-                self.pim_simulation()
-            else:
-                self.npu_simulation()
-
-        #Simulation function need to be generated
-        # if self.form_factor == 'Mobile':
-        #     self.mobile()
-
-        # else:
-        #     self.other_form_factor()
-
-
+            self.other_simulation(default_path)
 
 import os
 path = os.getcwd()
-topo_path = path + '/_Topology/VIT/ViT_base_196.csv'
-config_path = path + '/_Hardware/configuration2.cfg'
-energy_path = path + '/_Energy/Energy_Config1.cfg'
+topo_path = path + '/_Topology/BERT_Large/BERT_large_512.csv'
+config_path = path + '/_Hardware/Mobile.cfg'
+energy_path = path + '/_Energy/DDR4/DDR4_8KB.cfg'
 storage_path = path
 a = Simulation()
 a.simulation(topo_path, config_path, energy_path, storage_path)

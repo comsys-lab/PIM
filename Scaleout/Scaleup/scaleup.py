@@ -5,6 +5,7 @@ from .scaleup_sram import Scaleupsram
 from .scaleup_dram import Scaleupdram
 from .scaleup_runtime import Scaleupruntime
 
+from .base_class import Results
 
 class ScaleUp:
     """Scaleup simulation"""
@@ -19,13 +20,24 @@ class ScaleUp:
         #Get Information from ScaleupInfo module: # of tiled dimension.
         scaleupinfo = self.scaleup_info(scaleup, operand)
 
-
         #Get Memory Information
-        sram_info = self.scaleupsram.scaleup_sram(scaleup, operand, stride)
-        dram_info, stall = self.scaleupdram.scaleup_dram(scaleup, operand, scaleupinfo)
+        input_sram, filter_sram, output_sram = self.scaleupsram.scaleup_sram(scaleup, operand, stride)
+        input_dram, filter_dram, output_dram, stall = self.scaleupdram.scaleup_dram(scaleup, operand, scaleupinfo)
+
         #Get runtime with scaleup information and operand information.
-        runtime = self.scaleupruntime.get_runtime(scaleup, operand) + stall
-        return sram_info, dram_info, runtime
+        runtime = self.scaleupruntime.get_runtime(scaleup, operand)
+        runtime += stall
+
+        result_list = [input_sram, filter_sram, output_sram, input_dram, filter_dram, output_dram, runtime]
+        results = self.results(result_list)
+
+        return results
+
+    def scaleup_mobile(self, scaleup, operand):
+        """Scaleup function for mobile form factor"""
+        runtime = self.scaleupruntime.get_runtime(scaleup, operand)
+
+        return runtime
 
     #Input: scaleupformat / Return: int | int
     def get_operand_dimensions(self, scaleup, operand):
@@ -54,3 +66,17 @@ class ScaleUp:
         scaleupinfo = [[num_row,num_col],[full_row, rest_row],[full_col, rest_col]]
 
         return scaleupinfo
+
+    def results(self, result_list):
+        """Collect results from scaleup"""
+        results = Results(0,0,0,0,0,0,0,0)
+
+        results.input_sram = result_list[0]
+        results.filter_sram = result_list[1]
+        results.output_sram = result_list[2]
+        results.input_dram = result_list[3]
+        results.filter_dram = result_list[4]
+        results.output_dram = result_list[5]
+        results.runtime = result_list[6]
+
+        return results

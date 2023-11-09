@@ -38,3 +38,15 @@ class Scaleout:
     operand: Operand(0,0)
     row_dim: int
     col_dim: int
+
+@dataclass #8 paramters - variable for results
+class Results:
+    """Class for scaleup results."""
+    input_sram: int
+    filter_sram: int
+    output_sram: int
+    input_dram: int
+    filter_dram: int
+    output_dram: int
+    runtime: int
+    ene_eff: float
