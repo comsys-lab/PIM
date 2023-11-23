@@ -1,0 +1,264 @@
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+Server bound to 127.0.0.1:42569 (IPv4)
+Extension host agent listening on 42569
+
+[12:56:11] 
+
+
+
+
+[12:56:11] Extension host agent started.
+[12:56:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:12] [127.0.0.1][06c8a5e7][ManagementConnection] New connection established.
+[12:56:12] [127.0.0.1][247aabf8][ExtensionHostConnection] New connection established.
+[12:56:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:12] [127.0.0.1][247aabf8][ExtensionHostConnection] <48665> Launched Extension Host Process.
+[12:56:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:14] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:14] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:14] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:14] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:17] Getting Manifest... ms-python.vscode-pylance
+[12:56:17] Installing extension: ms-python.vscode-pylance
+[12:56:17] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:17] Getting Manifest... ms-python.python
+[12:56:18] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:18] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[12:56:20] Extension signature verification failed with error 'ENOENT': ms-python.vscode-pylance
+[12:56:31] Extracted extension to file:///home/sj/.vscode-server/extensions/ms-python.vscode-pylance-2023.10.30: ms-python.vscode-pylance
+[12:56:31] Renamed to /home/sj/.vscode-server/extensions/ms-python.vscode-pylance-2023.10.30
+[12:56:31] Extracting extension completed. ms-python.vscode-pylance
+[12:56:31] Extension installed successfully: ms-python.vscode-pylance
+[12:56:31] Marked extension as uninstalled ms-python.vscode-pylance-2023.10.20
+New EH opened, aborting shutdown
+[13:01:11] New EH opened, aborting shutdown
+[13:01:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:01:49] [127.0.0.1][247aabf8][ExtensionHostConnection] The client has reconnected.
+[13:24:54] [127.0.0.1][3f349137][ManagementConnection] New connection established.
+[13:24:54] [127.0.0.1][e9003edf][ExtensionHostConnection] New connection established.
+[13:24:54] [127.0.0.1][e9003edf][ExtensionHostConnection] <51085> Launched Extension Host Process.
+[13:24:54] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:54] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [127.0.0.1][8b51a2c6][ManagementConnection] New connection established.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [127.0.0.1][f91662bc][ExtensionHostConnection] New connection established.
+[13:24:55] [127.0.0.1][f91662bc][ExtensionHostConnection] <51096> Launched Extension Host Process.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:55] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:56] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:57] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:58] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:24:58] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:25:00] [File Watcher (parcel)] Inotify limit reached (ENOSPC) (path: /home/sj)
+[13:25:01] [127.0.0.1][3f349137][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[13:25:01] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+[13:25:06] [127.0.0.1][e9003edf][ExtensionHostConnection] <51085> Extension Host Process exited with code: 0, signal: null.
+[13:26:03] [127.0.0.1][8b51a2c6][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at process.processTimers (node:internal/timers:512:7)
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+[13:26:03] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+[13:26:08] [127.0.0.1][f91662bc][ExtensionHostConnection] <51096> Extension Host Process exited with code: 0, signal: null.
+[13:26:10] [127.0.0.1][4f4496b0][ManagementConnection] New connection established.
+[13:26:10] [127.0.0.1][ca52eb19][ExtensionHostConnection] New connection established.
+[13:26:10] [127.0.0.1][ca52eb19][ExtensionHostConnection] <51516> Launched Extension Host Process.
+[13:26:10] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:10] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:26:15] [File Watcher (parcel)] Inotify limit reached (ENOSPC) (path: /home/sj)
+[13:30:00] [127.0.0.1][247aabf8][ExtensionHostConnection] <48665> Extension Host Process exited with code: 0, signal: null.
+[13:31:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:36:11] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:41:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:46:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:51:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[13:56:12] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:01:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:06:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:11:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:16:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:21:13] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:26:14] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:31:14] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:36:15] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:41:15] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:34] [127.0.0.1][c39c151d][ManagementConnection] New connection established.
+[14:47:34] [127.0.0.1][7fa95322][ExtensionHostConnection] New connection established.
+[14:47:34] [127.0.0.1][7fa95322][ExtensionHostConnection] <59907> Launched Extension Host Process.
+[14:47:34] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:34] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:35] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:35] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:35] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:35] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:35] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:36] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:36] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:36] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:37] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:37] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:37] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:37] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:38] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:47:39] [File Watcher (parcel)] Inotify limit reached (ENOSPC) (path: /home/sj)
+[14:52:36] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:52:39] [127.0.0.1][ca52eb19][ExtensionHostConnection] <51516> Extension Host Process exited with code: 0, signal: null.
+[14:53:21] [127.0.0.1][a96f1724][ManagementConnection] New connection established.
+[14:53:21] [127.0.0.1][5fd2f22c][ExtensionHostConnection] New connection established.
+[14:53:21] [127.0.0.1][5fd2f22c][ExtensionHostConnection] <60832> Launched Extension Host Process.
+[14:53:21] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:22] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:23] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:24] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:25] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:25] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:25] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:25] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:26] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:26] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:27] [/home/sj/.vscode-server/extensions/github.copilot-chat-0.8.0]: Extension is not compatible with Code 1.82.2. Extension requires: ^1.83.0-20230923.
+[14:53:31] [127.0.0.1][a96f1724][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[14:53:31] Error: Throttler is disposed
+    at c.queue (/home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:13632)
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:15216
+    at /home/sj/.vscode-server/bin/abd2f3db4bdb28f9e95536dfa84d8479f1eb312d/out/vs/server/node/server.main.js:70:14852
+[14:53:36] [127.0.0.1][5fd2f22c][ExtensionHostConnection] <60832> Extension Host Process exited with code: 0, signal: null.
